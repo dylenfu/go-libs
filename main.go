@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"godemo/base"
 	"godemo/jsonrpc"
+	"godemo/leveldb"
 )
 
 var (
@@ -88,7 +89,7 @@ func main() {
 		jsonrpc.SyncCall()
 		break
 
-	case "leveldb":
+	case "leveldb-demo1":
 		leveldb.Demo1()
 		break
 
