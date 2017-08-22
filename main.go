@@ -89,8 +89,12 @@ func main() {
 		jsonrpc.SyncCall()
 		break
 
-	case "leveldb-demo1":
-		leveldb.Demo1()
+	case "leveldb-simple-put-get":
+		leveldb.SimplePutAndGet()
+		break
+
+	case "leveldb-simple-batch":
+		leveldb.SimpleBatch()
 		break
 
 	default:
