@@ -36,41 +36,60 @@ func main() {
     switch *testcase {
     case "hi-ipfs":
         println("Hello IPFS")
+        break
 
     case "base-struct":
         t := &base.Tee{3, "hello"}
         println(t.GetTeeNum())
         println(t.GetTeeName())
+        break
 
     case "base-channel":
         base.ChannelDemo()
+        break
+
+    case "base-interface":
+        base.InterfaceDemo()
+        break
 
     case "reflect1":
         base.ReflectDemo1()
+        break
 
     case "reflect2":
         base.ReflectDemo2()
+        break
 
     case "reflect3":
         base.ReflectDemo3()
+        break
 
     case "reflect4":
         base.ReflectDemo4()
+        break
 
     case "reflect5":
         base.ReflectDemo5()
+        break
 
     case "reflect6":
         base.ReflectDemo6()
+        break
 
     case "jsonrpc-server1":
         jsonrpc.NewServer1()
+        break
 
     case "jsonrpc-aync-call":
         jsonrpc.AyncCall()
+        break
 
     case "jsonrpc-sync-call":
         jsonrpc.SyncCall()
+        break
+
+    default:
+        break
     }
 
 }

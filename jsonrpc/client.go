@@ -11,10 +11,9 @@ import (
 var (
 	req ReqMessage
 	resp RespMessage
-	client *rpc.Client
 )
 
-func init() {
+func newServer() *rpc.Client{
 	// 新建连接
 	conn, err := net.DialTimeout("tcp", "localhost:8888", 1 * time.Second)
 	if err != nil {
@@ -22,11 +21,13 @@ func init() {
 	}
 
 	// 创建jsonrpc客户端
-	client = jsonrpc.NewClient(conn)
+	client := jsonrpc.NewClient(conn)
+	return client
 }
 
 // aync call
 func AyncCall() {
+	client := newServer()
 	defer client.Close()
 
 	// 同步请求
@@ -36,6 +37,7 @@ func AyncCall() {
 
 // sync call
 func SyncCall() {
+	client := newServer()
 	defer client.Close()
 
 	req.Id = 5
