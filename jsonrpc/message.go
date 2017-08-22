@@ -1,14 +1,14 @@
 package jsonrpc
 
 type ReqMessage struct {
-	Id int `json:id`
+	Id   int    `json:id`
 	Name string `json:name`
 }
 
 type RespMessage struct {
-	Ok bool `json:ok`
-	Id int `json:id`
+	Ok  bool   `json:ok`
+	Id  int    `json:id`
 	Msg string `json:msg`
 }
 
-const port="8888"
+const port = "8888"

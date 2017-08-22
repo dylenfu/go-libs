@@ -2,12 +2,12 @@ package jsonrpc
 
 import (
 	"log"
+	"net"
 	"net/rpc"
 	"net/rpc/jsonrpc"
-	"net"
 )
 
-type ServerHandle struct {}
+type ServerHandle struct{}
 
 func (s *ServerHandle) GetName(id int, req *ReqMessage) error {
 	log.Println("server\t-", "receive GetName call")
@@ -31,7 +31,7 @@ func NewServer1() {
 	server := rpc.NewServer()
 
 	// 开始监听
-	listener,err := net.Listen("tcp", ":" + port)
+	listener, err := net.Listen("tcp", ":"+port)
 	if err != nil {
 		log.Fatal("server\t-", "listen error:", err.Error())
 	}
@@ -45,15 +45,11 @@ func NewServer1() {
 
 	// 等待并处理连接
 	for {
-		conn,err := listener.Accept()
+		conn, err := listener.Accept()
 		if err != nil {
 			log.Fatal(err.Error())
 		}
 
 		go server.ServeCodec(jsonrpc.NewServerCodec(conn))
 	}
-}
-
-func NewServer2() {
-
 }
