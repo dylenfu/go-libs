@@ -97,6 +97,10 @@ func main() {
 		leveldb.SimpleBatch()
 		break
 
+	case "leveldb-batch-load":
+		leveldb.SimpleBatchLoad()
+		break
+
 	default:
 		break
 	}

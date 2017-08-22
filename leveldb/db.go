@@ -60,7 +60,20 @@ func SimpleBatch() {
 	log.Println("leveldb batch\t-", "write batch then get", string(v11))
 }
 
-func 
+// 丢弃重载batch内容，丢弃之前batch的内容
+func SimpleBatchLoad() {
+	//db := newDb()
+
+	var data []byte
+	batch := new(leveldb.Batch)
+	if err := batch.Load(data); err != nil {
+		log.Println("leveldb\t-", "batch load", err.Error())
+	}
+
+	log.Println("leveldb\t-", "data length", len(data))
+	log.Println("leveldb\t-", "data", string(data))
+}
+
 func UseOptions() {
 
 }
