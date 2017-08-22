@@ -15,7 +15,7 @@ var (
 
 func newServer() *rpc.Client{
 	// 新建连接
-	conn, err := net.DialTimeout("tcp", "localhost:8888", 1 * time.Second)
+	conn, err := net.DialTimeout("tcp", "localhost:" + port, 1 * time.Second)
 	if err != nil {
 		log.Fatal(err.Error())
 	}

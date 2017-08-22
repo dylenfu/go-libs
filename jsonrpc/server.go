@@ -31,7 +31,7 @@ func NewServer1() {
 	server := rpc.NewServer()
 
 	// 开始监听
-	listener,err := net.Listen("tcp", ":8888")
+	listener,err := net.Listen("tcp", ":" + port)
 	if err != nil {
 		log.Fatal("server\t-", "listen error:", err.Error())
 	}
@@ -52,4 +52,8 @@ func NewServer1() {
 
 		go server.ServeCodec(jsonrpc.NewServerCodec(conn))
 	}
+}
+
+func NewServer2() {
+
 }
