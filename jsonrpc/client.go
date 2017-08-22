@@ -5,21 +5,49 @@ import (
 	"time"
 	"log"
 	"net/rpc/jsonrpc"
+	"net/rpc"
 )
 
-func NewClient1() {
+var (
+	req ReqMessage
+	resp RespMessage
+	client *rpc.Client
+)
+
+func init() {
 	// 新建连接
 	conn, err := net.DialTimeout("tcp", "localhost:8888", 1 * time.Second)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	defer conn.Close()
 
 	// 创建jsonrpc客户端
-	client := jsonrpc.NewClient(conn)
+	client = jsonrpc.NewClient(conn)
+}
 
-	// 远程服务器返回的对象
-	var req ReqMessage
-	client.Call("GetName", 1,&req)
+// aync call
+func AyncCall() {
+	defer client.Close()
+
+	// 同步请求
+	client.Call("ServerHandle.GetName", 1,&req)
 	log.Println("client\t-", "call GetName method", req)
+}
+
+// sync call
+func SyncCall() {
+	defer client.Close()
+
+	req.Id = 5
+	req.Name = "ha"
+
+	// 异步请求
+	syncCall := client.Go("ServerHandle.SetName", &req, &resp, nil)
+	go func() {
+		_ = syncCall.Done
+		//log.Println("client\t-", "call SetName", reply)
+	}()
+	time.Sleep(1 * time.Second)
+
+	log.Println("client\t-", "call SetName response ", resp)
 }

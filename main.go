@@ -66,8 +66,11 @@ func main() {
     case "jsonrpc-server1":
         jsonrpc.NewServer1()
 
-    case "jsonrpc-client1":
-        jsonrpc.NewClient1()
+    case "jsonrpc-aync-call":
+        jsonrpc.AyncCall()
+
+    case "jsonrpc-sync-call":
+        jsonrpc.SyncCall()
     }
 
 }

@@ -40,8 +40,8 @@ func NewServer1() {
 
 	// 新建处理器
 	sh := &ServerHandle{}
-	// 注册处理器
-	server.RegisterName("ServerHandle", sh)
+	// 注册处理器,这里注意使用Register和使用RegisterName并不能让client.call省略ServerHandle
+	server.Register(sh)
 
 	// 等待并处理连接
 	for {
