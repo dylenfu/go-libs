@@ -4,6 +4,7 @@ import (
     "flag"
     "godemo/base"
     "fmt"
+    "godemo/jsonrpc"
 )
 
 var (
@@ -44,23 +45,29 @@ func main() {
     case "base-channel":
         base.ChannelDemo()
 
-    case "base-reflect1":
+    case "reflect1":
         base.ReflectDemo1()
 
-    case "base-reflect2":
+    case "reflect2":
         base.ReflectDemo2()
 
-    case "base-reflect3":
+    case "reflect3":
         base.ReflectDemo3()
 
-    case "base-reflect4":
+    case "reflect4":
         base.ReflectDemo4()
 
-    case "base-reflect5":
+    case "reflect5":
         base.ReflectDemo5()
 
-    case "base-reflect6":
+    case "reflect6":
         base.ReflectDemo6()
+
+    case "jsonrpc-server1":
+        jsonrpc.NewServer1()
+
+    case "jsonrpc-client1":
+        jsonrpc.NewClient1()
     }
 
 }
