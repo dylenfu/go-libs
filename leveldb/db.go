@@ -5,6 +5,8 @@ import (
 
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/util"
+	opt2 "github.com/syndtr/goleveldb/leveldb/opt"
+	"github.com/syndtr/goleveldb/leveldb/filter"
 )
 
 const DB_FILE_PATH = "demo.db"
@@ -19,6 +21,7 @@ func newDb() *leveldb.DB{
 
 func SimplePutAndGet() {
 	db := newDb()
+	defer db.Close()
 
 	if err := db.Put([]byte("id"), []byte("36"), nil); err != nil {
 		log.Println("leveldb\t-", "put key", err.Error())
@@ -34,6 +37,7 @@ func SimplePutAndGet() {
 // 批量写入到db
 func SimpleBatch() {
 	db := newDb()
+	defer db.Close()
 
 	batch := new(leveldb.Batch)
 	batch.Put([]byte("k11"), []byte("v11"))
@@ -80,6 +84,8 @@ func SimpleBatchLoad() {
 // 大概是将数据打包，后续不能再写入，而是只能读取
 func SimpleConpactRange() {
 	db := newDb()
+	db.Close()
+
 	r := util.Range{[]byte("k"), []byte("3")}
 	db.CompactRange(r)
 }
@@ -87,6 +93,7 @@ func SimpleConpactRange() {
 // 查询db相关属性
 func SimpleGetProperty() {
 	db := newDb()
+	defer db.Close()
 
 	// "leveldb.num-files-at-level{1}"
 
@@ -145,6 +152,8 @@ func SimpleGetProperty() {
 // 获取快照,通过快照查询key
 func SimpleGetSnapshot() {
 	db := newDb()
+	defer db.Close()
+
 	if snap,err := db.GetSnapshot(); err != nil {
 		log.Println("leveldb\t-", "get snapshot error", err.Error())
 	} else {
@@ -161,6 +170,8 @@ func SimpleGetSnapshot() {
 // 建立基于db的迭代器，遍历db所有数据
 func SimpleNewDBIterator() {
 	db := newDb()
+	defer db.Close()
+
 	iter := db.NewIterator(nil, nil)
 	defer iter.Release()
 
@@ -172,8 +183,10 @@ func SimpleNewDBIterator() {
 }
 
 // 查询某个key
-func SimpleDBInteratorSeek() {
+func SimpleDBIteratorSeek() {
 	db := newDb()
+	defer db.Close()
+
 	iter := db.NewIterator(nil, nil)
 	defer iter.Release()
 
@@ -193,6 +206,55 @@ func SimpleDBInteratorSeek() {
 		log.Println("leveldb\t-", "iterator first key and value", string(iter.Key()), string(iter.Value()))
 	}
 
+}
+
+// 使用前缀
+func SimpleIteratorWithPrefix() {
+	db := newDb()
+	defer db.Close()
+
+	batch := new(leveldb.Batch)
+	batch.Put([]byte("hash_2"), []byte("1"))
+	batch.Put([]byte("hash_1"), []byte("2"))
+	batch.Put([]byte("hash_3"), []byte("3"))
+	batch.Put([]byte("hash_4"), []byte("4"))
+
+	if err := db.Write(batch, nil); err != nil {
+		log.Println("leveldb\t-", "iterator write with prefix error", err.Error())
+	}
+
+	iter := db.NewIterator(util.BytesPrefix([]byte("hash_")), nil)
+	for iter.Next() {
+		key := string(iter.Key())
+		value := string(iter.Value())
+		log.Println("leveldb\t-", "iterator seek with prefix", key, value)
+	}
+}
+
+// 使用filter,不起作用
+func SimpleFilter() {
+	opt := &opt2.Options{
+		Filter:filter.NewBloomFilter(3)}
+
+	db, err := leveldb.OpenFile("demo-filter-db", opt)
+	defer db.Close()
+
+	if err != nil {
+		log.Println("leveldb\t-", "OpenFile with filter error", err.Error())
+	}
+
+	batch := new(leveldb.Batch)
+	batch.Put([]byte("ssd-1"), []byte("v11111"))
+	batch.Put([]byte("ssd-2"), []byte("v21111"))
+	batch.Put([]byte("ssd-3"), []byte("v31111"))
+	db.Write(batch, nil)
+
+	iter := db.NewIterator(nil, nil)
+	for iter.Next() {
+		key := string(iter.Key())
+		value := string(iter.Value())
+		log.Println("leveldb\t-", "filter and iterator seek", key, value)
+	}
 }
 
 func UseOptions() {

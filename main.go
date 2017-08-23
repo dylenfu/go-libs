@@ -114,7 +114,15 @@ func main() {
 		break
 
 	case "leveldb-iterator-seek":
-		leveldb.SimpleDBInteratorSeek()
+		leveldb.SimpleDBIteratorSeek()
+		break
+
+	case "leveldb-iterator-prefix":
+		leveldb.SimpleIteratorWithPrefix()
+		break
+
+	case "leveldb-filter":
+		leveldb.SimpleFilter()
 		break
 
 	default:
