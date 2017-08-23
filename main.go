@@ -101,6 +101,22 @@ func main() {
 		leveldb.SimpleBatchLoad()
 		break
 
+	case "leveldb-get-property":
+		leveldb.SimpleGetProperty()
+		break
+
+	case "leveldb-get-snapshot":
+		leveldb.SimpleGetSnapshot()
+		break
+
+	case "leveldb-db-iterator":
+		leveldb.SimpleNewDBIterator()
+		break
+
+	case "leveldb-iterator-seek":
+		leveldb.SimpleDBInteratorSeek()
+		break
+
 	default:
 		break
 	}
