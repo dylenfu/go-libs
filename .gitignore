@@ -3,3 +3,4 @@ go-libs
 go-libs.iml
 demo.db/
 demo-filter-db/
+*.log

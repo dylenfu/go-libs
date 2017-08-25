@@ -131,6 +131,14 @@ func main() {
 		zap.SimpleZapLogger()
 		break
 
+	case "zap-simple-save":
+		zap.SimpleSavingZapLogger()
+		break
+
+	case "zap-multi-save":
+		zap.MultipleSavingZapLogger()
+		break
+
 	case "inject-start":
 		inject.SimpleInject()
 		break
