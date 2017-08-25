@@ -143,6 +143,10 @@ func main() {
 		inject.SimpleInject()
 		break
 
+	case "inject-mine":
+		inject.RewriteFaceBookInjectDemo()
+		break
+
 	default:
 		break
 	}
