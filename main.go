@@ -3,9 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
-	"godemo/base"
-	"godemo/jsonrpc"
-	"godemo/leveldb"
+	"github.com/dylenfu/go-libs/base"
+	"github.com/dylenfu/go-libs/jsonrpc"
+	"github.com/dylenfu/go-libs/leveldb"
 )
 
 var (

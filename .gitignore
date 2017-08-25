@@ -1,4 +1,5 @@
 .idea
-godemo
-godemo.iml
+go-libs
+go-libs.iml
 demo.db/
+demo-filter-db/
