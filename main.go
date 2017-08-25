@@ -6,6 +6,8 @@ import (
 	"github.com/dylenfu/go-libs/base"
 	"github.com/dylenfu/go-libs/jsonrpc"
 	"github.com/dylenfu/go-libs/leveldb"
+	"github.com/dylenfu/go-libs/zap"
+	"github.com/dylenfu/go-libs/inject"
 )
 
 var (
@@ -123,6 +125,14 @@ func main() {
 
 	case "leveldb-filter":
 		leveldb.SimpleFilter()
+		break
+
+	case "zap-quick-start":
+		zap.SimpleZapLogger()
+		break
+
+	case "inject-start":
+		inject.SimpleInject()
 		break
 
 	default:
