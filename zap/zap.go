@@ -56,6 +56,10 @@ func SimpleSavingZapLogger() {
 	}()
 }
 
+// 这里需要注意：
+// 1.使用前面两种方式，在循环里写log的时候会丢失数据，因为zap的log是有采样的
+// 2.下面的json配置中development并没有什么卵用
+// 3.outputpaths&erroroutputpaths可以配置多个文件，但是如果不做其他设定的话，文件内容一致
 func MultipleSavingZapLogger() {
 	rawJSON := []byte(`{
 	  "level": "debug",
