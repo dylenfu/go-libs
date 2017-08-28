@@ -6,6 +6,7 @@ import (
 	"time"
 	"path"
 	"encoding/json"
+	"fmt"
 )
 
 var (
@@ -86,8 +87,24 @@ func MultipleSavingZapLogger() {
 	defer logger.Sync()
 
 	logger.Info("logger construction succeeded")
+
 	url := "loopring.org"
 	for i := 1; i < 100000; i++ {
 		logger.Info("saving number", zap.String("url", url), zap.Int("attempt", i))
 	}
+}
+
+// 第二种情况无法实现既能打印出来又能写入到log文件
+func SimpleLoggerAndPrint() {
+	zapConf := zap.NewDevelopmentConfig()
+	zapConf.OutputPaths = []string{outpath}
+	zapConf.ErrorOutputPaths = []string{errpath}
+
+	logger, err := zapConf.Build()
+	if err != nil {
+		panic(err.Error())
+	}
+
+	logger.Info("it is a log test")
+	logger.Info(fmt.Sprintln("it is a log println test"))
 }

@@ -15,8 +15,8 @@ var (
 )
 
 func main() {
-	//flagToRun()
-	cliToRun()
+	flagToRun()
+	//cliToRun()
 }
 
 func cliToRun() {
@@ -131,6 +131,10 @@ func flagToRun() {
 
 	case "zap-multi-save":
 		zap.MultipleSavingZapLogger()
+		break
+
+	case "zap-logger-print":
+		zap.SimpleLoggerAndPrint()
 		break
 
 	case "inject-start":
