@@ -15,8 +15,8 @@ var (
 )
 
 func main() {
-	//flagToRun()
-	cliToRun()
+	flagToRun()
+	//cliToRun()
 }
 
 func cliToRun() {
@@ -39,6 +39,10 @@ func flagToRun() {
 
 	case "base-channel":
 		base.ChannelDemo()
+		break
+
+	case "simple-channel-wait":
+		base.SimpleChannelDemo()
 		break
 
 	case "base-interface":
