@@ -15,8 +15,8 @@ var (
 )
 
 func main() {
-	flagToRun()
-	//cliToRun()
+	//flagToRun()
+	cliToRun()
 }
 
 func cliToRun() {
