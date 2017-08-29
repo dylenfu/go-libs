@@ -145,6 +145,10 @@ func flagToRun() {
 		inject.RewriteFaceBookInjectDemo()
 		break
 
+	case "inject-interface":
+		inject.InjectInterface()
+		break
+
 	default:
 		break
 	}

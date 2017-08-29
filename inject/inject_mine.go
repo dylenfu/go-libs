@@ -36,8 +36,8 @@ func RewriteFaceBookInjectDemo() {
 }
 
 type App struct {
-	Rest *datas.RestApi `inject:""`
-	Json *datas.JsonApi `inject:""`
+	Rest *datas.RestApi `inject:"rest"`
+	Json *datas.JsonApi `inject:"json"`
 	Other string
 }
 
@@ -45,4 +45,34 @@ func (a *App) Sing() {
 	a.Rest.Ring()
 	a.Json.Loop()
 	log.Println("inject\t-", "other uninject object", a.Other)
+}
+
+// 不能注入interface
+func InjectInterface() {
+	srv := &AnswerService{}
+	stu := &Student{"dylenfu", 30}
+
+	var graph inject.Graph
+	graph.Provide(
+		&inject.Object{Value:srv},
+		&inject.Object{Value:stu, Name:"stu"},
+	)
+	srv.Ans.Answer()
+}
+
+type AnswerService struct {
+	Ans Answerable `inject:"stu"`
+}
+
+type Answerable interface {
+	Answer()
+}
+
+type Student struct {
+	Name string
+	Age int
+}
+
+func (s *Student) Answer() {
+	log.Println("inject\t-", "answerable", s.Name, s.Age)
 }
