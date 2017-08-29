@@ -30,15 +30,19 @@ func RewriteFaceBookInjectDemo() {
 		log.Panic("inject\t-", "inject graph populate error:", err.Error())
 	}
 
+	app.Other = "other test"
+
 	app.Sing()
 }
 
 type App struct {
 	Rest *datas.RestApi `inject:""`
 	Json *datas.JsonApi `inject:""`
+	Other string
 }
 
 func (a *App) Sing() {
 	a.Rest.Ring()
 	a.Json.Loop()
+	log.Println("inject\t-", "other uninject object", a.Other)
 }
