@@ -8,6 +8,7 @@ import (
 	"github.com/dylenfu/go-libs/zap"
 	"github.com/dylenfu/go-libs/inject"
 	"github.com/dylenfu/go-libs/cmd"
+	"github.com/dylenfu/go-libs/env"
 )
 
 var (
@@ -47,6 +48,10 @@ func flagToRun() {
 
 	case "base-interface":
 		base.InterfaceDemo()
+		break
+
+	case "env-simple-path":
+		env.SimplePath()
 		break
 
 	case "reflect1":
