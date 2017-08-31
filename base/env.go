@@ -1,10 +1,10 @@
-package env
+package base
 
 import (
 	"os"
-	"path"
-	"log"
 	"os/exec"
+	"log"
+	"path"
 )
 
 func SimplePath() {
