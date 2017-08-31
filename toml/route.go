@@ -5,5 +5,9 @@ func Route(sub string) {
 	case "quick-start":
 		QuickStart()
 		break
+
+	case "simple-unmarshal":
+		SimpleUnmarshal()
+		break
 	}
 }
