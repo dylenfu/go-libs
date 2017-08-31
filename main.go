@@ -8,6 +8,7 @@ import (
 	"github.com/dylenfu/go-libs/zap"
 	"github.com/dylenfu/go-libs/inject"
 	"github.com/dylenfu/go-libs/cmd"
+	"github.com/dylenfu/go-libs/toml"
 )
 
 var (
@@ -47,6 +48,10 @@ func flagToRun() {
 
 	case "zap":
 		zap.Route(*sub)
+		break
+
+	case "toml":
+		toml.Route(*sub)
 		break
 
 	default:

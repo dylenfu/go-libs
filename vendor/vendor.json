@@ -1,0 +1,151 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "GqkBIw2lUA6lv/jgh9WIyR0YdWY=",
+			"path": "github.com/facebookgo/inject",
+			"revision": "cc1aa653e50f6a9893bcaef89e673e5b24e1e97b",
+			"revisionTime": "2016-10-06T17:47:21Z"
+		},
+		{
+			"checksumSHA1": "i7FZ2nvv/aE37h5KD2b5hW+fHUo=",
+			"path": "github.com/facebookgo/structtag",
+			"revision": "217e25fb96916cc60332e399c9aa63f5c422ceed",
+			"revisionTime": "2015-02-14T07:43:06Z"
+		},
+		{
+			"checksumSHA1": "p/8vSviYF91gFflhrt5vkyksroo=",
+			"path": "github.com/golang/snappy",
+			"revision": "553a641470496b2327abcac10b36396bd98e45c9",
+			"revisionTime": "2017-02-15T23:32:05Z"
+		},
+		{
+			"checksumSHA1": "yHbyLpI/Meh0DGrmi8x6FrDxxUY=",
+			"path": "github.com/syndtr/goleveldb/leveldb",
+			"revision": "b89cc31ef7977104127d34c1bd31ebd1a9db2199",
+			"revisionTime": "2017-07-25T06:48:36Z"
+		},
+		{
+			"checksumSHA1": "EKIow7XkgNdWvR/982ffIZxKG8Y=",
+			"path": "github.com/syndtr/goleveldb/leveldb/cache",
+			"revision": "b89cc31ef7977104127d34c1bd31ebd1a9db2199",
+			"revisionTime": "2017-07-25T06:48:36Z"
+		},
+		{
+			"checksumSHA1": "5KPgnvCPlR0ysDAqo6jApzRQ3tw=",
+			"path": "github.com/syndtr/goleveldb/leveldb/comparer",
+			"revision": "b89cc31ef7977104127d34c1bd31ebd1a9db2199",
+			"revisionTime": "2017-07-25T06:48:36Z"
+		},
+		{
+			"checksumSHA1": "1DRAxdlWzS4U0xKN/yQ/fdNN7f0=",
+			"path": "github.com/syndtr/goleveldb/leveldb/errors",
+			"revision": "b89cc31ef7977104127d34c1bd31ebd1a9db2199",
+			"revisionTime": "2017-07-25T06:48:36Z"
+		},
+		{
+			"checksumSHA1": "eqKeD6DS7eNCtxVYZEHHRKkyZrw=",
+			"path": "github.com/syndtr/goleveldb/leveldb/filter",
+			"revision": "b89cc31ef7977104127d34c1bd31ebd1a9db2199",
+			"revisionTime": "2017-07-25T06:48:36Z"
+		},
+		{
+			"checksumSHA1": "8dXuAVIsbtaMiGGuHjzGR6Ny/5c=",
+			"path": "github.com/syndtr/goleveldb/leveldb/iterator",
+			"revision": "b89cc31ef7977104127d34c1bd31ebd1a9db2199",
+			"revisionTime": "2017-07-25T06:48:36Z"
+		},
+		{
+			"checksumSHA1": "gJY7bRpELtO0PJpZXgPQ2BYFJ88=",
+			"path": "github.com/syndtr/goleveldb/leveldb/journal",
+			"revision": "b89cc31ef7977104127d34c1bd31ebd1a9db2199",
+			"revisionTime": "2017-07-25T06:48:36Z"
+		},
+		{
+			"checksumSHA1": "j+uaQ6DwJ50dkIdfMQu1TXdlQcY=",
+			"path": "github.com/syndtr/goleveldb/leveldb/memdb",
+			"revision": "b89cc31ef7977104127d34c1bd31ebd1a9db2199",
+			"revisionTime": "2017-07-25T06:48:36Z"
+		},
+		{
+			"checksumSHA1": "UmQeotV+m8/FduKEfLOhjdp18rs=",
+			"path": "github.com/syndtr/goleveldb/leveldb/opt",
+			"revision": "b89cc31ef7977104127d34c1bd31ebd1a9db2199",
+			"revisionTime": "2017-07-25T06:48:36Z"
+		},
+		{
+			"checksumSHA1": "tQ2AqXXAEy9icbZI9dLVdZGvWMw=",
+			"path": "github.com/syndtr/goleveldb/leveldb/storage",
+			"revision": "b89cc31ef7977104127d34c1bd31ebd1a9db2199",
+			"revisionTime": "2017-07-25T06:48:36Z"
+		},
+		{
+			"checksumSHA1": "gWFPMz8OQeul0t54RM66yMTX49g=",
+			"path": "github.com/syndtr/goleveldb/leveldb/table",
+			"revision": "b89cc31ef7977104127d34c1bd31ebd1a9db2199",
+			"revisionTime": "2017-07-25T06:48:36Z"
+		},
+		{
+			"checksumSHA1": "4zil8Gwg8VPkDn1YzlgCvtukJFU=",
+			"path": "github.com/syndtr/goleveldb/leveldb/util",
+			"revision": "b89cc31ef7977104127d34c1bd31ebd1a9db2199",
+			"revisionTime": "2017-07-25T06:48:36Z"
+		},
+		{
+			"checksumSHA1": "3IdEHJfBkeEE8guKA2tcA8Fv6eg=",
+			"path": "go.uber.org/atomic",
+			"revision": "70bd1261d36be490ebd22a62b385a3c5d23b6240",
+			"revisionTime": "2017-05-09T22:23:09Z"
+		},
+		{
+			"checksumSHA1": "JDGx7hehaQunZySwPs7yvdUs2m8=",
+			"path": "go.uber.org/multierr",
+			"revision": "3c4937480c32f4c13a875a1829af76c98ca3d40a",
+			"revisionTime": "2017-06-30T17:54:37Z"
+		},
+		{
+			"checksumSHA1": "ucY7OQrDyq1Zec8uO2y8h0N8fAU=",
+			"path": "go.uber.org/zap",
+			"revision": "416e66ad83ebde35df0e09f02e65ac149e193b0e",
+			"revisionTime": "2017-08-18T23:41:21Z"
+		},
+		{
+			"checksumSHA1": "HYo/9nwrY08NQA+2ItPOAH8IFW8=",
+			"path": "go.uber.org/zap/buffer",
+			"revision": "416e66ad83ebde35df0e09f02e65ac149e193b0e",
+			"revisionTime": "2017-08-18T23:41:21Z"
+		},
+		{
+			"checksumSHA1": "MuxOAtZEsJitlWBzhmpm2vGiHok=",
+			"path": "go.uber.org/zap/internal/bufferpool",
+			"revision": "416e66ad83ebde35df0e09f02e65ac149e193b0e",
+			"revisionTime": "2017-08-18T23:41:21Z"
+		},
+		{
+			"checksumSHA1": "uC0L9eCSAYcCWNC8udJk/t1vvIU=",
+			"path": "go.uber.org/zap/internal/color",
+			"revision": "416e66ad83ebde35df0e09f02e65ac149e193b0e",
+			"revisionTime": "2017-08-18T23:41:21Z"
+		},
+		{
+			"checksumSHA1": "b80CJExrVpXu3SA1iCQ6uLqTn2c=",
+			"path": "go.uber.org/zap/internal/exit",
+			"revision": "416e66ad83ebde35df0e09f02e65ac149e193b0e",
+			"revisionTime": "2017-08-18T23:41:21Z"
+		},
+		{
+			"checksumSHA1": "66VZR7l5jQfBlDLzV/b3p8+bzEo=",
+			"path": "go.uber.org/zap/zapcore",
+			"revision": "416e66ad83ebde35df0e09f02e65ac149e193b0e",
+			"revisionTime": "2017-08-18T23:41:21Z"
+		},
+		{
+			"checksumSHA1": "Yx1MU40fyGe7hhqW9+dkv8kXa60=",
+			"path": "gopkg.in/urfave/cli.v1",
+			"revision": "cfb38830724cc34fedffe9a2a29fb54fa9169cd1",
+			"revisionTime": "2017-08-11T01:42:03Z"
+		}
+	],
+	"rootPath": "github.com/dylenfu/go-libs"
+}
