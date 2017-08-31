@@ -51,6 +51,10 @@ func Route(sub string) {
 		SimplePath()
 		break
 
+	case "simple-math":
+		SimpleMath()
+		break
+
 	default:
 		break
 	}
