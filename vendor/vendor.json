@@ -21,6 +21,24 @@
 			"revisionTime": "2017-02-15T23:32:05Z"
 		},
 		{
+			"checksumSHA1": "A6nZdZ1/lTOVINhIndyw2ZWN9JU=",
+			"path": "github.com/naoina/go-stringutil",
+			"revision": "6b638e95a32d0c1131db0e7fe83775cbea4a0d0b",
+			"revisionTime": "2015-11-18T23:44:43Z"
+		},
+		{
+			"checksumSHA1": "2w8GeWfyeUrrVyj5MitxcHhaO7s=",
+			"path": "github.com/naoina/toml",
+			"revision": "e6f5723bf2a66af014955e0888881314cf294129",
+			"revisionTime": "2017-04-28T05:41:52Z"
+		},
+		{
+			"checksumSHA1": "xZBlSMT5o/A+EDOro6KbfHZwSNc=",
+			"path": "github.com/naoina/toml/ast",
+			"revision": "e6f5723bf2a66af014955e0888881314cf294129",
+			"revisionTime": "2017-04-28T05:41:52Z"
+		},
+		{
 			"checksumSHA1": "yHbyLpI/Meh0DGrmi8x6FrDxxUY=",
 			"path": "github.com/syndtr/goleveldb/leveldb",
 			"revision": "b89cc31ef7977104127d34c1bd31ebd1a9db2199",

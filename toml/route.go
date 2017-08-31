@@ -2,7 +2,8 @@ package toml
 
 func Route(sub string) {
 	switch sub {
-	case "1":
+	case "quick-start":
+		QuickStart()
 		break
 	}
 }
