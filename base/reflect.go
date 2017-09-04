@@ -3,6 +3,7 @@ package base
 import (
 	"reflect"
 	"fmt"
+	"log"
 )
 
 type Foo struct {
@@ -73,14 +74,6 @@ func ReflectDemo5()  {
 	fmt.Println(reflect.ValueOf(f).Interface())  //{abc 123}
 }
 
-func (f Foo) Do1(num1,num2 int) int {
-	return num1 + num2 + f.Y
-}
-
-func (f *Foo) Do2() {
-	println("hello Foo.X:" + f.X)
-}
-
 // show use of reflect method and call
 func ReflectDemo6() {
 	f := &Foo{"abc", 1}
@@ -94,4 +87,36 @@ func ReflectDemo6() {
 	// we use []reflect.Value{} replace of nil
 	// reflect.ValueOf(f).MethodByName("Do2").Call()
 	reflect.ValueOf(f).MethodByName("Do2").Call([]reflect.Value{})
+}
+
+func (f Foo) Do1(num1,num2 int) int {
+	return num1 + num2 + f.Y
+}
+
+func (f *Foo) Do2() {
+	println("hello Foo.X:" + f.X)
+}
+
+
+type Human struct {
+	Name string
+	Age  int
+}
+
+type Student struct {
+	Human
+	Class string
+}
+
+func JudgeType() {
+	h := Human{Name:"dylenfu", Age: 12}
+	s := &Student{h,"big"}
+
+	if reflect.TypeOf(h) == reflect.TypeOf(Human{}) {
+		log.Println("h is human")
+	}
+
+	if reflect.TypeOf(s) == reflect.TypeOf(&Student{}) {
+		log.Println("s is student")
+	}
 }

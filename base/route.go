@@ -47,6 +47,10 @@ func Route(sub string) {
 		ReflectDemo6()
 		break
 
+	case "reflect-judge":
+		JudgeType()
+		break
+
 	case "simple-path":
 		SimplePath()
 		break
