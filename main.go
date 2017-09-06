@@ -11,6 +11,7 @@ import (
 	"github.com/dylenfu/go-libs/toml"
 	"github.com/dylenfu/go-libs/http"
 	"github.com/dylenfu/go-libs/tcp"
+	"github.com/dylenfu/go-libs/refers"
 )
 
 var (
@@ -55,6 +56,9 @@ func flagToRun() {
 
 	case "tcp":
 		tcp.Route(*sub)
+
+	case "refers":
+		refers.Route(*sub)
 
 	default:
 		break
