@@ -9,6 +9,8 @@ import (
 	"github.com/dylenfu/go-libs/inject"
 	"github.com/dylenfu/go-libs/cmd"
 	"github.com/dylenfu/go-libs/toml"
+	"github.com/dylenfu/go-libs/http"
+	"github.com/dylenfu/go-libs/tcp"
 )
 
 var (
@@ -32,27 +34,27 @@ func flagToRun() {
 
 	case "base":
 		base.Route(*sub)
-		break
 
 	case "leveldb":
 		leveldb.Route(*sub)
-		break
 
 	case "jsonrpc":
 		jsonrpc.Route(*sub)
-		break
 
 	case "inject":
 		inject.Route(*sub)
-		break
 
 	case "zap":
 		zap.Route(*sub)
-		break
 
 	case "toml":
 		toml.Route(*sub)
-		break
+
+	case "http":
+		http.Route(*sub)
+
+	case "tcp":
+		tcp.Route(*sub)
 
 	default:
 		break

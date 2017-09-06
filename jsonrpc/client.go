@@ -13,7 +13,7 @@ var (
 	resp RespMessage
 )
 
-func newServer() *rpc.Client{
+func newClient() *rpc.Client{
 	// 新建连接
 	conn, err := net.DialTimeout("tcp", "localhost:" + port, 1 * time.Second)
 	if err != nil {
@@ -27,7 +27,7 @@ func newServer() *rpc.Client{
 
 // aync call
 func AyncCall() {
-	client := newServer()
+	client := newClient()
 	defer client.Close()
 
 	// 同步请求
@@ -37,7 +37,7 @@ func AyncCall() {
 
 // sync call
 func SyncCall() {
-	client := newServer()
+	client := newClient()
 	defer client.Close()
 
 	req.Id = 5
