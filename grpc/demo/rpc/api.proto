@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.dylenfu.go-libs.grpc.demo.rpc";
+
+package rpc;
+
+service ApiService {
+	rpc SayHello(HelloReq) returns (HelloResp) {}
+}
+
+message HelloReq               {string data=1;}
+message HelloResp              {string data=1;}

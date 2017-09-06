@@ -13,6 +13,7 @@ import (
 	"github.com/dylenfu/go-libs/tcp"
 	"github.com/dylenfu/go-libs/refers"
 	"github.com/dylenfu/go-libs/serialize"
+	"github.com/dylenfu/go-libs/grpc"
 )
 
 var (
@@ -63,6 +64,9 @@ func flagToRun() {
 
 	case "serialize":
 		serialize.Route(*sub)
+
+	case "grpc":
+		grpc.Route(*sub)
 
 	default:
 		break
