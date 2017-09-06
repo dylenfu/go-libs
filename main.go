@@ -12,6 +12,7 @@ import (
 	"github.com/dylenfu/go-libs/http"
 	"github.com/dylenfu/go-libs/tcp"
 	"github.com/dylenfu/go-libs/refers"
+	"github.com/dylenfu/go-libs/serialize"
 )
 
 var (
@@ -35,31 +36,34 @@ func flagToRun() {
 
 	case "base":
 		base.Route(*sub)
-		break
+
 	case "leveldb":
 		leveldb.Route(*sub)
-		break
+
 	case "jsonrpc":
 		jsonrpc.Route(*sub)
-		break
+
 	case "inject":
 		inject.Route(*sub)
-		break
+
 	case "zap":
 		zap.Route(*sub)
-		break
+
 	case "toml":
 		toml.Route(*sub)
-		break
+
 	case "http":
 		http.Route(*sub)
-		break
+
 	case "tcp":
 		tcp.Route(*sub)
-		break
+
 	case "refers":
 		refers.Route(*sub)
-		break
+
+	case "serialize":
+		serialize.Route(*sub)
+
 	default:
 		break
 	}

@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package protodata;
+
+////////////////////////////////////////////////////
+//proto3 语法tips
+//1.不再使用required
+//2.不再使用optional
+//3.不再使用default标记
+//4.支持map格式
+//5.枚举第一个强制为0
+///////////////////////////////////////////////////
+
+message Test1 {
+    map<string, int32> users = 1;//map demo
+    int64 page = 2;
+    repeated string names = 3;
+    EDEMO ed = 4;
+    enum EDEMO {
+        UNKNOWN = 0;
+        X = 17;
+        Y = 18;
+    };
+}
+
+message Test2 {
+    int32 page = 1;
+    string title = 2;
+}
