@@ -68,3 +68,17 @@ func SimplePath() {
 	lp, _ := exec.LookPath(os.Args[0])
 	log.Println("env\t-", "executeable file in:", lp)
 }
+
+/*
+go run main.go -pkg=base -sub=simple-os-args
+os length: 3
+os.Args[0] /var/folders/9q/vlm5tt2n6yncq29mf4zjr8080000gn/T/go-build528220898/command-line-arguments/_obj/exe/main
+os.Args[1] -pkg=base
+os.Args[2] -sub=simple-os-args
+*/
+func SimpleOsArgs() {
+	println("os length:", len(os.Args))
+	println("os.Args[0]", string(os.Args[0]))
+	println("os.Args[1]", string(os.Args[1]))
+	println("os.Args[2]", string(os.Args[2]))
+}

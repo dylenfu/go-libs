@@ -35,31 +35,31 @@ func flagToRun() {
 
 	case "base":
 		base.Route(*sub)
-
+		break
 	case "leveldb":
 		leveldb.Route(*sub)
-
+		break
 	case "jsonrpc":
 		jsonrpc.Route(*sub)
-
+		break
 	case "inject":
 		inject.Route(*sub)
-
+		break
 	case "zap":
 		zap.Route(*sub)
-
+		break
 	case "toml":
 		toml.Route(*sub)
-
+		break
 	case "http":
 		http.Route(*sub)
-
+		break
 	case "tcp":
 		tcp.Route(*sub)
-
+		break
 	case "refers":
 		refers.Route(*sub)
-
+		break
 	default:
 		break
 	}

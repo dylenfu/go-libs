@@ -49,6 +49,10 @@ func Route(sub string) {
 	case "simple-path":
 		SimplePath()
 
+	case "simple-os-args":
+		SimpleOsArgs()
+		break
+
 	case "simple-math":
 		SimpleMath()
 	}
