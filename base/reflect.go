@@ -74,30 +74,11 @@ func ReflectDemo5()  {
 	fmt.Println(reflect.ValueOf(f).Interface())  //{abc 123}
 }
 
-// show use of reflect method and call
-func ReflectDemo6() {
-	f := &Foo{"abc", 1}
-
-	var params []reflect.Value
-	params = append(params, reflect.ValueOf(3))
-	params = append(params, reflect.ValueOf(4))
-	sum := reflect.ValueOf(f).MethodByName("Do1").Call(params)
-	println(sum[0].Int())
-
-	// we use []reflect.Value{} replace of nil
-	// reflect.ValueOf(f).MethodByName("Do2").Call()
-	reflect.ValueOf(f).MethodByName("Do2").Call([]reflect.Value{})
-}
-
-func (f Foo) Do1(num1,num2 int) int {
-	return num1 + num2 + f.Y
-}
-
-func (f *Foo) Do2() {
-	println("hello Foo.X:" + f.X)
-}
-
-
+//////////////////////////////////////////////////////////////////////
+//
+// 使用反射判断数据类型
+//
+//////////////////////////////////////////////////////////////////////
 type Human struct {
 	Name string
 	Age  int
@@ -119,4 +100,41 @@ func JudgeType() {
 	if reflect.TypeOf(s) == reflect.TypeOf(&Student{}) {
 		log.Println("s is student")
 	}
+}
+
+//////////////////////////////////////////////////////////////////////
+//
+// 使用反射调用函数
+//
+//////////////////////////////////////////////////////////////////////
+func ReflectSimpleCall() {
+	method := reflect.ValueOf(test)
+	data := method.Call([]reflect.Value{})
+	println(data[0].String())
+}
+
+func test() string {
+	return "it is test1"
+}
+
+//////////////////////////////////////////////////////////////////////
+//
+// 使用反射调用结构体函数
+// 这里记住一定要大写Test1
+// 而(ob *orderbook)是不是指针没有关系
+//
+//////////////////////////////////////////////////////////////////////
+func ReflectStructCall() {
+	ob := &orderbook{"dylenfu"}
+	method := reflect.ValueOf(ob).MethodByName("Test1")
+	data := method.Call([]reflect.Value{reflect.ValueOf("hi!")})
+	println(data[0].String())
+}
+
+type orderbook struct{
+	name string
+}
+
+func (ob *orderbook) Test1(prefix string) string {
+	return prefix + ob.name
 }

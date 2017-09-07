@@ -25,23 +25,26 @@ func Route(sub string) {
 	case "simple-interface":
 		InterfaceDemo()
 
-	case "simple-reflect1":
+	case "reflect-demo1":
 		ReflectDemo1()
 
-	case "simple-reflect2":
+	case "reflect-demo2":
 		ReflectDemo2()
 
-	case "simple-reflect3":
+	case "reflect-demo3":
 		ReflectDemo3()
 
-	case "simple-reflect4":
+	case "reflect-demo4":
 		ReflectDemo4()
 
-	case "simple-reflect5":
+	case "reflect-demo5":
 		ReflectDemo5()
 
-	case "simple-reflect6":
-		ReflectDemo6()
+	case "reflect-simple-call":
+		ReflectSimpleCall()
+
+	case "reflect-simple-struct-call":
+		ReflectStructCall()
 
 	case "reflect-judge":
 		JudgeType()

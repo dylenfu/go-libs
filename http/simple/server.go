@@ -1,4 +1,4 @@
-package http
+package simple
 
 import (
 	"net/http"
@@ -7,11 +7,9 @@ import (
 
 type mutex struct{}
 
-const host = ":9090"
-
 func SimpleHttpServer()  {
 	http.HandleFunc("/hello", handleTest)
-	err := http.ListenAndServe(host, nil)
+	err := http.ListenAndServe(":9090", nil)
 	if err != nil {
 		fmt.Println(err)
 	}
