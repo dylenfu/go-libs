@@ -57,6 +57,9 @@ func InjectInterface() {
 		&inject.Object{Value:srv},
 		&inject.Object{Value:stu, Name:"stu"},
 	)
+	if err := graph.Populate(); err != nil {
+		panic(err)
+	}
 	srv.Ans.Answer()
 }
 

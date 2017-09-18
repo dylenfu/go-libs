@@ -95,6 +95,7 @@ func makeHandlers() []*rest.Route {
 		route.PathExp = "/" + name
 
 		route.Func = func(w rest.ResponseWriter, r *rest.Request) {
+			println(r.Header.Get(""))
 			method := controller.MethodByName(name)
 			data := method.Call([]reflect.Value{})
 			w.WriteJson(map[string]string{"body": data[0].String()})
