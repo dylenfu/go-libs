@@ -6,6 +6,7 @@ import (
 	"os"
 	"github.com/naoina/toml"
 	"log"
+	"math/big"
 )
 
 type ServerInfo struct {
@@ -69,7 +70,7 @@ func (r *RawTOML) UnmarshalTOML(input []byte) error {
 func SimpleUnmarshal() {
 	println("hi")
 	input := []byte(`
-		foo = 1
+		foo = 10000000000000000000000000000000000000000000000000999999999999999999999999999993333333333333
 
 		[[servers]]
 		addr = "198.51.100.3:80" # a comment
@@ -80,12 +81,12 @@ func SimpleUnmarshal() {
 		`)
 
 	var config struct {
-		Foo     int
+		Foo     *big.Int
 		Servers RawTOML
 	}
 
 	toml.Unmarshal(input, &config)
-	log.Println("config.Foo = ", config.Foo)
+	log.Println("config.Foo = ", config.Foo.String())
 	log.Println("config.servers = ", string(config.Servers))
 	//fmt.Printf("config.Servers =\n%s\n", indent(config.Servers, 2))
 }
