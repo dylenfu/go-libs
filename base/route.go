@@ -16,6 +16,12 @@ func Route(sub string) {
 		println(t.GetTeeNum())
 		println(t.GetTeeName())
 
+	case "break-loop":
+		BreakLoop()
+
+	case "break-for-loop":
+		BreakForLoop()
+
 	case "simple-channel":
 		ChannelDemo()
 
