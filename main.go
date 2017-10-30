@@ -14,6 +14,7 @@ import (
 	"github.com/dylenfu/go-libs/refers"
 	"github.com/dylenfu/go-libs/serialize"
 	"github.com/dylenfu/go-libs/grpc"
+	"github.com/dylenfu/go-libs/sort"
 )
 
 var (
@@ -37,6 +38,9 @@ func flagToRun() {
 
 	case "base":
 		base.Route(*sub)
+
+	case "sort":
+		sort.Route(*sub)
 
 	case "leveldb":
 		leveldb.Route(*sub)
