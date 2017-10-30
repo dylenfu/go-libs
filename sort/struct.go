@@ -12,7 +12,7 @@ type Student struct {
 	Height *big.Int
 }
 
-type Students []Student
+type Students []*Student
 
 func (s Students) Len() int{
 	return len(s)
@@ -35,9 +35,9 @@ func (s Students) Swap(i, j int) {
 }
 
 func SimpleStructSort() {
-	s1 := Student{"s1", big.NewInt(21)}
-	s2 := Student{"s2", big.NewInt(19)}
-	s3 := Student{"s3", big.NewInt(20)}
+	s1 := &Student{"s1", big.NewInt(20)}
+	s2 := &Student{"s2", big.NewInt(19)}
+	s3 := &Student{"s3", big.NewInt(20)}
 	ss := Students{s1, s2, s3}
 	tsort.Sort(ss)
 
