@@ -64,5 +64,11 @@ func Route(sub string) {
 
 	case "simple-math":
 		SimpleMath()
+
+	case "simple-singleton":
+		SingletonDemo()
+
+	case "simple-goroutine":
+		SimpleGoRoutine()
 	}
 }
