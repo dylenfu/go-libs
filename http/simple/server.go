@@ -1,13 +1,13 @@
 package simple
 
 import (
-	"net/http"
 	"fmt"
+	"net/http"
 )
 
 type mutex struct{}
 
-func SimpleHttpServer()  {
+func SimpleHttpServer() {
 	http.HandleFunc("/hello", handleTest)
 	err := http.ListenAndServe(":9090", nil)
 	if err != nil {
@@ -21,6 +21,6 @@ func SimpleHttpServer()  {
 //////////////////////////////////////////////////
 func handleTest(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
-	data,_ := r.Form["data"]
-	fmt.Fprintf(w,"hello " + data[0])
+	data, _ := r.Form["data"]
+	fmt.Fprintf(w, "hello "+data[0])
 }

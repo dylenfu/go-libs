@@ -22,10 +22,10 @@ type Rectangle struct {
 	W float32
 }
 
-func (r *Rectangle) Area() float32{
+func (r *Rectangle) Area() float32 {
 	return r.L * r.W
 }
 
 func (r *Rectangle) Perimeter() float32 {
-	return 2 * r.W + 2 * r.L
+	return 2*r.W + 2*r.L
 }

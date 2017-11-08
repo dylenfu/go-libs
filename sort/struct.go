@@ -8,20 +8,20 @@ import (
 // implement sort interface functions len,swap,less
 
 type Student struct {
-	Name string
+	Name   string
 	Height *big.Int
 }
 
 type Students []*Student
 
-func (s Students) Len() int{
+func (s Students) Len() int {
 	return len(s)
 }
 
 func (s Students) Less(i, j int) bool {
 	si := s[i]
 	sj := s[j]
-	if si.Height.Cmp(sj.Height) < 0  {
+	if si.Height.Cmp(sj.Height) < 0 {
 		return true
 	}
 
@@ -45,4 +45,3 @@ func SimpleStructSort() {
 		println(v.Name, v.Height.String())
 	}
 }
-

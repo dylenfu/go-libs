@@ -1,11 +1,14 @@
 package base
 
-import "time"
+import (
+	"log"
+	"time"
+)
 
 func BreakLoop() {
-	for i:=0;i<10;i++ {
+	for i := 0; i < 10; i++ {
 	next1:
-		for j:=0;j<10;j++ {
+		for j := 0; j < 10; j++ {
 			if j == 2 {
 				println(i, j)
 				break next1
@@ -24,12 +27,12 @@ func BreakForLoop() {
 			continue
 		}
 
-		for j:=0;j<10;j++ {
+		for j := 0; j < 10; j++ {
 			if j < 5 {
 				continue
 			} else {
 				time.Sleep(1 * time.Second)
-				for k := 0; k< 10;k++ {
+				for k := 0; k < 10; k++ {
 					if k < 5 {
 						continue
 					}
@@ -49,5 +52,12 @@ func simple(i int) bool {
 		return false
 	} else {
 		return true
+	}
+}
+
+func Maploop() {
+	m := map[string]int{"1": 11, "2": 22, "3": 33}
+	for k, v := range m {
+		log.Print(k, v)
 	}
 }

@@ -1,21 +1,21 @@
 package jsonrpc
 
 import (
-	"net"
-	"time"
 	"log"
-	"net/rpc/jsonrpc"
+	"net"
 	"net/rpc"
+	"net/rpc/jsonrpc"
+	"time"
 )
 
 var (
-	req ReqMessage
+	req  ReqMessage
 	resp RespMessage
 )
 
-func newClient() *rpc.Client{
+func newClient() *rpc.Client {
 	// 新建连接
-	conn, err := net.DialTimeout("tcp", "localhost:" + port, 1 * time.Second)
+	conn, err := net.DialTimeout("tcp", "localhost:"+port, 1*time.Second)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
@@ -31,7 +31,7 @@ func AyncCall() {
 	defer client.Close()
 
 	// 同步请求
-	client.Call("ServerHandle.GetName", 1,&req)
+	client.Call("ServerHandle.GetName", 1, &req)
 	log.Println("client\t-", "call GetName method", req)
 }
 

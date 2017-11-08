@@ -23,7 +23,7 @@ func (n *Node) Start() {
 }
 
 func (n *Node) Wait() {
-	<- n.stop
+	<-n.stop
 }
 
 func (n *Node) Close() {

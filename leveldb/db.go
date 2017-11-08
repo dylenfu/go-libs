@@ -4,14 +4,14 @@ import (
 	"log"
 
 	"github.com/syndtr/goleveldb/leveldb"
-	"github.com/syndtr/goleveldb/leveldb/util"
-	opt2 "github.com/syndtr/goleveldb/leveldb/opt"
 	"github.com/syndtr/goleveldb/leveldb/filter"
+	opt2 "github.com/syndtr/goleveldb/leveldb/opt"
+	"github.com/syndtr/goleveldb/leveldb/util"
 )
 
 const DB_FILE_PATH = "demo.db"
 
-func newDb() *leveldb.DB{
+func newDb() *leveldb.DB {
 	db, err := leveldb.OpenFile(DB_FILE_PATH, nil)
 	if err != nil {
 		log.Fatal("leveldb\t-", "OpenFile", err.Error())
@@ -52,13 +52,13 @@ func SimpleBatch() {
 
 	log.Println("leveldb batch\t-", "len", batch.Len())
 
-	v1, err:= db.Get([]byte("k1"), nil)
+	v1, err := db.Get([]byte("k1"), nil)
 	if err != nil {
 		log.Println("leveldb batch\t-", "write batch then get", err.Error())
 	}
 	log.Println("leveldb batch\t-", "write batch then get", string(v1))
 
-	v11, err:= db.Get([]byte("k11"), nil)
+	v11, err := db.Get([]byte("k11"), nil)
 	if err != nil {
 		log.Println("leveldb batch\t-", "write batch then get", err.Error())
 	}
@@ -99,50 +99,50 @@ func SimpleGetProperty() {
 
 	// "leveldb.stats"
 	/*
-	2017/08/23 10:21:10 leveldb	- get property success Compactions
-	Level |   Tables   |    Size(MB)   |    Time(sec)  |    Read(MB)   |   Write(MB)
-	-------+------------+---------------+---------------+---------------+---------------
-		0   |          5 |       0.00063 |       0.00000 |       0.00000 |       0.00000
+		2017/08/23 10:21:10 leveldb	- get property success Compactions
+		Level |   Tables   |    Size(MB)   |    Time(sec)  |    Read(MB)   |   Write(MB)
+		-------+------------+---------------+---------------+---------------+---------------
+			0   |          5 |       0.00063 |       0.00000 |       0.00000 |       0.00000
 	*/
 
 	// "leveldb.sstables"
 	/*
-	2017/08/23 10:22:33 leveldb	- get property success --- level 0 ---
-	20:137["k1,v15" .. "k1,v13"]
-	17:144["k11,v9" .. "k31,v11"]
-	8:139["k1,v5" .. "k3,v7"]
-	5:119["id,v3" .. "id,v3"]
-	2:119["id,v1" .. "id,v1"]
+		2017/08/23 10:22:33 leveldb	- get property success --- level 0 ---
+		20:137["k1,v15" .. "k1,v13"]
+		17:144["k11,v9" .. "k31,v11"]
+		8:139["k1,v5" .. "k3,v7"]
+		5:119["id,v3" .. "id,v3"]
+		2:119["id,v1" .. "id,v1"]
 	*/
 
 	// "leveldb.blockpool"
 	/*
-	2017/08/23 10:24:11 leveldb	- get property success BufferPool{B·4101 Z·[0 0 0 0 0] Zm·[0 0 0 0 0] Zh·[0 0 0 0 0] G·0 P·0 H·0 <·0 =·0 >·0 M·0}
-	 */
+		2017/08/23 10:24:11 leveldb	- get property success BufferPool{B·4101 Z·[0 0 0 0 0] Zm·[0 0 0 0 0] Zh·[0 0 0 0 0] G·0 P·0 H·0 <·0 =·0 >·0 M·0}
+	*/
 
 	// "leveldb.cachedblock"
 	/*
-	2017/08/23 10:25:27 leveldb	- get property success 0
+		2017/08/23 10:25:27 leveldb	- get property success 0
 	*/
 
 	// "leveldb.openedtables"
 	/*
-	2017/08/23 10:26:12 leveldb	- get property success 0
+		2017/08/23 10:26:12 leveldb	- get property success 0
 	*/
 
 	// "leveldb.alivesnaps"
 	/*
-	2017/08/23 10:26:56 leveldb	- get property success 0
+		2017/08/23 10:26:56 leveldb	- get property success 0
 	*/
 
 	// "leveldb.aliveiters"
 	/*
-	2017/08/23 10:27:38 leveldb	- get property success 0
+		2017/08/23 10:27:38 leveldb	- get property success 0
 	*/
 
 	name := "leveldb.aliveiters"
 
-	if property,err := db.GetProperty(name); err != nil {
+	if property, err := db.GetProperty(name); err != nil {
 		log.Println("leveldb\t-", "get property error", err.Error())
 	} else {
 		log.Println("leveldb\t-", "get property success", property)
@@ -154,7 +154,7 @@ func SimpleGetSnapshot() {
 	db := newDb()
 	defer db.Close()
 
-	if snap,err := db.GetSnapshot(); err != nil {
+	if snap, err := db.GetSnapshot(); err != nil {
 		log.Println("leveldb\t-", "get snapshot error", err.Error())
 	} else {
 		log.Println("leveldb\t-", "get snapshot success", snap.String())
@@ -234,7 +234,7 @@ func SimpleIteratorWithPrefix() {
 // 使用filter,不起作用
 func SimpleFilter() {
 	opt := &opt2.Options{
-		Filter:filter.NewBloomFilter(3)}
+		Filter: filter.NewBloomFilter(3)}
 
 	db, err := leveldb.OpenFile("demo-filter-db", opt)
 	defer db.Close()

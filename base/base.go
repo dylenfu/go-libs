@@ -7,10 +7,10 @@ import (
 
 type Tee struct {
 	Num  uint
-	Name  string
+	Name string
 }
 
-func (tee *Tee)  GetTeeNum() uint {
+func (tee *Tee) GetTeeNum() uint {
 	return tee.Num
 }
 
@@ -34,7 +34,7 @@ func ChannelDemo() {
 }
 
 func SimpleGoRoutine() {
-	for i:=0;i<10;i++ {
+	for i := 0; i < 10; i++ {
 		go func(i int) {
 			println(i)
 		}(i)
@@ -44,14 +44,14 @@ func SimpleGoRoutine() {
 
 func SingletonDemo() {
 	ton := GetInstance()
-	go func(){
-		for i:=0;i<100;i++ {
+	go func() {
+		for i := 0; i < 100; i++ {
 			ton.do(i)
 		}
 	}()
 
-	go func(){
-		for i:=0;i<100;i++ {
+	go func() {
+		for i := 0; i < 100; i++ {
 			ton.do(i)
 		}
 	}()
@@ -60,11 +60,11 @@ func SingletonDemo() {
 }
 
 var (
-	once sync.Once
+	once     sync.Once
 	instance *singleton
 )
 
-type singleton struct {}
+type singleton struct{}
 
 func GetInstance() *singleton {
 	once.Do(func() {

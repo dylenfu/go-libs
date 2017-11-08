@@ -1,9 +1,9 @@
 package server
 
 import (
+	pb "github.com/dylenfu/go-libs/grpc/demo/rpc"
 	"log"
 	"net"
-	pb "github.com/dylenfu/go-libs/grpc/demo/rpc"
 
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"

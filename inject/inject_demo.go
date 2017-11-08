@@ -1,10 +1,10 @@
 package inject
 
 import (
-	"github.com/facebookgo/inject"
 	"fmt"
-	"os"
+	"github.com/facebookgo/inject"
 	"net/http"
+	"os"
 )
 
 func SimpleInject() {

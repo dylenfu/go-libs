@@ -2,8 +2,8 @@ package client
 
 import (
 	"flag"
-	"log"
 	pb "github.com/dylenfu/go-libs/grpc/demo/rpc"
+	"log"
 
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"

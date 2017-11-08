@@ -1,9 +1,9 @@
 package base
 
 import (
-	"reflect"
 	"fmt"
 	"log"
+	"reflect"
 )
 
 type Foo struct {
@@ -32,12 +32,12 @@ func ReflectDemo1() {
 func ReflectDemo2() {
 	var f Foo
 	typ := reflect.TypeOf(f)
-	for i:=0;i<typ.NumField();i++ {
+	for i := 0; i < typ.NumField(); i++ {
 		field := typ.Field(i)
 		fmt.Printf("%s type is :%s\n", field.Name, field.Type)
 	}
 
-	field1,_:= typ.FieldByName("X")
+	field1, _ := typ.FieldByName("X")
 	fmt.Printf("Foo.X field name is %s and type is %s and index is %d\n", field1.Name, field1.Type, field1.Index)
 }
 
@@ -54,9 +54,9 @@ func ReflectDemo3() {
 
 // show use of reflect value
 func ReflectDemo4() {
-	var i int= 12
+	var i int = 12
 	var s string = "hi"
-	var f Foo = Foo{X:"ha", Y:12}
+	var f Foo = Foo{X: "ha", Y: 12}
 
 	fmt.Println("value of i:", reflect.ValueOf(i))
 	fmt.Println("value of s:", reflect.ValueOf(s))
@@ -64,14 +64,14 @@ func ReflectDemo4() {
 }
 
 // show use of reflect interface
-func ReflectDemo5()  {
+func ReflectDemo5() {
 	var i int = 123
 	fmt.Println(reflect.ValueOf(i).Interface()) //123
 
 	var f = Foo{"abc", 123}
-	fmt.Println(f) //{abc 123}
-	fmt.Println(reflect.ValueOf(f).Interface() == f)  //true
-	fmt.Println(reflect.ValueOf(f).Interface())  //{abc 123}
+	fmt.Println(f)                                   //{abc 123}
+	fmt.Println(reflect.ValueOf(f).Interface() == f) //true
+	fmt.Println(reflect.ValueOf(f).Interface())      //{abc 123}
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -90,8 +90,8 @@ type Student struct {
 }
 
 func JudgeType() {
-	h := Human{Name:"dylenfu", Age: 12}
-	s := &Student{h,"big"}
+	h := Human{Name: "dylenfu", Age: 12}
+	s := &Student{h, "big"}
 
 	if reflect.TypeOf(h) == reflect.TypeOf(Human{}) {
 		log.Println("h is human")
@@ -131,7 +131,7 @@ func ReflectStructCall() {
 	println(data[0].String())
 }
 
-type orderbook struct{
+type orderbook struct {
 	name string
 }
 

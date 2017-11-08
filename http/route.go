@@ -1,9 +1,9 @@
 package http
 
 import (
-	"github.com/dylenfu/go-libs/http/simple"
 	"github.com/dylenfu/go-libs/http/jsonrest"
 	"github.com/dylenfu/go-libs/http/ref"
+	"github.com/dylenfu/go-libs/http/simple"
 )
 
 func Route(sub string) {

@@ -2,8 +2,8 @@ package base
 
 import (
 	"fmt"
-	"time"
 	"sync/atomic"
+	"time"
 )
 
 func SimpleStringType() {

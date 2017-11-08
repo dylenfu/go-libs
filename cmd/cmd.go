@@ -1,14 +1,14 @@
 package cmd
 
 import (
-	"gopkg.in/urfave/cli.v1"
-	"os"
-	"fmt"
-	"log"
-	"sort"
 	"errors"
+	"fmt"
+	"gopkg.in/urfave/cli.v1"
+	"log"
+	"os"
 	"path/filepath"
 	"runtime"
+	"sort"
 )
 
 func SimpleCli() {
@@ -24,7 +24,7 @@ func demo2() {
 	app := cli.NewApp()
 	app.Name = "loopring"
 	app.Usage = "DIAOZHATIAN DE ICO"
-	app.Authors = []cli.Author{cli.Author{Name:"Dylen Fu",Email:"dylenfu@126.com"}}
+	app.Authors = []cli.Author{cli.Author{Name: "Dylen Fu", Email: "dylenfu@126.com"}}
 	app.Action = func(c *cli.Context) error {
 		fmt.Println("diao zha tian de ico,jiu wen ni pabupa")
 		return nil
@@ -51,9 +51,9 @@ hola maybe
 func demo3() {
 	app := cli.NewApp()
 
-	app.Flags = []cli.Flag {
+	app.Flags = []cli.Flag{
 		cli.StringFlag{
-			Name: "lang",
+			Name:  "lang",
 			Value: "english",
 			Usage: "language for the greeting",
 		},
@@ -82,9 +82,9 @@ func demo3() {
 func demo4() {
 	app := cli.NewApp()
 
-	app.Flags = []cli.Flag {
+	app.Flags = []cli.Flag{
 		cli.StringFlag{
-			Name: "config, c",
+			Name:  "config, c",
 			Usage: "load configuration from `FILE`",
 		},
 	}
@@ -95,11 +95,11 @@ func demo4() {
 func demo5() {
 	app := cli.NewApp()
 
-	app.Flags = []cli.Flag {
+	app.Flags = []cli.Flag{
 		cli.StringFlag{
-			Name: "lang, l",
-			Value: "english",
-			Usage: "language for the greeting",
+			Name:   "lang, l",
+			Value:  "english",
+			Usage:  "language for the greeting",
 			EnvVar: "LEGACY_COMPAT_LANG,APP_LANG,LANG",
 		},
 	}
@@ -118,23 +118,23 @@ go run main.go complete
 func demo6() {
 	app := cli.NewApp()
 
-	app.Flags = []cli.Flag {
+	app.Flags = []cli.Flag{
 		cli.StringFlag{
-			Name: "lang, l",
+			Name:  "lang, l",
 			Value: "english",
 			Usage: "language for greeting",
 		},
 		cli.StringFlag{
-			Name: "config, c",
+			Name:  "config, c",
 			Usage: "Load configuration from File",
 		},
 	}
 
-	app.Commands = []cli.Command {
+	app.Commands = []cli.Command{
 		{
-			Name: "complete",
+			Name:    "complete",
 			Aliases: []string{"c"},
-			Usage: "complete a task in list",
+			Usage:   "complete a task in list",
 			Action: func(c *cli.Context) error {
 				log.Println("cli test\t-", "commands", "complete")
 				return nil
@@ -142,9 +142,9 @@ func demo6() {
 		},
 
 		{
-			Name: "add",
-			Aliases: []string {"a"},
-			Usage: "add a task to a list",
+			Name:    "add",
+			Aliases: []string{"a"},
+			Usage:   "add a task to a list",
 			Action: func(c *cli.Context) error {
 				log.Println("cli test\t-", "command", "add")
 				return nil
@@ -167,17 +167,17 @@ func demo7() {
 			Name: "loop",
 		},
 		{
-			Name: "add",
+			Name:     "add",
 			Category: "template",
-			Usage: "add task in list",
+			Usage:    "add task in list",
 			Action: func(c *cli.Context) {
 				log.Println("cli test\t-", "sub commands", "add")
 			},
 		},
 		{
-			Name: "remove",
+			Name:     "remove",
 			Category: "template",
-			Usage: "remove a task from list",
+			Usage:    "remove a task from list",
 			Action: func(c *cli.Context) {
 				log.Println("cli test\t-", "sub commands", "remove")
 			},
@@ -213,9 +213,9 @@ func demo9() {
 	app.EnableBashCompletion = true
 	app.Commands = []cli.Command{
 		{
-			Name: "complete",
+			Name:    "complete",
 			Aliases: []string{"c"},
-			Usage: "complete a task in list",
+			Usage:   "complete a task in list",
 			Action: func(c *cli.Context) error {
 				log.Println("cli test\t-", "bash completion", c.Args().First())
 				return nil
@@ -229,7 +229,7 @@ func demo9() {
 					log.Println("cli test\t-", "bash completion", "Narg")
 				}
 
-				for _,t := range tasks {
+				for _, t := range tasks {
 					log.Println("cli test\t-", "bash completion", t)
 				}
 			},
@@ -274,11 +274,11 @@ func demo11() {
 	app.Copyright = "Copyright 2013-2017 The loopring/ringminer Authors"
 	app.EnableBashCompletion = true
 
-	app.Commands = []cli.Command {
+	app.Commands = []cli.Command{
 		greetCmd,
 		runCmd,
 	}
-	app.Flags = []cli.Flag {
+	app.Flags = []cli.Flag{
 		evnFlag,
 		idFlag,
 		descFlag,
@@ -359,21 +359,21 @@ var (
 	}
 
 	idFlag = cli.StringFlag{
-		Name: "id",
+		Name:  "id",
 		Usage: "set id for stack",
 	}
 
 	descFlag = cli.StringFlag{
-		Name: "desc",
+		Name:  "desc",
 		Usage: "set description for stack",
 	}
 
 	greetCmd = cli.Command{
-		Action: Greeting,
-		Name: "greet",
-		Usage: "say hi",
+		Action:    Greeting,
+		Name:      "greet",
+		Usage:     "say hi",
 		ArgsUsage: "<environment>,<Hash ID>,<description>",
-		Flags: []cli.Flag {
+		Flags: []cli.Flag{
 			evnFlag,
 			idFlag,
 			descFlag,
@@ -386,29 +386,28 @@ var (
 	}
 
 	runCmd = cli.Command{
-		Name: "run",
-		Usage: "running service",
+		Name:     "run",
+		Usage:    "running service",
 		Category: "RUNNING COMMANDS",
 		Description: `
 		running commands can start,wait or stop the stack,
 		while wait, we can greet the others
 		`,
 
-		Subcommands: []cli.Command {
+		Subcommands: []cli.Command{
 			{
-				Name: "start",
-				Usage: "start the stack",
+				Name:   "start",
+				Usage:  "start the stack",
 				Action: Start,
 			},
 			{
-				Name: "stop",
-				Usage: "stop the stack",
+				Name:   "stop",
+				Usage:  "stop the stack",
 				Action: Stop,
 			},
 		},
 	}
 )
-
 
 func defaultEnv() string {
 	return "dev"

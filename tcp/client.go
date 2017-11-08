@@ -1,8 +1,8 @@
 package tcp
 
 import (
-	"net"
 	"fmt"
+	"net"
 )
 
 func client() {

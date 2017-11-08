@@ -1,9 +1,9 @@
 package inject
 
 import (
+	"github.com/dylenfu/go-libs/inject/basedatas"
 	"github.com/dylenfu/go-libs/inject/datas"
 	"github.com/facebookgo/inject"
-	"github.com/dylenfu/go-libs/inject/basedatas"
 	"log"
 )
 
@@ -36,8 +36,8 @@ func RewriteFaceBookInjectDemo() {
 }
 
 type App struct {
-	Rest *datas.RestApi `inject:"rest"`
-	Json *datas.JsonApi `inject:"json"`
+	Rest  *datas.RestApi `inject:"rest"`
+	Json  *datas.JsonApi `inject:"json"`
 	Other string
 }
 
@@ -54,8 +54,8 @@ func InjectInterface() {
 
 	var graph inject.Graph
 	graph.Provide(
-		&inject.Object{Value:srv},
-		&inject.Object{Value:stu, Name:"stu"},
+		&inject.Object{Value: srv},
+		&inject.Object{Value: stu, Name: "stu"},
 	)
 	if err := graph.Populate(); err != nil {
 		panic(err)
@@ -73,7 +73,7 @@ type Answerable interface {
 
 type Student struct {
 	Name string
-	Age int
+	Age  int
 }
 
 func (s *Student) Answer() {

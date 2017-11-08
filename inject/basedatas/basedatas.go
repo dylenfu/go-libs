@@ -1,6 +1,6 @@
 package basedatas
 
 type Base struct {
-	Id string
+	Id   string
 	Desc string
 }

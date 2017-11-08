@@ -22,6 +22,9 @@ func Route(sub string) {
 	case "break-for-loop":
 		BreakForLoop()
 
+	case "map-loop":
+		Maploop()
+
 	case "simple-channel":
 		ChannelDemo()
 

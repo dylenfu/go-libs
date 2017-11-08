@@ -17,7 +17,7 @@ func Hello() {
 	api.Use(rest.DefaultDevStack...)
 
 	api.SetApp(rest.AppSimple(func(w rest.ResponseWriter, r *rest.Request) {
-		w.WriteJson(map[string]string{"body":"hello json rest"})
+		w.WriteJson(map[string]string{"body": "hello json rest"})
 	}))
 
 	log.Fatal(http.ListenAndServe(":8080", api.MakeHandler()))
@@ -32,7 +32,7 @@ func SimpleRoute() {
 	api := rest.NewApi()
 	api.Use(rest.DefaultDevStack...)
 
-	route,err := rest.MakeRouter(
+	route, err := rest.MakeRouter(
 		rest.Get("/test1", testHandle1),
 		rest.Get("/test2", testHandle2),
 	)
@@ -63,7 +63,7 @@ func Reflect() {
 	api.Use(rest.DefaultDevStack...)
 
 	handles := makeHandlers()
-	route,err := rest.MakeRouter(handles...)
+	route, err := rest.MakeRouter(handles...)
 
 	if err != nil {
 		panic(err)
@@ -77,13 +77,13 @@ func makeHandlers() []*rest.Route {
 	var list []*rest.Route
 
 	type api struct {
-		name string
+		name   string
 		method string
 	}
 
 	funclist := []*api{}
-	funclist = append(funclist, &api{name:"Test1", method: "GET"})
-	funclist = append(funclist, &api{name:"Test2", method: "GET"})
+	funclist = append(funclist, &api{name: "Test1", method: "GET"})
+	funclist = append(funclist, &api{name: "Test2", method: "GET"})
 
 	controller := reflect.ValueOf(&orderbook{})
 	for _, v := range funclist {
@@ -107,9 +107,9 @@ func makeHandlers() []*rest.Route {
 	return list
 }
 
-type orderbook struct {}
+type orderbook struct{}
 
-func (ob *orderbook) Test1() string  {
+func (ob *orderbook) Test1() string {
 	return "it is test 11111"
 }
 

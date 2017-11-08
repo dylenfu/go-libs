@@ -1,6 +1,5 @@
 package jsonrpc
 
-
 func Route(sub string) {
 	switch sub {
 	case "simple-server":

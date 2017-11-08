@@ -1,12 +1,12 @@
 package toml
 
 import (
-	"net"
-	"time"
-	"os"
 	"github.com/naoina/toml"
 	"log"
 	"math/big"
+	"net"
+	"os"
+	"time"
 )
 
 type ServerInfo struct {
@@ -19,20 +19,20 @@ type tomlConfig struct {
 
 	Owner struct {
 		Name string
-		Dob time.Time
+		Dob  time.Time
 	}
 
 	Database struct {
-		Server string
-		Ports []int
+		Server        string
+		Ports         []int
 		ConnectionMax int
-		Enabled bool
+		Enabled       bool
 	}
 
 	Servers map[string]ServerInfo
 
 	Clients struct {
-		Data [][]interface{}
+		Data  [][]interface{}
 		Hosts []string
 	}
 }

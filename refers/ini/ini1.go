@@ -1,6 +1,5 @@
 package ini
 
-
 var (
 	Num1 int
 	Num2 int
