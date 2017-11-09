@@ -15,6 +15,7 @@ import (
 	"github.com/dylenfu/go-libs/tcp"
 	"github.com/dylenfu/go-libs/toml"
 	"github.com/dylenfu/go-libs/zap"
+	"github.com/dylenfu/go-libs/mysql"
 )
 
 var (
@@ -71,6 +72,9 @@ func flagToRun() {
 
 	case "grpc":
 		grpc.Route(*sub)
+
+	case "mysql":
+		mysql.Route(*sub)
 
 	default:
 		break
