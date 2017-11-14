@@ -68,6 +68,9 @@ func Route(sub string) {
 	case "simple-math":
 		SimpleMath()
 
+	case "big-rat-and-big-int":
+		BigRatAndBigInt()
+
 	case "simple-singleton":
 		SingletonDemo()
 
