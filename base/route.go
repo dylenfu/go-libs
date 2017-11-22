@@ -71,6 +71,15 @@ func Route(sub string) {
 	case "big-rat-and-big-int":
 		BigRatAndBigInt()
 
+	case "use-e":
+		UseE()
+
+	case "big-rat-to-float":
+		BigRatToFloat()
+
+	case "list-ptr-demo":
+		ListPtrDemo()
+
 	case "simple-singleton":
 		SingletonDemo()
 

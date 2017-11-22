@@ -23,3 +23,13 @@ func BigRatAndBigInt() {
 	r := m.Mul(m, big.NewRat(1, 1))
 	log.Println(r.Num())
 }
+
+func UseE() {
+	a := 1.0320388897123451e18
+	log.Println(a)
+}
+
+func BigRatToFloat() {
+	a := big.NewRat(1, 3)
+	log.Println(a.Float64())
+}
