@@ -1,11 +1,11 @@
 package base
 
 import (
-	"log"
+	"testing"
 	"time"
 )
 
-func BreakLoop() {
+func TestBreakLoop(t *testing.T) {
 	for i := 0; i < 10; i++ {
 	next1:
 		for j := 0; j < 10; j++ {
@@ -17,7 +17,7 @@ func BreakLoop() {
 	}
 }
 
-func BreakForLoop() {
+func TestBreakForLoop(t *testing.T) {
 	i := 0
 	for {
 		if simple(i) {
@@ -55,9 +55,9 @@ func simple(i int) bool {
 	}
 }
 
-func Maploop() {
+func TestMaploop(t *testing.T) {
 	m := map[string]int{"1": 11, "2": 22, "3": 33}
 	for k, v := range m {
-		log.Print(k, v)
+		t.Log(k, v)
 	}
 }

@@ -1,8 +1,11 @@
 package base
 
-import "time"
+import (
+	"testing"
+	"time"
+)
 
-func SimpleChannelDemo() {
+func TestSimpleChannel1(t *testing.T) {
 	var n Node
 	n.Start()
 	go n.Wait()
@@ -28,4 +31,18 @@ func (n *Node) Wait() {
 
 func (n *Node) Close() {
 	close(n.stop)
+}
+
+func TestChannel2(t *testing.T) {
+	messages := make(chan string)
+
+	msg := "hi"
+	go func() {
+		messages <- msg
+	}()
+
+	select {
+	case msg := <-messages:
+		t.Log("received message", msg)
+	}
 }

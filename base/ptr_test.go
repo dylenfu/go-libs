@@ -1,6 +1,8 @@
 package base
 
-func ListPtrDemo() {
+import "testing"
+
+func TestListPtr(t *testing.T) {
 	fill1 := Fill{Name:"tom", Heigth:184}
 	fill2 := Fill{Name:"jesse", Heigth:172}
 	list := []Fill{fill1, fill2}

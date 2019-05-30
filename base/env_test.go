@@ -1,10 +1,10 @@
 package base
 
 import (
-	"log"
 	"os"
 	"os/exec"
 	"path"
+	"testing"
 )
 
 /*
@@ -44,41 +44,42 @@ import (
 
 2017/09/04 10:44:47 env	- executeable file in: /var/folders/9q/vlm5tt2n6yncq29mf4zjr8080000gn/T/go-build139424569/command-line-arguments/_obj/exe/main
 */
-func SimplePath() {
+func TestPath(t *testing.T) {
 	dir, _ := os.Getwd()
-	log.Println("env\t-", "current direction:", dir)
+	t.Log("env\t-", "current direction:", dir)
 	p := path.Dir(dir)
-	log.Println("env\t-", "current direction process after path.Dir:", p)
-	log.Println("--------------------------------------------------------------\r\n")
+	t.Log("env\t-", "current direction process after path.Dir:", p)
+	t.Log("--------------------------------------------------------------")
 
 	p1 := path.Dir("$GOPATH/src/github.com/Loopring/ringminer/store")
-	log.Print("env\t-", "path1:", p1)
-	log.Println("--------------------------------------------------------------\r\n")
+	t.Log("env\t-", "path1:", p1)
+	t.Log("--------------------------------------------------------------")
 
 	gopath := os.Getenv("GOPATH")
-	log.Println("env\t-", "gopath:", gopath)
-	log.Println("--------------------------------------------------------------\r\n")
+	t.Log("env\t-", "gopath:", gopath)
+	t.Log("--------------------------------------------------------------")
 
 	env := os.Environ()
 	for _, v := range env {
-		log.Println("env\t-", "os.Environ contains:", v)
+		t.Log("env\t-", "os.Environ contains:", v)
 	}
-	log.Println("--------------------------------------------------------------\r\n")
+	t.Log("--------------------------------------------------------------")
 
 	lp, _ := exec.LookPath(os.Args[0])
-	log.Println("env\t-", "executeable file in:", lp)
+	t.Log("env\t-", "executeable file in:", lp)
 }
 
 /*
 go run main.go -pkg=base -sub=simple-os-args
+go test -v github.com/dylenfu/go-libs/base -run TestOsArgs
 os length: 3
 os.Args[0] /var/folders/9q/vlm5tt2n6yncq29mf4zjr8080000gn/T/go-build528220898/command-line-arguments/_obj/exe/main
 os.Args[1] -pkg=base
 os.Args[2] -sub=simple-os-args
 */
-func SimpleOsArgs() {
-	println("os length:", len(os.Args))
-	println("os.Args[0]", string(os.Args[0]))
-	println("os.Args[1]", string(os.Args[1]))
-	println("os.Args[2]", string(os.Args[2]))
+func TestOsArgs(t *testing.T) {
+	t.Log("os length:", len(os.Args))
+	t.Log("os.Args[0]", string(os.Args[0]))
+	t.Log("os.Args[1]", string(os.Args[1]))
+	t.Log("os.Args[2]", string(os.Args[2]))
 }

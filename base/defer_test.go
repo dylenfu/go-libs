@@ -15,7 +15,7 @@ import (
 // defer的执行在panic之前
 // defer对应的函数入参不变
 
-// go test -v github.com/dylenfu/algorithm/base -run TestDefer2
+// go test -v github.com/dylenfu/go-libs/base -run TestDefer1
 // @result 3 2 1 & panic content
 func TestDefer1(t *testing.T) {
 	defer fmt.Println(1)

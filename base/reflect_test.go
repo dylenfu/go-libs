@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"reflect"
+	"testing"
 )
 
 type Foo struct {
@@ -16,7 +17,7 @@ func (f Foo) Test1() {
 }
 
 // show use of typeof.name,string...
-func ReflectDemo1() {
+func TestReflect1(t *testing.T) {
 	var i int = 123
 	var s string = "hi"
 	var a []string = []string{"ab", "abc", "abcd"}
@@ -29,7 +30,7 @@ func ReflectDemo1() {
 }
 
 // show use of num fields
-func ReflectDemo2() {
+func TestReflect2(t *testing.T) {
 	var f Foo
 	typ := reflect.TypeOf(f)
 	for i := 0; i < typ.NumField(); i++ {
@@ -42,7 +43,7 @@ func ReflectDemo2() {
 }
 
 // show use of reflect method,method should not be internal
-func ReflectDemo3() {
+func TestReflect3(t *testing.T) {
 	var f Foo
 	typ := reflect.TypeOf(f)
 
@@ -53,7 +54,7 @@ func ReflectDemo3() {
 }
 
 // show use of reflect value
-func ReflectDemo4() {
+func TestReflect4(t *testing.T) {
 	var i int = 12
 	var s string = "hi"
 	var f Foo = Foo{X: "ha", Y: 12}
@@ -64,7 +65,7 @@ func ReflectDemo4() {
 }
 
 // show use of reflect interface
-func ReflectDemo5() {
+func TestReflect5(t *testing.T) {
 	var i int = 123
 	fmt.Println(reflect.ValueOf(i).Interface()) //123
 
@@ -89,7 +90,7 @@ type Student struct {
 	Class string
 }
 
-func JudgeType() {
+func TestJudgeType(t *testing.T) {
 	h := Human{Name: "dylenfu", Age: 12}
 	s := &Student{h, "big"}
 
@@ -107,7 +108,7 @@ func JudgeType() {
 // 使用反射调用函数
 //
 //////////////////////////////////////////////////////////////////////
-func ReflectSimpleCall() {
+func TestReflectCall(t *testing.T) {
 	method := reflect.ValueOf(test)
 	data := method.Call([]reflect.Value{})
 	println(data[0].String())
@@ -124,7 +125,7 @@ func test() string {
 // 而(ob *orderbook)是不是指针没有关系
 //
 //////////////////////////////////////////////////////////////////////
-func ReflectStructCall() {
+func TestReflectStructCall(t *testing.T) {
 	ob := &orderbook{"dylenfu"}
 	method := reflect.ValueOf(ob).MethodByName("Test1")
 	data := method.Call([]reflect.Value{reflect.ValueOf("hi!")})

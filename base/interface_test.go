@@ -1,12 +1,16 @@
 package base
 
-import "log"
+import (
+	"log"
+	"testing"
+)
 
-func InterfaceDemo() {
+func TestInterface(t *testing.T) {
 	r := &Rectangle{3.15, 3.0}
 	use(r)
 }
 
+// implement interface Geo
 type Geo interface {
 	Area() float32
 	Perimeter() float32

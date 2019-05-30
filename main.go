@@ -9,13 +9,12 @@ import (
 	"github.com/dylenfu/go-libs/inject"
 	"github.com/dylenfu/go-libs/jsonrpc"
 	"github.com/dylenfu/go-libs/leveldb"
+	"github.com/dylenfu/go-libs/mysql"
 	"github.com/dylenfu/go-libs/refers"
 	"github.com/dylenfu/go-libs/serialize"
-	"github.com/dylenfu/go-libs/sort"
 	"github.com/dylenfu/go-libs/tcp"
 	"github.com/dylenfu/go-libs/toml"
 	"github.com/dylenfu/go-libs/zap"
-	"github.com/dylenfu/go-libs/mysql"
 )
 
 var (
@@ -39,9 +38,6 @@ func flagToRun() {
 
 	case "base":
 		base.Route(*sub)
-
-	case "sort":
-		sort.Route(*sub)
 
 	case "leveldb":
 		leveldb.Route(*sub)
