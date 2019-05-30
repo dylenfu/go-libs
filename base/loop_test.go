@@ -10,7 +10,7 @@ func TestBreakLoop(t *testing.T) {
 	next1:
 		for j := 0; j < 10; j++ {
 			if j == 2 {
-				println(i, j)
+				t.Log(i, j)
 				break next1
 			}
 		}
@@ -22,7 +22,7 @@ func TestBreakForLoop(t *testing.T) {
 	for {
 		if simple(i) {
 			i++
-			println("========11111")
+			t.Log("========11111")
 			time.Sleep(1 * time.Second)
 			continue
 		}
@@ -37,12 +37,12 @@ func TestBreakForLoop(t *testing.T) {
 						continue
 					}
 
-					println("========22222")
+					t.Log("========22222")
 				}
 			}
 		}
 
-		println("=========33333")
+		t.Log("=========33333")
 
 	}
 }
