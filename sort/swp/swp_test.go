@@ -1,8 +1,9 @@
-package sort
+package swp
 
 import (
 	"math/big"
 	tsort "sort"
+	"testing"
 )
 
 // implement sort interface functions len,swap,less
@@ -34,7 +35,7 @@ func (s Students) Swap(i, j int) {
 	s[j] = tmp
 }
 
-func SimpleStructSort() {
+func TestSwpSort(t *testing.T) {
 	s1 := &Student{"s1", big.NewInt(20)}
 	s2 := &Student{"s2", big.NewInt(19)}
 	s3 := &Student{"s3", big.NewInt(20)}
@@ -42,6 +43,6 @@ func SimpleStructSort() {
 	tsort.Sort(ss)
 
 	for _, v := range ss {
-		println(v.Name, v.Height.String())
+		t.Log(v.Name, v.Height.String())
 	}
 }
