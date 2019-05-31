@@ -1,8 +1,8 @@
 package base
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 )
 
 // defer的实现原理，在runtime2.go文件中定义了_defer的数据结果，
@@ -11,30 +11,32 @@ import (
 // 在panic.go中，有两个函数deferproc&deferretrun
 // 在deferproc中用来声明defer，将defer对应的func插入到链表头部，
 // 在deferreturn中，从链表头部取出一个defer函数进行执行
-//
-// defer的执行在panic之前
-// defer对应的函数入参不变
-
 // go test -v github.com/dylenfu/go-libs/base -run TestDefer1
-// @result 3 2 1 & panic content
-func TestDefer1(t *testing.T) {
+// @result 3 2 1
+func TestDeferLink(t *testing.T) {
 	defer fmt.Println(1)
 	defer fmt.Println(2)
 	defer fmt.Println(3)
-
-	panic("panic now")
 }
 
+// defer的执行在panic之前,defer在panic之后则不执行
+func TestDeferPanic(t *testing.T) {
+	defer fmt.Println(1)
+	panic("panic now")
+	defer fmt.Println(2)
+}
+
+// defer对应的函数入参不变
 // 打印结果1
 // defer执行的操作参数a,定义在a = 2之前
-func TestDefer2(t *testing.T) {
+func TestDeferVar(t *testing.T) {
 	a := 1
 	defer fmt.Println(a)
 	a = 2
 }
 
 // defer的入参为数组对象指针
-func TestDefer3(t *testing.T) {
+func TestDeferArrayPtr(t *testing.T) {
 	list := [3]int{7, 9, 3}
 	defer printArray(&list)
 	list[2] = 5
@@ -46,6 +48,24 @@ func printArray(list *[3]int) {
 	}
 }
 
+func TestDeferStructPtr(t *testing.T) {
+	type T struct {
+		name string
+		age int
+	}
+
+	m := &T{
+		name: "dylenfu",
+		age: 30,
+	}
+
+	defer func(d *T) {
+		fmt.Printf("name is %s, age is %d:", d.name, d.age)
+	}(m)
+
+	m.age = 40
+}
+
 //
 // 下面几个例子讲defer对return的影响
 // return在go里的操作并非原子化的 他包含两个步骤：
@@ -53,10 +73,11 @@ func printArray(list *[3]int) {
 // 2.跳转
 // defer的执行在跳转之前
 //
-// TestDefer4的打印结果为1 TestDefer5的打印结果为0
-// 因为deferFuncReturn1是具名返回值，最后的返回操作return相当于:
+// TestDeferNamedReturn的打印结果为1 
+// TestDeferAnonymosReturn的打印结果为0
+// 因为TestDeferNamedReturn是具名返回值，最后的返回操作return相当于:
 // i = 0; i++; return i;
-// 而deferFuncReturn2是匿名返回值，最后的返回操作相当于:
+// 而TestDeferAnonymosReturn是匿名返回值，最后的返回操作相当于:
 // result := i; i++; return result;
 //
 // 同理:
@@ -65,12 +86,12 @@ func printArray(list *[3]int) {
 // result = 0; i++; return result; 字面量直接存入栈中
 // deferFuncReturn4的return操作相当于:
 // i = 0; i++; return i;
-func TestDefer4(t *testing.T) {
-	fmt.Println(deferFuncReturn1())
+func TestDeferNamedReturn(t *testing.T) {
+	fmt.Println(deferNamedReturn())
 }
 
-func TestDefer5(t *testing.T) {
-	fmt.Println(deferFuncReturn2())
+func TestDeferAnonymosReturn(t *testing.T) {
+	fmt.Println(deferAnonymosReturn())
 }
 
 func TestDefer6(t *testing.T) {
@@ -82,7 +103,7 @@ func TestDefer7(t *testing.T) {
 }
 
 // 具名返回值 i int
-func deferFuncReturn1() (i int) {
+func deferNamedReturn() (i int) {
 	i = 0
 	defer func() {
 		i++
@@ -91,7 +112,7 @@ func deferFuncReturn1() (i int) {
 }
 
 // 匿名返回值
-func deferFuncReturn2() int {
+func deferAnonymosReturn() int {
 	i := 0
 	defer func() {
 		i++
@@ -112,4 +133,29 @@ func deferFuncReturn4() (i int) {
 		i++
 	}()
 	return 0
+}
+
+// 
+// 下面的两个例子用来证明defer 调用匿名函数&具名函数的区别
+// defer调用具名函数时 函数作为参数在外围先执行 
+// 在调用匿名函数时 所有内容都要在退出前执行
+func TestDeferNamedFunc(t *testing.T) {
+	defer deferOutFunc(deferInnerFunc())
+	fmt.Println("starting print")
+}
+
+func TestDeferAnonymosFunc(t *testing.T) {
+	defer func() {
+		deferOutFunc(deferInnerFunc())
+	}()
+	fmt.Println("starting print")
+}
+
+func deferInnerFunc() string {
+	fmt.Println("inner func")
+	return "abc"
+}
+
+func deferOutFunc(str string) {
+	fmt.Printf("out func:%s", str)
 }
