@@ -2,7 +2,7 @@ package lintcode
 
 import "testing"
 
-func TestDot(t *testing.T) {
+func TestDotProduct(t *testing.T) {
 	a := []int{}
 	b := []int{}
 	t.Log(dotProduct(a, b))
