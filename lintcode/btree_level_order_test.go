@@ -36,16 +36,6 @@ import "testing"
 首个数据为根节点，后面接着是其左儿子和右儿子节点值，"#"表示不存在该子节点。
 节点数量不超过20。
 */
-
-/**
- * Definition for a binary tree node.
- */
-type TreeNode struct {
-	Val int
-	Left *TreeNode
-	Right *TreeNode
-}
-
 var ret [][]int
 
 /**
