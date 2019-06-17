@@ -51,7 +51,7 @@ func judgeTriangle(arr []int) string {
 			for k:=j+1; k<length;k++ {
 				cnt++
 				fmt.Println(arr[i], arr[j], arr[k])
-				if judgeUnit(arr[i], arr[j], arr[k]) {
+				if judgeTriangleUnit(arr[i], arr[j], arr[k]) {
 					ret = "yes"
 					return ret
 				}
@@ -65,7 +65,7 @@ func judgeTriangle(arr []int) string {
 	return ret
 }
 
-func judgeUnit(a, b, c int) bool {
+func judgeTriangleUnit(a, b, c int) bool {
 	ret := false
 	if a + b > c && a +  c > b && b + c > a {
 		ret = true
