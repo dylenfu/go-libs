@@ -1,12 +1,12 @@
 package server
 
 import (
-	"flag"
 	"io"
 	"log"
 	"net"
 	"strconv"
 	"strings"
+	"testing"
 
 	pb "github.com/dylenfu/go-libs/grpc/stream/rpc"
 
@@ -16,9 +16,7 @@ import (
 
 type server struct{}
 
-func SimpleStreamServer() {
-	flag.Parse()
-
+func TestSimpleStreamServer(t *testing.T) {
 	listener, err := net.Listen("tcp", ":9091")
 	if err != nil {
 		log.Fatalf("failed to listen %v", err)

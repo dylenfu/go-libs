@@ -1,7 +1,9 @@
-package protodata
+package serialize
 
 import (
 	"github.com/golang/protobuf/proto"
+	. "github.com/dylenfu/go-libs/serialize/protodata"
+	"testing"
 )
 
 /*
@@ -9,7 +11,7 @@ import (
 在pkg里生成pb.go protoc --go_out=. *.proto
 */
 
-func SimpleProto2() {
+func TestSimpleProto2(t *testing.T) {
 	test := &Test{}
 	test.Id = proto.Int32(1)
 	test.Opt = proto.Int32(2)
@@ -20,7 +22,7 @@ func SimpleProto2() {
 	println("test.Str", test.GetStr())
 }
 
-func SimpleProto3() {
+func TestSimpleProto3(t *testing.T) {
 	test := &Test1{}
 	test.Ed = Test1_X
 	test.Page = 3

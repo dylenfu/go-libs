@@ -3,11 +3,12 @@ package simple
 import (
 	"fmt"
 	"net/http"
+	"testing"
 )
 
 type mutex struct{}
 
-func SimpleHttpServer() {
+func TestSimpleHttpServer(t *testing.T) {
 	http.HandleFunc("/hello", handleTest)
 	err := http.ListenAndServe(":9090", nil)
 	if err != nil {

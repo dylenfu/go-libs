@@ -2,6 +2,7 @@ package leveldb
 
 import (
 	"log"
+	"testing"
 
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/filter"
@@ -19,7 +20,7 @@ func newDb() *leveldb.DB {
 	return db
 }
 
-func SimplePutAndGet() {
+func TestSimplePutAndGet(t *testing.T) {
 	db := newDb()
 	defer db.Close()
 
@@ -35,7 +36,7 @@ func SimplePutAndGet() {
 }
 
 // 批量写入到db
-func SimpleBatch() {
+func TestSimpleBatch(t *testing.T) {
 	db := newDb()
 	defer db.Close()
 
@@ -66,7 +67,7 @@ func SimpleBatch() {
 }
 
 // 丢弃重载batch内容，丢弃之前batch的内容,看不出来有什么效果及用途
-func SimpleBatchLoad() {
+func TestSimpleBatchLoad(t *testing.T) {
 	batch := new(leveldb.Batch)
 
 	batch.Put([]byte("k12"), []byte("v12"))
@@ -91,7 +92,7 @@ func SimpleConpactRange() {
 }
 
 // 查询db相关属性
-func SimpleGetProperty() {
+func TestSimpleGetProperty(t *testing.T) {
 	db := newDb()
 	defer db.Close()
 
@@ -150,7 +151,7 @@ func SimpleGetProperty() {
 }
 
 // 获取快照,通过快照查询key
-func SimpleGetSnapshot() {
+func TestSimpleGetSnapshot(t *testing.T) {
 	db := newDb()
 	defer db.Close()
 
@@ -168,7 +169,7 @@ func SimpleGetSnapshot() {
 }
 
 // 建立基于db的迭代器，遍历db所有数据
-func SimpleNewDBIterator() {
+func TestSimpleNewDBIterator(t *testing.T) {
 	db := newDb()
 	defer db.Close()
 
@@ -183,7 +184,7 @@ func SimpleNewDBIterator() {
 }
 
 // 查询某个key
-func SimpleDBIteratorSeek() {
+func TestSimpleDBIteratorSeek(t *testing.T) {
 	db := newDb()
 	defer db.Close()
 
@@ -209,7 +210,7 @@ func SimpleDBIteratorSeek() {
 }
 
 // 使用前缀
-func SimpleIteratorWithPrefix() {
+func TestSimpleIteratorWithPrefix(t *testing.T) {
 	db := newDb()
 	defer db.Close()
 
@@ -232,7 +233,7 @@ func SimpleIteratorWithPrefix() {
 }
 
 // 使用filter,不起作用
-func SimpleFilter() {
+func TestSimpleFilter(t *testing.T) {
 	opt := &opt2.Options{
 		Filter: filter.NewBloomFilter(3)}
 

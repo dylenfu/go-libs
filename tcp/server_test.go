@@ -3,11 +3,12 @@ package tcp
 import (
 	"fmt"
 	"net"
+	"testing"
 )
 
 const host = "0.0.0.0:9090"
 
-func server() {
+func TestServer(t *testing.T) {
 	address, err := net.ResolveTCPAddr("tcp4", host)
 	if err != nil {
 		panic(err)

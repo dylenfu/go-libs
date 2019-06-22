@@ -5,6 +5,7 @@ import (
 	"github.com/dylenfu/go-libs/inject/datas"
 	"github.com/facebookgo/inject"
 	"log"
+	"testing"
 )
 
 // 这里需要注意几点：
@@ -13,7 +14,7 @@ import (
 // 3.注入之后Populate会完成Rest&Json的实例化,不需要另外实例化
 // 4.被注入结构应该是可访问的(大写)
 // 5.如果App中Json没有`inject:""`,则需要实例化app.Json = &datas.JsonApi{base}
-func RewriteFaceBookInjectDemo() {
+func TestRewriteFaceBookInjectDemo(t *testing.T) {
 	var graph = inject.Graph{}
 	var app App
 
@@ -48,7 +49,7 @@ func (a *App) Sing() {
 }
 
 // 不能注入interface
-func InjectInterface() {
+func TestInjectInterface(t *testing.T) {
 	srv := &AnswerService{}
 	stu := &Student{"dylenfu", 30}
 

@@ -5,6 +5,7 @@ import (
 	"net"
 	"net/rpc"
 	"net/rpc/jsonrpc"
+	"testing"
 )
 
 type ServerHandle struct{}
@@ -26,7 +27,7 @@ func (s *ServerHandle) SetName(req *ReqMessage, resp *RespMessage) error {
 	return nil
 }
 
-func NewServer1() {
+func TestNewServer1(t *testing.T) {
 	// 新建服务器
 	server := rpc.NewServer()
 

@@ -4,6 +4,7 @@ import (
 	"flag"
 	pb "github.com/dylenfu/go-libs/grpc/demo/rpc"
 	"log"
+	"testing"
 
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
@@ -18,7 +19,7 @@ const (
 
 var endpoint = flag.String("endpoint", "localhost:9090", "grpc server address")
 
-func SimpleClient() {
+func TestSimpleClient(t *testing.T) {
 	flag.Parse()
 
 	ctx := context.Background()

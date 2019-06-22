@@ -1,9 +1,9 @@
 package client
 
 import (
-	"flag"
 	"io"
 	"log"
+	"testing"
 	"time"
 
 	pb "github.com/dylenfu/go-libs/grpc/stream/rpc"
@@ -12,9 +12,9 @@ import (
 	"google.golang.org/grpc"
 )
 
-func SimpleStreamClient(testCase int) {
-	flag.Parse()
+var testCase = 1
 
+func TestSimpleStreamClient(t *testing.T) {
 	opt := grpc.WithInsecure()
 	conn, err := grpc.Dial("localhost:9091", opt)
 	if err != nil {

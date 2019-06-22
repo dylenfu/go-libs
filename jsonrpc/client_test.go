@@ -5,6 +5,7 @@ import (
 	"net"
 	"net/rpc"
 	"net/rpc/jsonrpc"
+	"testing"
 	"time"
 )
 
@@ -26,7 +27,7 @@ func newClient() *rpc.Client {
 }
 
 // aync call
-func AyncCall() {
+func TestAyncCall(t *testing.T) {
 	client := newClient()
 	defer client.Close()
 
@@ -36,7 +37,7 @@ func AyncCall() {
 }
 
 // sync call
-func SyncCall() {
+func TestSyncCall(t *testing.T) {
 	client := newClient()
 	defer client.Close()
 

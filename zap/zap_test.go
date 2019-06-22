@@ -6,6 +6,7 @@ import (
 	"go.uber.org/zap"
 	"log"
 	"path"
+	"testing"
 	"time"
 )
 
@@ -14,7 +15,7 @@ var (
 	errpath = path.Join("err.log")
 )
 
-func SimpleZapLogger() {
+func TestSimpleZapLogger(t *testing.T) {
 	logger, err := zap.NewProduction()
 	if err != nil {
 		log.Println("zap\t-", "new logger error", err.Error())
@@ -32,7 +33,7 @@ func SimpleZapLogger() {
 	sugar.Infof("Failed to fetch URL: %s", url)
 }
 
-func SimpleSavingZapLogger() {
+func TestSimpleSavingZapLogger(t *testing.T) {
 	zapConf := zap.NewDevelopmentConfig()
 	zapConf.OutputPaths = []string{outpath}
 	zapConf.ErrorOutputPaths = []string{errpath}
@@ -61,7 +62,7 @@ func SimpleSavingZapLogger() {
 // 1.使用前面两种方式，在循环里写log的时候会丢失数据，因为zap的log是有采样的
 // 2.下面的json配置中development并没有什么卵用
 // 3.outputpaths&erroroutputpaths可以配置多个文件，但是如果不做其他设定的话，文件内容一致
-func MultipleSavingZapLogger() {
+func TestMultipleSavingZapLogger(t *testing.T) {
 	rawJSON := []byte(`{
 	  "level": "debug",
 	  "development": false,
@@ -95,7 +96,7 @@ func MultipleSavingZapLogger() {
 }
 
 // 第二种情况无法实现既能打印出来又能写入到log文件
-func SimpleLoggerAndPrint() {
+func TestSimpleLoggerAndPrint(t *testing.T) {
 	zapConf := zap.NewDevelopmentConfig()
 	zapConf.OutputPaths = []string{outpath}
 	zapConf.ErrorOutputPaths = []string{errpath}

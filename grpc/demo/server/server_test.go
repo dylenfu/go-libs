@@ -4,6 +4,7 @@ import (
 	pb "github.com/dylenfu/go-libs/grpc/demo/rpc"
 	"log"
 	"net"
+	"testing"
 
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
@@ -19,7 +20,7 @@ const (
 
 type server struct{}
 
-func SimpleServer() {
+func TestSimpleServer(t *testing.T) {
 	listener, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)

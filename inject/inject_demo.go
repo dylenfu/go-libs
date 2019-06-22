@@ -5,9 +5,10 @@ import (
 	"github.com/facebookgo/inject"
 	"net/http"
 	"os"
+	"testing"
 )
 
-func SimpleInject() {
+func TestSimpleInject(t *testing.T) {
 	// Typically an application will have exactly one object graph, and
 	// you will create it and use it within a main function:
 	var g inject.Graph

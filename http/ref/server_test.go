@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"reflect"
+	"testing"
 )
 
 type fakeHandler struct{}
@@ -27,7 +28,7 @@ func handle(pattern string, handler interface{}) {
 
 func f(http.ResponseWriter, *http.Request) {}
 
-func SimpleReflect() {
+func TestSimpleReflect(t *testing.T) {
 	handle("", &fakeHandler{})
 	handle("", f)
 }

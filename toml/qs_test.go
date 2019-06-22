@@ -6,6 +6,7 @@ import (
 	"math/big"
 	"net"
 	"os"
+	"testing"
 	"time"
 )
 
@@ -37,7 +38,7 @@ type tomlConfig struct {
 	}
 }
 
-func QuickStart() {
+func TestQuickStart(t *testing.T) {
 	dir, _ := os.Getwd()
 	f, err := os.Open(dir + "/toml/qs.toml")
 	if err != nil {
@@ -67,7 +68,7 @@ func (r *RawTOML) UnmarshalTOML(input []byte) error {
 	return nil
 }
 
-func SimpleUnmarshal() {
+func TestSimpleUnmarshal(t *testing.T) {
 	println("hi")
 	input := []byte(`
 		foo = 10000000000000000000000000000000000000000000000000999999999999999999999999999993333333333333

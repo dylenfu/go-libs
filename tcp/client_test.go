@@ -3,9 +3,10 @@ package tcp
 import (
 	"fmt"
 	"net"
+	"testing"
 )
 
-func client() {
+func Testclient(t *testing.T) {
 	address, err := net.ResolveTCPAddr("tcp4", host)
 	if err != nil {
 		panic(fmt.Sprintf("net.ResolveTCPAddr(\"tcp4\", \"%s\") error(%v)", address.String(), err.Error()))
