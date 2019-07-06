@@ -1,35 +1,26 @@
 package main
 
 import (
-	"flag"
-	"github.com/dylenfu/go-libs/cmd"
-	"github.com/dylenfu/go-libs/mysql"
-)
-
-var (
-	pkg = flag.String("pkg", "base", "chose package to use")
-	sub = flag.String("sub", "hi", "chose sub case")
+	"fmt"
+	"runtime"
+	"sync"
 )
 
 func main() {
-	flagToRun()
-	//cliToRun()
-}
-
-func cliToRun() {
-	cmd.SimpleCli()
-}
-
-func flagToRun() {
-	flag.Parse()
-
-	switch *pkg {
-	
-	case "mysql":
-		mysql.Route(*sub)
-
-	default:
-		break
+	runtime.GOMAXPROCS(1)
+	wg := sync.WaitGroup{}
+	wg.Add(20)
+	for i := 0; i < 10; i++ {
+		go func() {
+			fmt.Println("i: ", i)
+			wg.Done()
+		}()
 	}
-
+	for i := 0; i < 10; i++ {
+		go func(i int) {
+			fmt.Println("i: ", i)
+			wg.Done()
+		}(i)
+	}
+	wg.Wait()
 }
