@@ -5,12 +5,14 @@ import (
 	"testing"
 )
 
+// defer的执行顺序问题：
 // defer的实现原理，在runtime2.go文件中定义了_defer的数据结果，
 // 与func类似,拥有程序计数器，栈指针，函数地址指针，此外，有一个指向自身的defer指针
 // 任意一个gorutine中，defer都是以链表的形式进行链接的
 // 在panic.go中，有两个函数deferproc&deferretrun
 // 在deferproc中用来声明defer，将defer对应的func插入到链表头部，
 // 在deferreturn中，从链表头部取出一个defer函数进行执行
+// 当遇到panic，panic代码后的defer不会执行
 // go test -v github.com/dylenfu/go-libs/base -run TestDefer1
 // @result 3 2 1
 func TestDeferLink(t *testing.T) {
@@ -19,16 +21,20 @@ func TestDeferLink(t *testing.T) {
 	defer fmt.Println(3)
 }
 
-// defer的执行在panic之前,defer在panic之后则不执行
 func TestDeferPanic(t *testing.T) {
 	defer fmt.Println(1)
 	panic("panic now")
 	defer fmt.Println(2)
 }
 
+// defer执行时函数入口参数的问题
 // defer对应的函数入参不变
-// 打印结果1
-// defer执行的操作参数a,定义在a = 2之前
+// 1.当传入的参数是常量时，defer使用常量；如果是普通变量，defer使用的是变量对应的常量值
+//   如TestDeferVar defer执行的操作参数a,定义在a = 2之前
+// 2.当defer使用的是指针时，参考1可知，指针不变的情况下，defer会使用后续代码中变更的引用内容
+//   如TestDeferArrayPtr，打印结果是&[7, 9, 5]
+// 3.当defer遇到匿名函数，受用func(){}()将代码块包起来了，情况与2同，
+//   如TestDeferStructPtr，当m是结构体对象时，打印结果中age是30，当m是结构体对象引用时，age是40
 func TestDeferVar(t *testing.T) {
 	a := 1
 	defer fmt.Println(a)
@@ -38,14 +44,8 @@ func TestDeferVar(t *testing.T) {
 // defer的入参为数组对象指针
 func TestDeferArrayPtr(t *testing.T) {
 	list := [3]int{7, 9, 3}
-	defer printArray(&list)
+	defer fmt.Println(&list)
 	list[2] = 5
-}
-
-func printArray(list *[3]int) {
-	for _, v := range list {
-		fmt.Println(v)
-	}
 }
 
 func TestDeferStructPtr(t *testing.T) {
@@ -54,12 +54,12 @@ func TestDeferStructPtr(t *testing.T) {
 		age int
 	}
 
-	m := &T{
+	m := T{
 		name: "dylenfu",
 		age: 30,
 	}
 
-	defer func(d *T) {
+	defer func(d T) {
 		fmt.Printf("name is %s, age is %d:", d.name, d.age)
 	}(m)
 
