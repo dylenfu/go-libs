@@ -16,7 +16,7 @@ func TestStringType(t *testing.T) {
 	t.Logf("str1:%s", str1)
 	t.Logf("bytes2.size:%d", len(bytes2))
 	for k, v := range bytes3 {
-		t.Log(k, byte(v))
+		//t.Log(k, byte(v))
 		t.Log(k, string(v))
 	}
 }
