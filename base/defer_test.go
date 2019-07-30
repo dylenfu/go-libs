@@ -27,6 +27,17 @@ func TestDeferPanic(t *testing.T) {
 	defer fmt.Println(2)
 }
 
+func TestDeferReturned(t *testing.T) {
+	t.Log(deferAfterReturn())
+}
+
+func deferAfterReturn() (x int) {
+	x = 5
+	return
+	defer func(){x = 3}()
+	return
+}
+
 // defer执行时函数入口参数的问题
 // defer对应的函数入参不变
 // 1.当传入的参数是常量时，defer使用常量；如果是普通变量，defer使用的是变量对应的常量值
