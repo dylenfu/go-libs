@@ -82,8 +82,10 @@ func (list *SkipList) Insert(score int, value interface{}) *Element {
 	level := randLevel()
 	if level > list.level {
 		level = list.level + 1
+		for i:=list.level;i<level;i++ {
+			update[i] = list.header
+		}
 		list.level = level
-		update[level] = list.header
 	}
 
 	// 新建需要插入的节点p, 将p节点插入到单链表中
@@ -104,7 +106,7 @@ func (list *SkipList) Delete(score int) *Element {
 	update := make([]*Element, skiplist_max_level)
 
 	e := list.header
-	for i:=list.level;i>=0;i--{
+	for i:=list.level-1;i>=0;i--{
 		for e.forward[i] != nil && e.forward[i].score < score {
 			e = e.forward[i]
 		}
@@ -126,11 +128,12 @@ func (list *SkipList) Delete(score int) *Element {
 
 func (list *SkipList) PrintList() {
 	e := list.header
-	for i:=list.level;i>=0;i-- {
+	for i:=list.level-1;i>=0;i-- {
 		fmt.Println(fmt.Sprintf("level %d", i))
 		for {
 			if e.forward[i] != nil {
 				fmt.Println(fmt.Sprintf("%d", e.score))
+				e = e.forward[i]
 			} else {
 				break
 			}
