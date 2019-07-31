@@ -1,11 +1,16 @@
 package skiplist
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestSkipList(t *testing.T) {
 	list := New()
-	for i:=0;i<2;i++ {
-		list.Insert(i + 1000, nil)
+	for i := 1; i <= 100; i++ {
+		//if i == 6 {
+		//	fmt.Println("debug here")
+		//}
+		list.Insert(i, nil)
 	}
 	list.PrintList()
 }

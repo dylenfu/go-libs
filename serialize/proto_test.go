@@ -1,8 +1,8 @@
 package serialize
 
 import (
-	"github.com/golang/protobuf/proto"
 	. "github.com/dylenfu/go-libs/serialize/protodata"
+	"github.com/golang/protobuf/proto"
 	"testing"
 )
 

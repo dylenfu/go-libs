@@ -44,8 +44,8 @@ English
 /**
  * @param root: The root of binary tree.
  * @return: True if the binary tree is BST, or false
- */
-func isValidBST (root *TreeNode) bool {
+*/
+func isValidBST(root *TreeNode) bool {
 	// write your code here
 	return false
 }

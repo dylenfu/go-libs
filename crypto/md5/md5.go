@@ -1,9 +1,9 @@
 package md5
 
-import(
-	"fmt"
+import (
 	"crypto/md5"
 	"encoding/hex"
+	"fmt"
 )
 
 func Md5() {

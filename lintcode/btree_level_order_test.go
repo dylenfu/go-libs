@@ -42,7 +42,7 @@ var ret [][]int
  * @param root: A Tree
  * @return: Level order a list of lists of integer
  */
-func levelOrder (root *TreeNode) [][]int {
+func levelOrder(root *TreeNode) [][]int {
 	// write your code here
 	levelOrderHelper(root, 0)
 	return ret
@@ -53,7 +53,7 @@ func levelOrderHelper(root *TreeNode, level int) {
 		return
 	}
 
-	if len(ret) < level + 1 {
+	if len(ret) < level+1 {
 		ret = append(ret, make([]int, 0))
 	}
 
@@ -61,26 +61,26 @@ func levelOrderHelper(root *TreeNode, level int) {
 	data = append(data, root.Val)
 	ret[level] = data
 
-	levelOrderHelper(root.Left, level + 1)
-	levelOrderHelper(root.Right, level + 1)
+	levelOrderHelper(root.Left, level+1)
+	levelOrderHelper(root.Right, level+1)
 }
 
 func TestLevelOrder1(t *testing.T) {
-	node3 := TreeNode{ Val: 3, Left: nil, Right: nil}
-	node2 := TreeNode{ Val: 2, Left: nil, Right: nil}
-	node1 := TreeNode{ Val: 1, Left: &node2, Right: &node3}
+	node3 := TreeNode{Val: 3, Left: nil, Right: nil}
+	node2 := TreeNode{Val: 2, Left: nil, Right: nil}
+	node1 := TreeNode{Val: 1, Left: &node2, Right: &node3}
 
 	orders := levelOrder(&node1)
 	t.Log(orders)
 }
 
 func TestLevelOrder2(t *testing.T) {
-	node6 := TreeNode{ Val: 6, Left: nil, Right: nil}
-	node5 := TreeNode{ Val: 5, Left: nil, Right: nil}
-	node4 := TreeNode{ Val: 4, Left: nil, Right: nil}
-	node3 := TreeNode{ Val: 3, Left: &node6, Right: nil}
-	node2 := TreeNode{ Val: 2, Left: &node4, Right: &node5}
-	node1 := TreeNode{ Val: 1, Left: &node2, Right: &node3}
+	node6 := TreeNode{Val: 6, Left: nil, Right: nil}
+	node5 := TreeNode{Val: 5, Left: nil, Right: nil}
+	node4 := TreeNode{Val: 4, Left: nil, Right: nil}
+	node3 := TreeNode{Val: 3, Left: &node6, Right: nil}
+	node2 := TreeNode{Val: 2, Left: &node4, Right: &node5}
+	node1 := TreeNode{Val: 1, Left: &node2, Right: &node3}
 
 	orders := levelOrder(&node1)
 	t.Log(orders)

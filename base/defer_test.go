@@ -34,7 +34,7 @@ func TestDeferReturned(t *testing.T) {
 func deferAfterReturn() (x int) {
 	x = 5
 	return
-	defer func(){x = 3}()
+	defer func() { x = 3 }()
 	return
 }
 
@@ -62,12 +62,12 @@ func TestDeferArrayPtr(t *testing.T) {
 func TestDeferStructPtr(t *testing.T) {
 	type T struct {
 		name string
-		age int
+		age  int
 	}
 
 	m := T{
 		name: "dylenfu",
-		age: 30,
+		age:  30,
 	}
 
 	defer func(d T) {
@@ -84,7 +84,7 @@ func TestDeferStructPtr(t *testing.T) {
 // 2.跳转
 // defer的执行在跳转之前
 //
-// TestDeferNamedReturn的打印结果为1 
+// TestDeferNamedReturn的打印结果为1
 // TestDeferAnonymosReturn的打印结果为0
 // 因为TestDeferNamedReturn是具名返回值，最后的返回操作return相当于:
 // i = 0; i++; return i;
@@ -146,9 +146,9 @@ func deferFuncReturn4() (i int) {
 	return 0
 }
 
-// 
+//
 // 下面的两个例子用来证明defer 调用匿名函数&具名函数的区别
-// defer调用具名函数时 函数作为参数在外围先执行 
+// defer调用具名函数时 函数作为参数在外围先执行
 // 在调用匿名函数时 所有内容都要在退出前执行
 func TestDeferNamedFunc(t *testing.T) {
 	defer deferOutFunc(deferInnerFunc())

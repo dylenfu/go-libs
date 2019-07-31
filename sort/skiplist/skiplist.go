@@ -3,37 +3,38 @@ package skiplist
 import (
 	"fmt"
 	"math/rand"
+	"time"
 )
 
 const (
-	skiplist_rand_p float32 = 0.25
-	skiplist_max_level = 4
+	skiplist_rand_p    int32 = 4
+	skiplist_max_level       = 4
 )
 
 // 使用score int类型数据排序
 type Element struct {
-	score int
-	value interface{}
+	score   int
+	value   interface{}
 	forward []*Element
 }
 
 func newElement(score int, value interface{}, level int) *Element {
 	return &Element{
-		score: score,
-		value: value,
+		score:   score,
+		value:   value,
 		forward: make([]*Element, level),
 	}
 }
 
 type SkipList struct {
 	header *Element
-	len int
-	level int
+	len    int
+	level  int
 }
 
 func New() *SkipList {
 	return &SkipList{
-		header: &Element{ forward: make([]*Element, skiplist_max_level) },
+		header: &Element{forward: make([]*Element, skiplist_max_level)},
 	}
 }
 
@@ -42,7 +43,7 @@ func (list *SkipList) Search(score int) (*Element, bool) {
 	e := list.header
 
 	// 找到距离目标分数最近但并不相等的节点
-	for i:=list.level - 1; i>=0; i-- {
+	for i := list.level - 1; i >= 0; i-- {
 		for e.forward[i] != nil && e.forward[i].score < score {
 			e = e.forward[i]
 		}
@@ -63,7 +64,7 @@ func (list *SkipList) Insert(score int, value interface{}) *Element {
 
 	// 这里需要注意,链表有几层，那么update也就有几层
 	e := list.header
-	for i:=list.level-1;i>=0;i-- {
+	for i := list.level - 1; i >= 0; i-- {
 		for e.forward[i] != nil && e.forward[i].score < score {
 			e = e.forward[i]
 		}
@@ -79,18 +80,20 @@ func (list *SkipList) Insert(score int, value interface{}) *Element {
 	// 新插入的节点需要链接到几层指针是随机的，只要有一层相连就可以找到后续元素
 	// 如果随机得到的level比链表当前层数更大，每次插入元素时，也最多只能在链表
 	// 现有层数上加1层; 同时，update中新加的层级元素需要赋值为list.header
+	// list的level是从0开始，而不是从1开始
 	level := randLevel()
 	if level > list.level {
 		level = list.level + 1
-		for i:=list.level;i<level;i++ {
-			update[i] = list.header
-		}
+		update[level-1] = list.header
+		//for i:=list.level;i<level;i++ {
+		//	update[i] = list.header
+		//}
 		list.level = level
 	}
 
 	// 新建需要插入的节点p, 将p节点插入到单链表中
 	p := newElement(score, value, list.level)
-	for i:=0;i<list.level;i++ {
+	for i := 0; i < list.level; i++ {
 		q := update[i]
 		p.forward[i] = q.forward[i]
 		q.forward[i] = p
@@ -106,7 +109,7 @@ func (list *SkipList) Delete(score int) *Element {
 	update := make([]*Element, skiplist_max_level)
 
 	e := list.header
-	for i:=list.level-1;i>=0;i--{
+	for i := list.level - 1; i >= 0; i-- {
 		for e.forward[i] != nil && e.forward[i].score < score {
 			e = e.forward[i]
 		}
@@ -115,7 +118,7 @@ func (list *SkipList) Delete(score int) *Element {
 
 	p := e.forward[0]
 	if p != nil && p.score == score {
-		for i:=0;i<list.level;i++ {
+		for i := 0; i < list.level; i++ {
 			q := update[i]
 			q.forward[i] = p.forward[i]
 			p.forward[i] = nil
@@ -127,12 +130,12 @@ func (list *SkipList) Delete(score int) *Element {
 }
 
 func (list *SkipList) PrintList() {
-	e := list.header
-	for i:=list.level-1;i>=0;i-- {
+	for i := list.level - 1; i >= 0; i-- {
+		e := list.header
 		fmt.Println(fmt.Sprintf("level %d", i))
 		for {
+			fmt.Println(fmt.Sprintf("%d", e.score))
 			if e.forward[i] != nil {
-				fmt.Println(fmt.Sprintf("%d", e.score))
 				e = e.forward[i]
 			} else {
 				break
@@ -144,8 +147,12 @@ func (list *SkipList) PrintList() {
 
 func randLevel() int {
 	level := 1
-	for rand.Float32() < skiplist_rand_p && level < skiplist_max_level {
+	rand.Seed(time.Now().UnixNano())
+	for (rand.Int31()&0xffff)%skiplist_rand_p == 0 {
 		level++
+	}
+	if level > skiplist_max_level {
+		level = skiplist_max_level
 	}
 	return level
 }

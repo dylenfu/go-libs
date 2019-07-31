@@ -40,7 +40,7 @@ func TestPalindrome(t *testing.T) {
  * @param s: A string
  * @return: Whether the string is a valid palindrome
  */
-func isPalindrome (s string) bool {
+func isPalindrome(s string) bool {
 	// write your code here
 	s1 := cleanString(s)
 	return judgePalindrome(s1)
@@ -52,12 +52,12 @@ func cleanString(src string) string {
 
 func judgePalindrome(s string) bool {
 	bytes := []byte(s)
-	if s == "" || len(bytes) == 1{
+	if s == "" || len(bytes) == 1 {
 		return true
 	}
- 	front:=0
-	tail:=len(bytes)-1
-	for ;front<tail; {
+	front := 0
+	tail := len(bytes) - 1
+	for front < tail {
 		if bytes[front] != bytes[tail] {
 			fmt.Println(bytes[front])
 			return false

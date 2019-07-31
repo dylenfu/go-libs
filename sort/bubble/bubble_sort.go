@@ -13,8 +13,8 @@ func BubbleSort(src []int) {
 	if len(src) <= 1 {
 		return
 	}
-	for i := 0; i < len(src) - 1; i++ {
-		for j := i+1; j < len(src); j ++ {
+	for i := 0; i < len(src)-1; i++ {
+		for j := i + 1; j < len(src); j++ {
 			if src[i] > src[j] {
 				src[i], src[j] = src[j], src[i]
 			}

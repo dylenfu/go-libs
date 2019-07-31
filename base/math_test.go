@@ -13,7 +13,7 @@ func TestSimpleMath(t *testing.T) {
 }
 
 func TestBigRatAndBigInt(t *testing.T) {
-	amount,_ := new(big.Int).SetString("100000000000000000000000000001", 10)
+	amount, _ := new(big.Int).SetString("100000000000000000000000000001", 10)
 	t.Log(amount)
 
 	amountS := big.NewRat(3, 2) // 1.5

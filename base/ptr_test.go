@@ -3,8 +3,8 @@ package base
 import "testing"
 
 func TestListPtr(t *testing.T) {
-	fill1 := Fill{Name:"tom", Heigth:184}
-	fill2 := Fill{Name:"jesse", Heigth:172}
+	fill1 := Fill{Name: "tom", Heigth: 184}
+	fill2 := Fill{Name: "jesse", Heigth: 172}
 	list := []Fill{fill1, fill2}
 	setFillList(list)
 
@@ -14,7 +14,7 @@ func TestListPtr(t *testing.T) {
 }
 
 type Fill struct {
-	Name string
+	Name   string
 	Heigth int
 }
 

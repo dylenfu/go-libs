@@ -35,7 +35,7 @@ import (
 )
 
 func TestTriangleSelect(t *testing.T) {
-	arr := []int{2,3,5,8}
+	arr := []int{2, 3, 5, 8}
 	t.Log(judgeTriangle(arr))
 }
 
@@ -46,9 +46,9 @@ func judgeTriangle(arr []int) string {
 	}
 	cnt := 0
 	length := len(arr)
-	for i:=0; i<length-2;i++ {
-		for j:=i+1; j<length-1;j++ {
-			for k:=j+1; k<length;k++ {
+	for i := 0; i < length-2; i++ {
+		for j := i + 1; j < length-1; j++ {
+			for k := j + 1; k < length; k++ {
 				cnt++
 				fmt.Println(arr[i], arr[j], arr[k])
 				if judgeTriangleUnit(arr[i], arr[j], arr[k]) {
@@ -67,7 +67,7 @@ func judgeTriangle(arr []int) string {
 
 func judgeTriangleUnit(a, b, c int) bool {
 	ret := false
-	if a + b > c && a +  c > b && b + c > a {
+	if a+b > c && a+c > b && b+c > a {
 		ret = true
 	}
 	return ret

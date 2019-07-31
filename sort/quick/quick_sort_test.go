@@ -19,7 +19,7 @@ func TestSyncMap(t *testing.T) {
 	m1 := &sync.Map{}
 	m1.Store("t2", 2)
 	m1.Store("t3", 3)
-	if value, ok :=m1.Load("t2"); ok {
+	if value, ok := m1.Load("t2"); ok {
 		fmt.Println(value)
 	}
 
@@ -37,7 +37,7 @@ func TestConcurrentMap(t *testing.T) {
 	} else {
 		t.Error("key not exist")
 	}
-	cm.Range(func (k, v interface{}) bool {
+	cm.Range(func(k, v interface{}) bool {
 		t.Logf("key:%s value:%d", k, v)
 		return true
 	})
@@ -45,9 +45,9 @@ func TestConcurrentMap(t *testing.T) {
 
 func TestWaitGroup(t *testing.T) {
 	wg := &sync.WaitGroup{}
-	for i:=1; i< 5; i++ {
+	for i := 1; i < 5; i++ {
 		wg.Add(1)
-		go func(j int){
+		go func(j int) {
 			fmt.Printf("test %d", j)
 		}(i)
 		wg.Done()
@@ -60,7 +60,7 @@ func TestMultilGorutine(t *testing.T) {
 	go func(d chan int) {
 		for {
 			select {
-			case m :=<- d:
+			case m := <-d:
 				t.Logf("data is %d", m)
 			}
 		}
@@ -84,7 +84,7 @@ func TestTimerAfterFunc(t *testing.T) {
 	f := func() {
 		fmt.Printf("count:%d\r\n", 3)
 	}
-	time.AfterFunc(1 * time.Second, f)
+	time.AfterFunc(1*time.Second, f)
 	time.Sleep(5 * time.Second)
 }
 
@@ -92,7 +92,7 @@ func TestTicker(t *testing.T) {
 	ticker := time.NewTicker(1 * time.Second)
 	for {
 		select {
-		case <- ticker.C:
+		case <-ticker.C:
 			fmt.Println("test")
 		}
 	}
@@ -106,7 +106,7 @@ func TestTicker2(t *testing.T) {
 }
 
 func TestTicker3(t *testing.T) {
-	c  := time.Tick(1 * time.Millisecond)
+	c := time.Tick(1 * time.Millisecond)
 	for now := range c {
 		fmt.Println(now)
 	}

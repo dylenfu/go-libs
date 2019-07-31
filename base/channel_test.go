@@ -58,47 +58,47 @@ func TestSimpleChannel2(t *testing.T) {
 func TestSelectDeadLock1(t *testing.T) {
 	c := make(chan string)
 	select {
-		case m := <-c:
-			t.Log(m)
+	case m := <-c:
+		t.Log(m)
 	}
 }
 
 func TestSelectDeadLock2(t *testing.T) {
 	c := make(chan string)
 	select {
-		case m := <- c:
-			t.Log(m)
-		default:
+	case m := <-c:
+		t.Log(m)
+	default:
 	}
 }
 
 func TestSelectDeadLock3(t *testing.T) {
 	c := make(chan string)
 	c <- "hi"
-	m := <- c
+	m := <-c
 	t.Log(m)
 }
 
 func TestSelectDeadLock4(t *testing.T) {
 	c := make(chan string, 1)
 	c <- "hi"
-	m:= <-c
+	m := <-c
 	t.Log(m)
 }
 
 func TestSelectDeadLock5(t *testing.T) {
 	c := make(chan string)
-	go func(){c <- "hi"}()
-	m:= <-c
+	go func() { c <- "hi" }()
+	m := <-c
 	t.Log(m)
 }
 
 func TestSelectDeadLock6(t *testing.T) {
 	c := make(chan string)
-	go func(){c <- "hi"}()
+	go func() { c <- "hi" }()
 	select {
-		case m := <- c:
-			t.Log(m)
+	case m := <-c:
+		t.Log(m)
 	}
 }
 
@@ -108,15 +108,15 @@ func TestSelectDeadLock6(t *testing.T) {
 func TestSelectExecutionOrder(t *testing.T) {
 	c := make(chan int, 5)
 
-	for i:=0; i < cap(c); i++ {
+	for i := 0; i < cap(c); i++ {
 		select {
-			case c <- 1:
-			case c <- 2:
-			case c <- 3:
+		case c <- 1:
+		case c <- 2:
+		case c <- 3:
 		}
 	}
 
-	for i:=0; i < cap(c); i++ {
+	for i := 0; i < cap(c); i++ {
 		t.Log(<-c)
 	}
 }

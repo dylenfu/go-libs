@@ -6,7 +6,7 @@ func TestNewObject(t *testing.T) {
 
 	type s struct {
 		Name string
-		Age int
+		Age  int
 	}
 	d := new(s)
 	d.Age = 10

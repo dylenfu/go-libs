@@ -8,7 +8,7 @@ func TestDotProduct(t *testing.T) {
 	t.Log(dotProduct(a, b))
 }
 
-func dotProduct (A []int, B []int) int {
+func dotProduct(A []int, B []int) int {
 	// Write your code here
 	lenA := len(A)
 	lenB := len(B)

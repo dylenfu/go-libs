@@ -30,9 +30,9 @@ func Initialize() {
 }
 
 type Email struct {
-	ID 		int			`gorm:"column:id;							primary_key"`
-	UserID 	*big.Int	`gorm:"column:user_id;	type:bigint(20);	index"`
-	Email	string 		`gorm:"column:email;	type:varchar(100)"`
+	ID     int      `gorm:"column:id;							primary_key"`
+	UserID *big.Int `gorm:"column:user_id;	type:bigint(20);	index"`
+	Email  string   `gorm:"column:email;	type:varchar(100)"`
 }
 
 func CreateEmailModel() {

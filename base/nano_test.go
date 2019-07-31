@@ -1,16 +1,16 @@
 package base
 
 import (
-	"testing"
 	"fmt"
 	"runtime"
 	"sync"
+	"testing"
 )
 
 // go test -v github.com/dylenfu/algorithm/base -run TestPase
 type student struct {
 	Name string
-	Age int
+	Age  int
 }
 
 // 请找到下段代码的问题
@@ -60,7 +60,6 @@ func TestRuntime(t *testing.T) {
 	}
 	wg.Wait()
 }
-
 
 // 测试结构体继承
 // 打印:
