@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	pb "github.com/dylenfu/go-libs/grpc/stream/rpc"
+	pb "github.com/dylenfu/go-libs/rpc/grpcgrpc/stream/rpc"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"

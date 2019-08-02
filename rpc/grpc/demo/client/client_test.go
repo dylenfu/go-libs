@@ -2,7 +2,7 @@ package client
 
 import (
 	"flag"
-	pb "github.com/dylenfu/go-libs/grpc/demo/rpc"
+	pb "github.com/dylenfu/go-libs/rpc/grpcgrpc/demo/rpc"
 	"log"
 	"testing"
 

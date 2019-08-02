@@ -84,8 +84,8 @@ func (list *SkipList) Insert(score int, value interface{}) *Element {
 	level := randLevel()
 	if level > list.level {
 		// level = list.level + 1
-		 // update[level-1] = list.header
-		for i:=list.level;i<level;i++ {
+		// update[level-1] = list.header
+		for i := list.level; i < level; i++ {
 			update[i] = list.header
 		}
 		list.level = level
