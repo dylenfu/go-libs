@@ -1,16 +1,20 @@
 package skiplist
 
 import (
+	"math/rand"
 	"testing"
+	"time"
 )
 
 func TestSkipList(t *testing.T) {
 	list := New()
-	for i := 1; i <= 100; i++ {
+	rand.Seed(time.Now().UnixNano())
+	for i := 1; i <= 1000; i++ {
 		//if i == 6 {
 		//	fmt.Println("debug here")
 		//}
-		list.Insert(i, nil)
+		x := rand.Int31()
+		list.Insert(int(x), nil)
 	}
 	list.PrintList()
 }

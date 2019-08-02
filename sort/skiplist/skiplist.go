@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	skiplist_rand_p    int32 = 4
+	skiplist_rand_p    int32 = 2
 	skiplist_max_level       = 4
 )
 
@@ -83,11 +83,11 @@ func (list *SkipList) Insert(score int, value interface{}) *Element {
 	// list的level是从0开始，而不是从1开始
 	level := randLevel()
 	if level > list.level {
-		level = list.level + 1
-		update[level-1] = list.header
-		//for i:=list.level;i<level;i++ {
-		//	update[i] = list.header
-		//}
+		// level = list.level + 1
+		 // update[level-1] = list.header
+		for i:=list.level;i<level;i++ {
+			update[i] = list.header
+		}
 		list.level = level
 	}
 
@@ -132,15 +132,17 @@ func (list *SkipList) Delete(score int) *Element {
 func (list *SkipList) PrintList() {
 	for i := list.level - 1; i >= 0; i-- {
 		e := list.header
-		fmt.Println(fmt.Sprintf("level %d", i))
+		num := 0
 		for {
-			fmt.Println(fmt.Sprintf("%d", e.score))
+			// fmt.Println(fmt.Sprintf("%d", e.score))
+			num++
 			if e.forward[i] != nil {
 				e = e.forward[i]
 			} else {
 				break
 			}
 		}
+		fmt.Println(fmt.Sprintf("level %d num %d", i, num))
 		fmt.Println("---------------------------------------------")
 	}
 }
@@ -154,5 +156,6 @@ func randLevel() int {
 	if level > skiplist_max_level {
 		level = skiplist_max_level
 	}
+	fmt.Println(fmt.Sprintf("---------hahahhahhahah %d", level))
 	return level
 }
