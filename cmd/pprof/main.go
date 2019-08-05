@@ -2,9 +2,12 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	. "github.com/dylenfu/go-libs/db/kv"
 	"os"
+	"os/signal"
 	"runtime/pprof"
+	"syscall"
 )
 
 // ./pprof --cpu=cpu.prof --heap=heap.prof
@@ -12,28 +15,66 @@ import (
 // analysis:
 // go tool pprof -svg ./pprof cpu.prof > cpu.svg
 // go tool pprof -svg ./pprof heap.prof > heap.svg
+// go tool pprof  -text  -inuse_objects  ./pprof  heap.txt
 var (
-	cpuprofile  = flag.String("cpu", "cpu.prof", "write cpu profile to file")
-	heapprofile = flag.String("heap", "heap.prof", "write mem profile to file")
-	fcpu        *os.File
-	fheap       *os.File
-	AnalyzeHeap = NewKVCachePool(-1, USERS_SHARD_COUNT, Shard)
+	cpuprofile  = flag.String("cpu", "", "write cpu profile to file")
+	heapprofile = flag.String("heap", "", "write mem profile to file")
 )
 
 func main() {
 	flag.Parse()
 
-	openHeapProf()
-	defer func() {
-		closeHeapProf()
-	}()
+	var (
+		fcpu *os.File
+		err  error
+	)
 
-	Work()
-	wait()
+	if *cpuprofile != "" {
+		fmt.Println("start cpu profile writing...")
+		if fcpu, err = os.Create(*cpuprofile); err != nil {
+			panic(err)
+		}
+		if err = pprof.StartCPUProfile(fcpu); err != nil {
+			panic(err)
+		}
+		defer func() {
+			pprof.StopCPUProfile()
+			fcpu.Close()
+		}()
+	}
+
+	TestKVSet()
+
+	// waiting for signal to stop
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
+	for {
+		s := <-c
+		switch s {
+		case syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT:
+			return
+		case syscall.SIGHUP:
+		default:
+			return
+		}
+	}
 }
 
-func Work() {
-	for i := 1; i < 1000; i++ {
+func TestKVSet() {
+	var (
+		fheap *os.File
+		heap  = NewKVCachePool(-1, USERS_SHARD_COUNT, Shard)
+		err   error
+	)
+
+	if *heapprofile == "" {
+		panic("heap file can not be empty")
+	}
+	if fheap, err = os.Create(*heapprofile); err != nil {
+		panic(err)
+	}
+
+	for i := 1; i < 10000; i++ {
 		uid := 150000 + i
 		user := &UserData{
 			Uid:      int32(uid),
@@ -44,45 +85,12 @@ func Work() {
 			Exp:      1,
 			Level:    1,
 		}
-		AnalyzeHeap.Set(uid, user, -1)
+		heap.Set(uid, user, -1)
+		fmt.Println(heap.Get(uid))
 	}
-}
 
-func openCpuProf() {
-	var err error
-	if fcpu, err = os.Create(*cpuprofile); err != nil {
+	if err = pprof.WriteHeapProfile(fheap); err != nil {
 		panic(err)
 	}
-	if err = pprof.StartCPUProfile(fcpu); err != nil {
-		panic(err)
-	}
-}
-
-func closeCpuProf() {
-	pprof.StopCPUProfile()
-	if fcpu != nil {
-		fcpu.Close()
-	}
-}
-
-func openHeapProf() {
-	var err error
-	if fheap, err = os.Create(*heapprofile); err != nil {
-		panic(err)
-	}
-	if err := pprof.WriteHeapProfile(fheap); err != nil {
-		panic(err)
-	}
-}
-
-func closeHeapProf() {
-	if fheap != nil {
-		fheap.Close()
-	}
-}
-
-func wait() {
-	for {
-		select {}
-	}
+	fheap.Close()
 }
