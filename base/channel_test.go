@@ -120,3 +120,114 @@ func TestSelectExecutionOrder(t *testing.T) {
 		t.Log(<-c)
 	}
 }
+
+//// 使用channel 替代 mutex
+//type Op interface {
+//	Key() string
+//	Value() interface{}
+//}
+//
+//func server() chan<- Op {
+//	ch := make(chan Op)
+//	m := map[string]string{}
+//	go func() {
+//		for op := range ch {
+//			k, v := op.Key(), op.Value()
+//			if s, ok := v.(string); ok {
+//				m[k] = s
+//				continue
+//			}
+//			v.(chan string) <- m[k]
+//		}
+//	}()
+//	return ch
+//}
+//
+//type s struct {
+//	key   string
+//	value string
+//}
+//
+//func (x *s) Key() string        { return x.key }
+//func (x *s) Value() interface{} { return x.value }
+//
+//func setOp(key, value string) Op {
+//	return &s{key, value}
+//}
+//
+//type g struct {
+//	key   string
+//	value chan string
+//}
+//
+//func (x *g) Key() string        { return x.key }
+//func (x *g) Value() interface{} { return x.value }
+//
+//func getOp(key string) Op {
+//	return &g{key, make(chan string)}
+//}
+//
+//func TestChannelInMap(t *testing.T) {
+//	srv := server()
+//	//srv <- setOp("key", "value")
+//	//srv <- setOp("k3", "v3")
+//	//srv <- setOp("k2", "v2")
+//	//op := getOp("k3")
+//	//srv <- op
+//	//fmt.Println(<-(op.(*g).value))
+//	for i := 0; i < 10000; i++ {
+//		k := strconv.Itoa(i)
+//		v := "test_" + k
+//		go func(k, v string) {
+//			srv <- setOp(k, v)
+//		}(k, v)
+//	}
+//
+//	for i := 0; i < 10001; i++ {
+//		go func(k string) {
+//			op := getOp(k)
+//			srv <- op
+//			fmt.Println(k, <-op.(*g).value)
+//		}(strconv.Itoa(i))
+//	}
+//
+//	time.Sleep(5 * time.Second)
+//}
+//
+//
+/////----------------测试单项写通道在函数返回后是否还有写入的能力
+//func TestWriteOnlyChannel(t *testing.T) {
+//	var data  = map[string]int{}
+//	srv := writeOnly(data)
+//	for i := 0; i < 100; i++ {
+//		srv <- &kv{"test_" + strconv.Itoa(i), i}
+//	}
+//	for k, v := range data {
+//		t.Log(k, v)
+//	}
+//}
+//
+//type kv struct {
+//	k string
+//	v int
+//}
+//
+//func writeOnly(data map[string]int) chan <- *kv {
+//	ch := make(chan *kv)
+//	go func() {
+//		for x := range ch {
+//			data[x.k] = x.v
+//		}
+//	}()
+//	return ch
+//}
+//
+//func readOnly(data map[string]int, key string) <- chan *kv {
+//	ch := make(chan *kv)
+//	go func() {
+//		for x := range ch {
+//			x.v
+//		}
+//	}()
+//	return ch
+//}
