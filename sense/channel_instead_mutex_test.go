@@ -1,7 +1,6 @@
 package sense
 
 import (
-	"fmt"
 	"strconv"
 	"sync"
 	"testing"
@@ -52,17 +51,18 @@ func (r *room) safeRead(uid int) *user {
 func TestChannelInsteadMutex(t *testing.T) {
 	r := getinstance()
 	wg := sync.WaitGroup{}
-	for i := 1; i < 10000; i++ {
+	for i := 1; i < 1000000; i++ {
 		wg.Add(1)
 		go func(uid int) {
 			r.safeWrite(&user{uid, "test" + strconv.Itoa(uid)})
 			wg.Done()
 		}(i)
 	}
-	for i := 1; i < 10000; i++ {
+	for i := 1; i < 1000000; i++ {
 		wg.Add(1)
 		go func(uid int) {
-			fmt.Println(r.safeRead(uid))
+			r.safeRead(uid)
+			wg.Done()
 		}(i)
 	}
 	wg.Wait()
