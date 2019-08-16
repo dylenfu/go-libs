@@ -30,7 +30,7 @@ type Applicator interface {
 type Invoker interface {
 	// Invoke attempts to call the interface{} provided as a function,
 	// providing dependencies for function arguments based on Type. Returns
-	// a slice of reflect.Value representing the returned values of the function.
+	// a slice of reflect.value representing the returned values of the function.
 	// Returns an error if the injection fails.
 	Invoke(interface{}) ([]reflect.Value, error)
 }
@@ -47,7 +47,7 @@ type TypeMapper interface {
 	// This makes it possible to directly map type arguments not possible to instantiate
 	// with reflect like unidirectional channels.
 	Set(reflect.Type, reflect.Value) TypeMapper
-	// Returns the Value that is mapped to the current type. Returns a zeroed Value if
+	// Returns the value that is mapped to the current type. Returns a zeroed value if
 	// the Type has not been mapped.
 	Get(reflect.Type) reflect.Value
 }
@@ -82,7 +82,7 @@ func New() Injector {
 
 // Invoke attempts to call the interface{} provided as a function,
 // providing dependencies for function arguments based on Type.
-// Returns a slice of reflect.Value representing the returned values of the function.
+// Returns a slice of reflect.value representing the returned values of the function.
 // Returns an error if the injection fails.
 // It panics if f is not a function
 func (inj *injector) Invoke(f interface{}) ([]reflect.Value, error) {
@@ -93,7 +93,7 @@ func (inj *injector) Invoke(f interface{}) ([]reflect.Value, error) {
 		argType := t.In(i)
 		val := inj.Get(argType)
 		if !val.IsValid() {
-			return nil, fmt.Errorf("Value not found for type %v", argType)
+			return nil, fmt.Errorf("value not found for type %v", argType)
 		}
 
 		in[i] = val
@@ -125,7 +125,7 @@ func (inj *injector) Apply(val interface{}) error {
 			ft := f.Type()
 			v := inj.Get(ft)
 			if !v.IsValid() {
-				return fmt.Errorf("Value not found for type %v", ft)
+				return fmt.Errorf("value not found for type %v", ft)
 			}
 
 			f.Set(v)
@@ -148,7 +148,7 @@ func (i *injector) MapTo(val interface{}, ifacePtr interface{}) TypeMapper {
 	return i
 }
 
-// Maps the given reflect.Type to the given reflect.Value and returns
+// Maps the given reflect.Type to the given reflect.value and returns
 // the Typemapper the mapping has been registered in.
 func (i *injector) Set(typ reflect.Type, val reflect.Value) TypeMapper {
 	i.values[typ] = val

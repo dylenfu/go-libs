@@ -36,6 +36,16 @@ func (h Heap) Len() int {
 	return len(h)
 }
 
+func (h Heap) Remove(i int) interface{} {
+	n := len(h) - 1
+	if n != i {
+		h.Swap(i, n)
+		h.down(i, n)
+		h.up(i)
+	}
+	return h.Pop()
+}
+
 func (h *Heap) push(e *Elem) {
 	n := h.Len()
 	e.Index = n
