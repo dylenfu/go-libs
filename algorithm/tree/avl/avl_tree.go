@@ -14,6 +14,61 @@ AVL树在查询效率上，时间复杂度为O(log2N))，与折半查找相当�
 线性查询，其时间复杂度接近为o(n), avl树能平衡高度差
 */
 
+type AVLTree struct {
+	head *AVLTreeNode
+	mtx  *sync.Mutex
+}
+
+func NewAVLTree() *AVLTree {
+	return &AVLTree{
+		mtx: new(sync.Mutex),
+	}
+}
+
+func (t *AVLTree) Insert(value Comparable) {
+	t.mtx.Lock()
+	defer t.mtx.Unlock()
+
+	x := t.head.insert(value)
+	t.head = x
+}
+
+func (t *AVLTree) Delete(value Comparable) {
+	t.mtx.Lock()
+	defer t.mtx.Unlock()
+
+	t.head = t.head.delete(value)
+}
+
+func (t *AVLTree) Find(value Comparable) *AVLTreeNode {
+	node := t.head
+
+	for {
+		switch value.Compare(value, node.value) {
+		case 1:
+			node = node.right
+		case -1:
+			node = node.left
+		case 0:
+			return node
+		}
+	}
+}
+
+// after traversal tree, desc
+func (t *AVLTree) Scan(node *AVLTreeNode) (list []*AVLTreeNode) {
+	if node.right != nil {
+		x := t.Scan(node.right)
+		list = append(list, x...)
+	}
+	list = append(list, node)
+	if node.left != nil {
+		x := t.Scan(node.left)
+		list = append(list, x...)
+	}
+	return
+}
+
 type AVLTreeNode struct {
 	value       Comparable
 	height      int
@@ -51,8 +106,8 @@ func (a *AVLTreeNode) max() *AVLTreeNode {
 }
 
 // updateHeight 更新高度，取左右子树高度最大值，然后递增1
-func (a *AVLTreeNode) updateHeight() int {
-	return maxint(a.left.height, a.right.height) + 1
+func (a *AVLTreeNode) updateHeight() {
+	a.height = maxint(a.left.getHeight(), a.right.getHeight()) + 1
 }
 
 // balanceFactor 返回左右子树的高度差
@@ -157,13 +212,16 @@ func (a *AVLTreeNode) rebuildBalance() (node *AVLTreeNode) {
 		} else {
 			node = a.rightRotate()
 		}
+		break
 	case -2:
 		if a.right.balanceFactor() == 1 {
 			node = a.rightLeftRotate()
 		} else {
 			node = a.leftRotate()
 		}
+		break
 	default:
+		node = a
 	}
 	return
 }
@@ -177,8 +235,10 @@ func (a *AVLTreeNode) insert(value Comparable) (node *AVLTreeNode) {
 	switch value.Compare(value, a.value) {
 	case -1:
 		a.left = a.left.insert(value)
+		break
 	case 0, 1:
 		a.right = a.right.insert(value)
+		break
 	}
 	return a.rebuildBalance()
 }
@@ -200,7 +260,7 @@ func (a *AVLTreeNode) delete(value Comparable) (node *AVLTreeNode) {
 			return a.right
 		}
 		if a.right == nil {
-			return
+			return a.left
 		}
 		// 如果左子树较高则取左子树最大值替代根节点, 否则取右子树最小值替代根节点
 		if a.left.getHeight() > a.right.getHeight() {
@@ -216,22 +276,4 @@ func (a *AVLTreeNode) delete(value Comparable) (node *AVLTreeNode) {
 	}
 
 	return node.rebuildBalance()
-}
-
-type AVLTree struct {
-	head *AVLTreeNode
-	mtx  sync.Mutex
-}
-
-func NewAVLTree() *AVLTree {
-	return &AVLTree{}
-}
-
-func (t *AVLTree) Insert() {
-
-}
-
-// Delete 以a为入口节点，删除某个值对应的节点 并返回新的根节点
-func (t *AVLTree) Delete(a *AVLTreeNode, value Comparable) *AVLTreeNode {
-
 }
