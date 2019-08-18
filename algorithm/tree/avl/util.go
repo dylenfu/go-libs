@@ -28,4 +28,7 @@ func maxint(x, y int) int {
 type Comparable interface {
 	Less(i, j interface{}) bool   // i < j return true
 	Compare(i, j interface{}) int // i > j return 1, i == j return 0, i < j return -1
+	Min(i, j Comparable) Comparable
+	Max(i, j Comparable) Comparable
+	InScore(min, max, value Comparable) bool // value in [min, max]
 }

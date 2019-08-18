@@ -16,12 +16,12 @@ AVL树在查询效率上，时间复杂度为O(log2N))，与折半查找相当�
 
 type AVLTree struct {
 	head *AVLTreeNode
-	mtx  *sync.Mutex
+	mtx  *sync.RWMutex
 }
 
 func NewAVLTree() *AVLTree {
 	return &AVLTree{
-		mtx: new(sync.Mutex),
+		mtx: new(sync.RWMutex),
 	}
 }
 
@@ -41,6 +41,9 @@ func (t *AVLTree) Delete(value Comparable) {
 }
 
 func (t *AVLTree) Find(value Comparable) *AVLTreeNode {
+	t.mtx.RLock()
+	defer t.mtx.RUnlock()
+
 	node := t.head
 
 	for {
@@ -56,17 +59,18 @@ func (t *AVLTree) Find(value Comparable) *AVLTreeNode {
 }
 
 // after traversal tree, desc
-func (t *AVLTree) Scan(node *AVLTreeNode) (list []*AVLTreeNode) {
-	if node.right != nil {
-		x := t.Scan(node.right)
-		list = append(list, x...)
-	}
-	list = append(list, node)
-	if node.left != nil {
-		x := t.Scan(node.left)
-		list = append(list, x...)
-	}
-	return
+func (t *AVLTree) Scan() (list []*AVLTreeNode) {
+	t.mtx.RLock()
+	defer t.mtx.RUnlock()
+
+	return t.head.afterTraversal()
+}
+
+func (t *AVLTree) Range(min, max Comparable) (list []*AVLTreeNode) {
+	t.mtx.RLock()
+	defer t.mtx.RUnlock()
+
+	return t.head.scope(min, max)
 }
 
 type AVLTreeNode struct {
@@ -227,7 +231,7 @@ func (a *AVLTreeNode) rebuildBalance() (node *AVLTreeNode) {
 }
 
 // insert 以a为入口节点，插入新增节点 并返回新的根节点
-func (a *AVLTreeNode) insert(value Comparable) (node *AVLTreeNode) {
+func (a *AVLTreeNode) insert(value Comparable) *AVLTreeNode {
 	if a == nil {
 		return &AVLTreeNode{value: value, height: 1}
 	}
@@ -244,7 +248,7 @@ func (a *AVLTreeNode) insert(value Comparable) (node *AVLTreeNode) {
 }
 
 // delete 以a为入口节点，删除某个数据对应的节点 并返回新的根节点
-func (a *AVLTreeNode) delete(value Comparable) (node *AVLTreeNode) {
+func (a *AVLTreeNode) delete(value Comparable) *AVLTreeNode {
 	if a == nil {
 		return nil
 	}
@@ -255,25 +259,79 @@ func (a *AVLTreeNode) delete(value Comparable) (node *AVLTreeNode) {
 	case 1:
 		a.right = a.right.delete(value)
 	case 0:
-		// 这个时候还处于平衡状态，也就是说，左右子树高度差还小于2,当有左/右子树为空时可以直接返回另一半，不需要rebuildBalance
-		if a.left == nil {
-			return a.right
-		}
-		if a.right == nil {
-			return a.left
-		}
+		// 这个时候还处于平衡状态，也就是说，左右子树高度差还小于2,
+		// 当有左/右子树为空时可以直接返回另一半，不需要rebuildBalance
 		// 如果左子树较高则取左子树最大值替代根节点, 否则取右子树最小值替代根节点
-		if a.left.getHeight() > a.right.getHeight() {
-			max := a.left.max()
-			a.value = max.value
-			a.left = a.left.delete(value)
+		if a.left != nil && a.right != nil {
+			if a.left.getHeight() > a.right.getHeight() {
+				max := a.left.max()
+				a.value = max.value
+				a.left = a.left.delete(max.value)
+			} else {
+				min := a.right.min()
+				a.value = min.value
+				a.right = a.right.delete(min.value)
+			}
+		} else if a.left != nil && a.right == nil {
+			a = a.left
+		} else if a.right != nil && a.left == nil {
+			a = a.right
 		} else {
-			min := a.right.min()
-			a.value = min.value
-			a.right = a.right.delete(value)
+			a = nil
 		}
-		node = a
+
+		if a != nil {
+			a.rebuildBalance()
+		}
 	}
 
-	return node.rebuildBalance()
+	return a
+}
+
+// after traversal tree, desc
+func (a *AVLTreeNode) afterTraversal() (list []*AVLTreeNode) {
+	if a == nil {
+		return
+	}
+
+	if a.right != nil {
+		list = append(list, a.right.afterTraversal()...)
+	}
+	list = append(list, a)
+	if a.left != nil {
+		list = append(list, a.left.afterTraversal()...)
+	}
+	return
+}
+
+func (a *AVLTreeNode) preTraversal() (list []*AVLTreeNode) {
+	if a == nil {
+		return
+	}
+
+	if a.left != nil {
+		list = append(list, a.left.preTraversal()...)
+	}
+	list = append(list, a)
+	if a.right != nil {
+		list = append(list, a.right.preTraversal()...)
+	}
+	return
+}
+
+func (a *AVLTreeNode) scope(min, max Comparable) (list []*AVLTreeNode) {
+	if a == nil {
+		return
+	}
+
+	if min.Compare(min, a.value) > 0 { // 节点值小于min，只往右找
+		list = append(list, a.right.scope(min, max)...)
+	} else if max.Compare(max, a.value) < 0 { // 节点值大于max，只往左找
+		list = append(list, a.left.scope(min, max)...)
+	} else {
+		list = append(list, a.right.scope(min, max)...)
+		list = append(list, a)
+		list = append(list, a.left.scope(min, max)...)
+	}
+	return
 }
