@@ -1,12 +1,43 @@
 package inject
 
 import (
-	"github.com/dylenfu/go-libs/inject/basedatas"
-	"github.com/dylenfu/go-libs/inject/datas"
+	"fmt"
 	"github.com/facebookgo/inject"
-	"log"
 	"testing"
 )
+
+type Base struct {
+	Id   string
+	Desc string
+}
+
+type RestApi struct {
+	InternalData *Base `inject:"base"`
+}
+
+func (s *RestApi) Ring() {
+	fmt.Println("inject\t-", "restapi ring", s.InternalData.Id+" "+s.InternalData.Desc)
+}
+
+type JsonApi struct {
+	InternalData *Base `inject:"base"`
+}
+
+func (s *JsonApi) Loop() {
+	fmt.Println("inject\t-", "jsonapi loop", s.InternalData.Id+" "+s.InternalData.Desc)
+}
+
+type App struct {
+	Rest  *RestApi `inject:""`
+	Json  *JsonApi `inject:""`
+	Other string
+}
+
+func (a *App) Sing() {
+	a.Rest.Ring()
+	a.Json.Loop()
+	fmt.Println("inject\t-", "other uninject object", a.Other)
+}
 
 // 这里需要注意几点：
 // 1.provide的第一个元素为注入对象
@@ -18,34 +49,22 @@ func TestRewriteFaceBookInjectDemo(t *testing.T) {
 	var graph = inject.Graph{}
 	var app App
 
-	base := &basedatas.Base{"0x12", "base data strucgt"}
+	base := &Base{"0x12", "base data struct"}
 	err := graph.Provide(
 		&inject.Object{Value: &app},
-		&inject.Object{Value: base},
+		&inject.Object{Value: base, Name: "base"},
 	)
 	if err != nil {
-		log.Panic("inject\t-", "inject graph provide error:", err.Error())
+		t.Fatal("inject\t-", "inject graph provide error:", err.Error())
 	}
 
 	if err := graph.Populate(); err != nil {
-		log.Panic("inject\t-", "inject graph populate error:", err.Error())
+		t.Fatal("inject\t-", "inject graph populate error:", err.Error())
 	}
 
 	app.Other = "other test"
 
 	app.Sing()
-}
-
-type App struct {
-	Rest  *datas.RestApi `inject:"rest"`
-	Json  *datas.JsonApi `inject:"json"`
-	Other string
-}
-
-func (a *App) Sing() {
-	a.Rest.Ring()
-	a.Json.Loop()
-	log.Println("inject\t-", "other uninject object", a.Other)
 }
 
 // 不能注入interface
@@ -78,5 +97,5 @@ type Student struct {
 }
 
 func (s *Student) Answer() {
-	log.Println("inject\t-", "answerable", s.Name, s.Age)
+	fmt.Println("inject\t-", "answerable", s.Name, s.Age)
 }

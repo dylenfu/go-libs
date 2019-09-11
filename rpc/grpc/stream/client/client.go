@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	pb "github.com/dylenfu/go-libs/rpc/grpcgrpc/stream/rpc"
+	pb "github.com/dylenfu/go-libs/rpc/grpc/stream/rpc"
 
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"

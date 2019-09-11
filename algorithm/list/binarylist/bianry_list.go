@@ -6,10 +6,10 @@ import (
 
 type list struct {
 	data []uint64
-	mtx *sync.Mutex
+	mtx  *sync.Mutex
 }
 
-func NewList() *list{
+func NewList() *list {
 	return &list{data: make([]uint64, 32), mtx: new(sync.Mutex)}
 }
 
