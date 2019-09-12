@@ -1,6 +1,7 @@
 package base
 
 import (
+	"github.com/stretchr/testify/assert"
 	"math"
 	"math/big"
 	"testing"
@@ -32,4 +33,10 @@ func TestUseE(t *testing.T) {
 func TestBigRatToFloat(t *testing.T) {
 	a := big.NewRat(1, 3)
 	t.Log(a.Float64())
+}
+
+func TestMaxInt32(t *testing.T) {
+	x := math.MaxInt32 // 2G - 1
+	y := 1024*1024*1024*2 - 1
+	assert.Equal(t, x, y)
 }

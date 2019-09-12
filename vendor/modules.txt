@@ -1,3 +1,5 @@
+# github.com/davecgh/go-spew v1.1.1
+github.com/davecgh/go-spew/spew
 # github.com/facebookgo/inject v0.0.0-20180706035515-f23751cae28b
 github.com/facebookgo/inject
 # github.com/facebookgo/structtag v0.0.0-20150214074306-217e25fb9691
@@ -6,8 +8,8 @@ github.com/facebookgo/structtag
 github.com/go-sql-driver/mysql
 # github.com/golang/protobuf v1.3.2
 github.com/golang/protobuf/proto
-github.com/golang/protobuf/protoc-gen-go/descriptor
 github.com/golang/protobuf/ptypes
+github.com/golang/protobuf/protoc-gen-go/descriptor
 github.com/golang/protobuf/ptypes/any
 github.com/golang/protobuf/ptypes/duration
 github.com/golang/protobuf/ptypes/timestamp
@@ -23,6 +25,10 @@ github.com/naoina/go-stringutil
 # github.com/naoina/toml v0.1.1
 github.com/naoina/toml
 github.com/naoina/toml/ast
+# github.com/pmezard/go-difflib v1.0.0
+github.com/pmezard/go-difflib/difflib
+# github.com/stretchr/testify v1.3.0
+github.com/stretchr/testify/assert
 # github.com/syndtr/goleveldb v1.0.0
 github.com/syndtr/goleveldb/leveldb
 github.com/syndtr/goleveldb/leveldb/filter
@@ -68,11 +74,12 @@ google.golang.org/appengine/cloudsql
 google.golang.org/genproto/googleapis/rpc/status
 # google.golang.org/grpc v1.22.1
 google.golang.org/grpc
+google.golang.org/grpc/codes
+google.golang.org/grpc/status
 google.golang.org/grpc/reflection
 google.golang.org/grpc/credentials
 google.golang.org/grpc/balancer
 google.golang.org/grpc/balancer/roundrobin
-google.golang.org/grpc/codes
 google.golang.org/grpc/connectivity
 google.golang.org/grpc/encoding
 google.golang.org/grpc/encoding/proto
@@ -95,7 +102,6 @@ google.golang.org/grpc/resolver/dns
 google.golang.org/grpc/resolver/passthrough
 google.golang.org/grpc/serviceconfig
 google.golang.org/grpc/stats
-google.golang.org/grpc/status
 google.golang.org/grpc/tap
 google.golang.org/grpc/reflection/grpc_reflection_v1alpha
 google.golang.org/grpc/credentials/internal

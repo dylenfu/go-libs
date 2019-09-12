@@ -1,0 +1,21 @@
+syntax="proto3";
+
+option java_multiple_files=true;
+option java_package="io.dylenfu.go-libs.grpc.read";
+
+package read;
+
+import "google/api/annotations.proto";
+
+service ApiService {
+    rpc SayHello(HelloRequest) returns (HelloResponse) {
+        // http option
+        option (google.api.http) = {
+            post: "/read/sayHello"
+            body: "*"
+        };
+    }
+}
+
+message HelloRequest{ int32 id = 1; }
+message HelloResponse{ string name = 1; int32 age = 2; }
