@@ -1,8 +1,8 @@
 package base
 
 import (
-	"testing"
 	"math"
+	"testing"
 )
 
 // go test -v github.com/dylenfu/go-libs/base -run TestAddWithBinararyAction
@@ -11,7 +11,7 @@ func TestAddWithBinararyAction(t *testing.T) {
 		t.Fatal("(3 + 4) != (3 | 4)")
 	}
 
-	if math.MaxInt32 != (1 << 31 - 1) {
+	if math.MaxInt32 != (1<<31 - 1) {
 		t.Log("math.MaxInt32 != (1 << 32 - 1)")
 	}
 	if math.MinInt32 != -(1 << 31) {

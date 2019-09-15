@@ -23,3 +23,14 @@ func setFillList(list []Fill) {
 		v.Heigth = 1
 	}
 }
+
+// go test -v github.com/dylenfu/go-libs/base -run TestIntPtr
+func TestIntPtr(t *testing.T) {
+	var x int = 0
+	for {
+		if x += 1; x > 5 {
+			break
+		}
+		t.Logf("%p %d", &x, x)
+	}
+}

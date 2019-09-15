@@ -24,7 +24,7 @@ const (
 	grpcInitialWindowSize     = 1 << 24
 	grpcInitialConnWindowSize = 1 << 24
 
-	port = 9998
+	port      = 9998
 	proxyPort = 9999
 )
 
@@ -85,7 +85,7 @@ func registerServer(t *testing.T) {
 func registerProxy(t *testing.T, ctx context.Context) {
 	var (
 		credential credentials.TransportCredentials
-		err error
+		err        error
 	)
 
 	// Register gRPC server endpoint
@@ -103,7 +103,7 @@ func registerProxy(t *testing.T, ctx context.Context) {
 	mux := runtime.NewServeMux()
 
 	// register proxy
-	if err = RegisterApiServiceHandlerFromEndpoint(ctx, mux,  grpcSrv, opts); err != nil {
+	if err = RegisterApiServiceHandlerFromEndpoint(ctx, mux, grpcSrv, opts); err != nil {
 		t.Fatal(err)
 	}
 
@@ -120,9 +120,9 @@ func (s *helloService) SayHello(ctx context.Context, req *HelloRequest) (res *He
 
 func generateClient(t *testing.T, ctx context.Context, port int) ApiServiceClient {
 	var (
-		conn *grpc.ClientConn
+		conn       *grpc.ClientConn
 		credential credentials.TransportCredentials
-		err  error
+		err        error
 	)
 
 	// set credentail
@@ -131,11 +131,11 @@ func generateClient(t *testing.T, ctx context.Context, port int) ApiServiceClien
 	}
 
 	// grpc options
-	grpcKeepAliveTime    := 10 * time.Second
+	grpcKeepAliveTime := 10 * time.Second
 	grpcKeepAliveTimeout := 3 * time.Second
-	grpcBackoffMaxDelay  := 3 * time.Second
-	grpcMaxSendMsgSize   := 1 << 24
-	grpcMaxCallMsgSize   := 1 << 24
+	grpcBackoffMaxDelay := 3 * time.Second
+	grpcMaxSendMsgSize := 1 << 24
+	grpcMaxCallMsgSize := 1 << 24
 
 	// set options
 	// notice: grpc.WithInsecure & WithTransportCredentials can not been use at the same time
