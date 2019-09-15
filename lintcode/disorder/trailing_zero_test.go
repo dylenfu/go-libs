@@ -41,7 +41,7 @@ f(n) = n/5 + n/(5^2) + n/(5^3) +.....
 /**
  * @param n: A long integer
  * @return: An integer, denote the number of trailing zeros in n!
- * @desc: num为5的i次方
+ * @desc: m为5的i次方
  */
 func trailingZeros(n int64) int64 {
 	var m, cnt int64 = 1, 0
@@ -54,7 +54,7 @@ func trailingZeros(n int64) int64 {
 	return cnt
 }
 
-// go test -v github.com/dylenfu/go-libs/disorder/lintcode -run TestTrailingZero
+// go test -v github.com/dylenfu/go-libs/lintcode -run TestTrailingZero
 func TestTrailingZero(t *testing.T) {
 	x := trailingZeros(105)
 	if x != 25 {
