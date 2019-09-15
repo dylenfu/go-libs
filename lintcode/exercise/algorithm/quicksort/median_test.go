@@ -1,6 +1,8 @@
 package quicksort
 
-import "testing"
+import (
+	"testing"
+)
 
 /*
 给定一个未排序的整数数组，找到其中位数。
@@ -30,11 +32,11 @@ import "testing"
 /*
 解题思路:这里我们练习的是快速排序
 快排思想:
-快速排序采用分治法(devide and conquer), 选取一个参考值(privot)比如slice[0], 
+快速排序采用分治法(devide and conquer), 选取一个参考值(privot)比如slice[0],
 在[1, len-1]范围内扫描，head从左到右，tail从右到左，
 小于privot的值放到数组左边(与head-坐标为0-进行交换)，
 大于privot的值放到数组右边(与tail-坐标为len-1-进行交换)
-最终将数组分成两部分, 
+最终将数组分成两部分,
 然后将原数组slice[:head], slice[head+1:]部分分别进行递归。
 
 需要注意几点:
@@ -44,7 +46,7 @@ import "testing"
 4.i的走向与head一致，head对应的num小于privot时，head++，同时i++
 5.拆分成两个数组时，不要把参考值坐标也放进去(nums[:head], nums[head:])
 */
-func median (nums []int) int {
+func median(nums []int) int {
 	length := len(nums)
 	if length <= 1 {
 		return nums[0]
@@ -52,7 +54,7 @@ func median (nums []int) int {
 
 	qsort(nums)
 	mid := length / 2
-	if length % 2 == 0 {
+	if length%2 == 0 {
 		mid -= 1
 	}
 	return nums[mid]
@@ -67,7 +69,7 @@ func qsort(nums []int) {
 	head := 0
 	tail := len(nums) - 1
 
-	for i:=1; i <= tail; {
+	for i := 1; i <= tail; {
 		if nums[i] > privot {
 			swap(nums, tail, i)
 			tail--
