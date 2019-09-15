@@ -1,4 +1,4 @@
-package lintcode
+package disorder
 
 import "testing"
 
@@ -92,7 +92,7 @@ func digitCounts(k int, n int) int {
 	return cnt
 }
 
-// go test -v github.com/dylenfu/go-libs/lintcode -run TestDigitCounts
+// go test -v github.com/dylenfu/go-libs/disorder/lintcode -run TestDigitCounts
 func TestDigitCounts(t *testing.T) {
 	if x := digitCounts(0, 0); x != 1 {
 		t.Log(x)

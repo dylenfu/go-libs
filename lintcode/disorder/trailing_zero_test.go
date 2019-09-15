@@ -1,4 +1,4 @@
-package lintcode
+package disorder
 
 import (
 	"testing"
@@ -54,7 +54,7 @@ func trailingZeros(n int64) int64 {
 	return cnt
 }
 
-// go test -v github.com/dylenfu/go-libs/lintcode -run TestTrailingZero
+// go test -v github.com/dylenfu/go-libs/disorder/lintcode -run TestTrailingZero
 func TestTrailingZero(t *testing.T) {
 	x := trailingZeros(105)
 	if x != 25 {

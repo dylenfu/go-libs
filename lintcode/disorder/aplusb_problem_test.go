@@ -1,4 +1,4 @@
-package lintcode
+package disorder
 
 import (
 	"testing"
@@ -60,7 +60,7 @@ func plus(a, b int) int {
 	return plus((a ^ b), (a & b << 1))
 }
 
-// go test -v github.com/dylenfu/go-libs/lintcode -run TestPlus
+// go test -v github.com/dylenfu/go-libs/disorder/lintcode -run TestPlus
 func TestPlus(t *testing.T) {
 	if plus(100, -100) != 0 {
 		t.Fatal("plus(100, -100) != 0")
