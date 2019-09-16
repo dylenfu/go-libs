@@ -11,3 +11,8 @@ func TestSlice(t *testing.T) {
 	s = s[:5]
 	t.Log("kk")
 }
+
+func TestSlice2(t *testing.T) {
+	s := []int{2, 3}
+	t.Log(s[:2])
+}
