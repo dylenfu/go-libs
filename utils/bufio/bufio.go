@@ -1,19 +1,19 @@
 package bufio
 
 import (
-	"io"
 	"errors"
+	"io"
 )
 
 const (
-	defaultBufferSize = 4096
+	defaultBufferSize   = 4096
 	minReaderBufferSize = 10
 	// 当reader.bf需要从io.read中读取数据时，如果读取数据为空，最大重试次数
 	maxConsecutiveEmptyReadTime = 100
 )
 
 var (
-	ErrBufferFull = errors.New("bufio: buffer full")
+	ErrBufferFull    = errors.New("bufio: buffer full")
 	ErrNegativeCount = errors.New("bufio: negative count")
 )
 
@@ -24,10 +24,10 @@ var (
 // Reader 将io.Reader对象封装成Reader, 缓存io.Reader的数据到bf
 // 设置r,w记录读写位置，err记录最近的一次error, readErr后需要重置
 type Reader struct {
-	bf []byte
-	rd io.Reader
+	bf   []byte
+	rd   io.Reader
 	r, w int
-	err Error
+	err  Error
 }
 
 // NewReaderSize 根据io.Reader以及buf size创建一个新的Reader
@@ -115,7 +115,7 @@ func (r *Reader) Peak(n int) ([]byte, error) {
 		return nil, ErrBufferFull
 	}
 
-	if r.w - r.r < n && r.err == nil {
+	if r.w-r.r < n && r.err == nil {
 		r.fill()
 	}
 
@@ -127,7 +127,7 @@ func (r *Reader) Peak(n int) ([]byte, error) {
 		}
 		n = avail
 	}
-	return r.bf[r.r: r.r+n], err
+	return r.bf[r.r : r.r+n], err
 }
 
 // Pop 读出n个字节的数据

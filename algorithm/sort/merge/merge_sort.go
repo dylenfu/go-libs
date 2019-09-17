@@ -32,6 +32,7 @@ func MergeSort(src []int) []int {
 // 1.设定两个数组的起始index
 // 2.排序时当找到一个min值是该index右移,同时将min值append到result
 // 3.比较过程中剩下的数据直接append到result数组
+// 4.最后left&right只会有一个是非空数组, 使用两个append也是可行的
 func merge(left, right []int) (result []int) {
 	l, r := 0, 0
 
