@@ -47,7 +47,32 @@ func subsetsWithDup (nums []int) [][]int {
 }
 
 func TestSubsetsWithDup(t *testing.T) {
+	a1 := []int{0}
+	src := subsetsWithDup(a1)
+	if !containSubset(src, []int{}) || !containSubset(src, []int{1}) {
+		t.Fatal("[]int{0} do not contain []int{} or []int{1}")
+	}
 
+	a2 := []int{1,2,2}
+	src = subsetsWithDup(a2)
+	if !containSubset(src, []int{2}) {
+		t.Fatal("[]int{1,2,2} do not contain []int{2}")
+	}
+	if !containSubset(src, []int{1}) {
+		t.Fatal("[]int{1,2,2} do not contain []int{1}")
+	}
+	if !containSubset(src, []int{1,2,2}) {
+		t.Fatal("[]int{1,2,2} do not contain []int{1,2,2}")
+	}
+	if !containSubset(src, []int{2,2}) {
+		t.Fatal("[]int{1,2,2} do not contain []int{2,2}")
+	}
+	if !containSubset(src, []int{1,2}) {
+		t.Fatal("[]int{1,2,2} do not contain []int{1,2}")
+	}
+	if !containSubset(src, []int{}) {
+		t.Fatal("[]int{1,2,2} do not contain []int{}")
+	}
 }
 
 // go test -v github.com/dylenfu/go-libs/lintcode/exercise/algorithm/backtracking -run TestContainSubset
