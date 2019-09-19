@@ -27,11 +27,11 @@ func handleConnection(conn *net.TCPConn) {
 	recvBuf := make([]byte, 128)
 	for {
 		if _, err = conn.Write(sendBuf); err != nil {
-			println(fmt.Sprintf("conn.Write(\"%s\") error(%v)", string(sendBuf), err1))
+			println(fmt.Sprintf("conn.Write(\"%s\") error(%v)", string(sendBuf), err))
 			return
 		}
 		if _, err = conn.Read(recvBuf); err != nil {
-			println(fmt.Sprintf("conn.Read(\"%s\") error(%v)", string(sendBuf), err2))
+			println(fmt.Sprintf("conn.Read(\"%s\") error(%v)", string(sendBuf), err))
 			return
 		}
 		fmt.Println("client recv:::::" + string(recvBuf))
