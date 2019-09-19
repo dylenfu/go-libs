@@ -41,7 +41,7 @@ import "testing"
  * @param nums: A set of numbers.
  * @return: A list of lists. All valid subsets.
  */
-func subsetsWithDup (nums []int) [][]int {
+func subsetsWithDup(nums []int) [][]int {
 	// write your code here
 	return nil
 }
@@ -53,7 +53,7 @@ func TestSubsetsWithDup(t *testing.T) {
 		t.Fatal("[]int{0} do not contain []int{} or []int{1}")
 	}
 
-	a2 := []int{1,2,2}
+	a2 := []int{1, 2, 2}
 	src = subsetsWithDup(a2)
 	if !containSubset(src, []int{2}) {
 		t.Fatal("[]int{1,2,2} do not contain []int{2}")
@@ -61,13 +61,13 @@ func TestSubsetsWithDup(t *testing.T) {
 	if !containSubset(src, []int{1}) {
 		t.Fatal("[]int{1,2,2} do not contain []int{1}")
 	}
-	if !containSubset(src, []int{1,2,2}) {
+	if !containSubset(src, []int{1, 2, 2}) {
 		t.Fatal("[]int{1,2,2} do not contain []int{1,2,2}")
 	}
-	if !containSubset(src, []int{2,2}) {
+	if !containSubset(src, []int{2, 2}) {
 		t.Fatal("[]int{1,2,2} do not contain []int{2,2}")
 	}
-	if !containSubset(src, []int{1,2}) {
+	if !containSubset(src, []int{1, 2}) {
 		t.Fatal("[]int{1,2,2} do not contain []int{1,2}")
 	}
 	if !containSubset(src, []int{}) {
@@ -77,8 +77,8 @@ func TestSubsetsWithDup(t *testing.T) {
 
 // go test -v github.com/dylenfu/go-libs/lintcode/exercise/algorithm/backtracking -run TestContainSubset
 func TestContainSubset(t *testing.T) {
-	src := [][]int{[]int{}, []int{0,1}, []int{0, 2}, []int{1,2}}
-	dst := []int{0,3}
+	src := [][]int{[]int{}, []int{0, 1}, []int{0, 2}, []int{1, 2}}
+	dst := []int{0, 3}
 	if containSubset(src, dst) == true {
 		t.Fatal("[][]int{[]int{}, []int{0,1}, []int{0, 2}, []int{1,2}} should not contain []int{0,3}")
 	}
@@ -121,7 +121,7 @@ func contains(src []int, dst int) bool {
 
 // go test -v github.com/dylenfu/go-libs/lintcode/exercise/algorithm/backtracking -run TestContains
 func TestContains(t *testing.T) {
-	src := []int{1,2,3}
+	src := []int{1, 2, 3}
 	if contains(src, 3) == false {
 		t.Fatal("[]int{1,2,3} should contain 3")
 	}

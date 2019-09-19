@@ -36,18 +36,18 @@ func acceptTCP(listener *net.TCPListener) {
 }
 
 func handleServerConnection(conn *net.TCPConn) {
+	var err error
+
 	defer conn.Close()
 	recvBuf := make([]byte, 128)
 	sendBuf := []byte("server get client:" + conn.RemoteAddr().String() + " message!")
 	for {
-		_, err1 := conn.Read(recvBuf)
-		if err1 != nil {
-			println(err1)
+		if _, err = conn.Read(recvBuf); err != nil {
+			println(err)
 			return
 		}
-		_, err2 := conn.Write(sendBuf)
-		if err2 != nil {
-			println(err2)
+		if _, err = conn.Write(sendBuf); err != nil {
+			println(err)
 			return
 		}
 		fmt.Println("server recv:::::" + string(recvBuf))

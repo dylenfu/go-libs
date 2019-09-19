@@ -19,20 +19,21 @@ func Testclient(t *testing.T) {
 }
 
 func handleConnection(conn *net.TCPConn) {
+	var err error
+
+	defer conn.Close()
+
 	sendBuf := []byte(conn.LocalAddr().String() + " get server message!")
 	recvBuf := make([]byte, 128)
 	for {
-		_, err1 := conn.Write(sendBuf)
-		if err1 != nil {
+		if _, err = conn.Write(sendBuf); err != nil {
 			println(fmt.Sprintf("conn.Write(\"%s\") error(%v)", string(sendBuf), err1))
 			return
 		}
-		_, err2 := conn.Read(recvBuf)
-		if err2 != nil {
+		if _, err = conn.Read(recvBuf); err != nil {
 			println(fmt.Sprintf("conn.Read(\"%s\") error(%v)", string(sendBuf), err2))
 			return
 		}
 		fmt.Println("client recv:::::" + string(recvBuf))
 	}
-	defer conn.Close()
 }
