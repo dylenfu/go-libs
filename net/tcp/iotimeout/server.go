@@ -4,24 +4,28 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"sync"
 )
 
 type Server struct {
 	conns map[string]*Connect
+	mtx   *sync.Mutex
 }
 
 func NewServer() *Server {
 	s := &Server{}
 	s.conns = make(map[string]*Connect)
+	s.mtx = new(sync.Mutex)
 	listener := s.newServerListener(host)
 	go s.acceptTCP(listener)
 	return s
 }
 
 func (s *Server) PushMsg(msg *Msg, conn string) {
-	c := s.conns[conn]
-	if c != nil {
-		c.Push(msg)
+	for _, c := range s.conns {
+		if c.conn != nil {
+			c.Push(msg)
+		}
 	}
 }
 
@@ -46,30 +50,44 @@ func (s *Server) acceptTCP(listener *net.TCPListener) {
 		conn, err := listener.AcceptTCP()
 		if err != nil {
 			log.Fatal(err)
-		} else {
-			fmt.Println(fmt.Sprintf("tcp connect success, local address %s to remote address %s", conn.LocalAddr().String(), conn.RemoteAddr().String()))
 		}
+
 		c := NewConnect(conn)
-		s.conns[connname] = c
+		s.addConnect(c)
+		fmt.Println("[server] tcp connect success", c.Name())
 		go s.dispatch(c)
 	}
 }
 
 func (s *Server) dispatch(c *Connect) {
-	defer c.conn.Close()
+	defer s.delConnect(c)
+
 	for {
 		msg := c.Ready()
 		bs := Encode(msg)
-		if err := c.SetWriteDeadLine(writeDeadLint); err != nil {
-			fmt.Println("set dead line error", err)
+		if err := c.SetWriteDeadLine(writeDeadLine); err != nil {
+			fmt.Println("[server] set dead line error", err)
 		}
 		if _, err := c.Write(bs); err != nil {
-			fmt.Println("server connection write data error", err)
+			fmt.Println("[server] connection write data error", err)
 			return
 		}
 		if err := c.Flush(); err != nil {
-			fmt.Println("server connection io flush error", err)
+			fmt.Println("[server] connection io flush error", err)
 			return
 		}
 	}
+}
+
+func (s *Server) addConnect(c *Connect) {
+	s.mtx.Lock()
+	s.conns[c.Name()] = c
+	s.mtx.Unlock()
+}
+
+func (s *Server) delConnect(c *Connect) {
+	s.mtx.Lock()
+	delete(s.conns, c.Name())
+	c.Close()
+	s.mtx.Unlock()
 }

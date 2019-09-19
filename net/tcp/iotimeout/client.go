@@ -9,20 +9,17 @@ import (
 
 func NewClient() {
 	var (
-		local, remote *net.TCPAddr
-		err           error
+		remote *net.TCPAddr
+		err    error
 	)
 
-	if local, err = net.ResolveTCPAddr(tcp, clientaddr); err != nil {
-		panic(err)
-	}
 	if remote, err = net.ResolveTCPAddr(tcp, host); err != nil {
 		panic(err)
 	}
-	go connect(remote, local)
+	go connect(remote)
 }
 
-func connect(remote, local *net.TCPAddr) {
+func connect(remote *net.TCPAddr) {
 	var (
 		conn *net.TCPConn
 		err  error
@@ -41,22 +38,21 @@ func connect(remote, local *net.TCPAddr) {
 }
 
 func receive(c *Connect) {
+	buf := make([]byte, bufsize)
 	for {
-		buf := make([]byte, bufsize)
 		n, err := c.Read(buf)
 
 		switch err {
 		case io.EOF:
-			fmt.Println("tcp connection closed")
-			c.conn.Close()
-			c.conn = nil
+			fmt.Println("[client] tcp connection closed")
+			c.Close()
 			return
 
 		case nil:
 
 		default:
-			fmt.Println("clientaddr error:", err)
-			c.SetReadDeadLine(10 * time.Millisecond)
+			fmt.Println("[client] addr error:", err)
+			//c.SetReadDeadLine(10 * time.Millisecond)
 		}
 
 		bs := buf[:n]

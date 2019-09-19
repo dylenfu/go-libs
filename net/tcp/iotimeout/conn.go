@@ -20,8 +20,20 @@ func NewConnect(conn *net.TCPConn) *Connect {
 	c.conn = conn
 	c.rd = bufio.NewReader(conn)
 	c.wr = bufio.NewWriter(conn)
-	c.signal = make(chan *Msg, 2)
+	c.signal = make(chan *Msg, 10)
 	return c
+}
+
+func (c *Connect) Close() {
+	c.rd = nil
+	c.wr = nil
+	c.conn.Close()
+	c.conn = nil
+	close(c.signal)
+}
+
+func (c *Connect) Name() string {
+	return c.conn.RemoteAddr().String()
 }
 
 func (c *Connect) Push(s *Msg) {
@@ -40,10 +52,10 @@ func (c *Connect) Write(p []byte) (int, error) {
 	return c.wr.Write(p)
 }
 
-// 80 ~ 90 ms内随机
+// 30ms ~ 80ms内随机
 func (c *Connect) Flush() error {
-	n := rand.Intn(60)
-	n += 50
+	n := rand.Intn(50)
+	n += 30
 	d := time.Duration(n) * time.Millisecond
 	time.Sleep(d)
 	fmt.Println("flush rand time", d.String())

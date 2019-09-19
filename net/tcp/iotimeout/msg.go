@@ -9,6 +9,10 @@ type Msg struct {
 	Data string `json:"Data"`
 }
 
+var (
+	msgCnt = 0
+)
+
 func NewMsg(src, dst, data string) *Msg {
 	return &Msg{
 		Data: data,
@@ -28,4 +32,5 @@ func Decode(bs []byte) *Msg {
 
 func (m *Msg) Print() {
 	fmt.Println(fmt.Sprintf("content:%s", m.Data))
+	msgCnt++
 }
