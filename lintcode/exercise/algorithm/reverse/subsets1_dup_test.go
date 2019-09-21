@@ -1,4 +1,4 @@
-package dfs
+package reverse
 
 import "testing"
 

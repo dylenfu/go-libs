@@ -1,6 +1,8 @@
-package dfs
+package reverse
 
-import "testing"
+import (
+	"testing"
+)
 
 /*
 18. 子集 II
@@ -37,32 +39,46 @@ import "testing"
 解集中不能包含重复子集
 */
 
+// if 语句的含义是，
+// 在 A[index:] 中，每个数字只能附着到 temp 中一次
+// 判断方法是 A[i] != A[i-1]
+// 但是 A[index] == A[index-1] 也没有关系
+// 因为 A[index-1] 不在 A[index:] 中
+// 而且，需要执行 A[i]!=A[i-1] 时，
+// 可以肯定 i>=1，所以，不需要验证 i-1>=0
+
 /**
  * @param nums: A set of numbers.
  * @return: A list of lists. All valid subsets.
  */
 func subsetsWithDup(nums []int) [][]int {
-	// write your code here
-	return nil
+	ans := [][]int{}
+	cur := []int{}
+	for i := 0; i <= len(nums); i++ {
+		dfs(ans, nums, i, 0, cur)
+	}
+	return ans
 }
 
-/* 非递归的方式
-解题思路:
-包含n个元素的数组含有2^n个子集(含重复内容)，可以根据元素在数组中所在位置表示为2进制数，
-比如[1,2,2]这样的数组含1,2,2总共3个元素
-000, 001, 010, 011, 100, 101, 110, 111对应为
-{}   {2}  {2} {2,2} {1} {1,2} {1,2} {1,2,2}
-那么，我们只需要找出重复的数据就可以了。
-*/
-func unreverse(nums []int) [][]int {
-	return nil
+func dfs(ans [][]int, nums []int, n, s int, cur []int) {
+	if len(cur) == n {
+		tmp := make([]int, n)
+		copy(tmp, cur)
+		ans = append(ans, tmp)
+		return
+	}
+	for i := s; i < len(nums); i++ {
+		cur = append(cur, nums[i])
+		dfs(ans, nums, n, i+1, cur)
+		cur = cur[:len(cur)-1]
+	}
 }
 
 func TestSubsetsWithDup(t *testing.T) {
 	a1 := []int{0}
 	src := subsetsWithDup(a1)
-	if !containSubset(src, []int{}) || !containSubset(src, []int{1}) {
-		t.Fatal("[]int{0} do not contain []int{} or []int{1}")
+	if !containSubset(src, []int{}) || !containSubset(src, []int{0}) {
+		t.Fatal("[]int{0} do not contain []int{} or []int{0}")
 	}
 
 	a2 := []int{1, 2, 2}
