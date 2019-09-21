@@ -46,6 +46,18 @@ func subsetsWithDup(nums []int) [][]int {
 	return nil
 }
 
+/* 非递归的方式
+解题思路:
+包含n个元素的数组含有2^n个子集(含重复内容)，可以根据元素在数组中所在位置表示为2进制数，
+比如[1,2,2]这样的数组含1,2,2总共3个元素
+000, 001, 010, 011, 100, 101, 110, 111对应为
+{}   {2}  {2} {2,2} {1} {1,2} {1,2} {1,2,2}
+那么，我们只需要找出重复的数据就可以了。
+*/
+func unreverse(nums []int) [][]int {
+	return nil
+}
+
 func TestSubsetsWithDup(t *testing.T) {
 	a1 := []int{0}
 	src := subsetsWithDup(a1)

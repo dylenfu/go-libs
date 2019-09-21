@@ -90,7 +90,7 @@ func TestExpand(t *testing.T) {
 	}
 
 	// 1024 + 128
-	for i := 0; i < maxSize + 128; i++ {
+	for i := 0; i < maxSize+128; i++ {
 		q.Push(&Msg{i})
 		x := i + 1
 		switch x {
@@ -119,24 +119,24 @@ func TestExpand(t *testing.T) {
 				t.Fatal("q.Len() != 512 || q.Cap() != 1024")
 			}
 		}
-		if x + overflowThreshold == maxSize{
-			if q.Len() != maxSize - overflowThreshold || q.Cap() != maxSize {
+		if x+overflowThreshold == maxSize {
+			if q.Len() != maxSize-overflowThreshold || q.Cap() != maxSize {
 				t.Fatal("q.Len() != maxSize - overflowRemoveSize || q.Cap() != 1024")
 			}
 		}
-		if x + overflowThreshold == maxSize + 1 {
-			if q.Len() != maxSize - overflowThreshold - overflowRemoveSize + 1 || q.Cap() != maxSize {
+		if x+overflowThreshold == maxSize+1 {
+			if q.Len() != maxSize-overflowThreshold-overflowRemoveSize+1 || q.Cap() != maxSize {
 				t.Fatal("q.Len() != maxSize - overflowThreshold - overflowRemoveSize || q.Cap() != maxSize")
 			}
 		}
 	}
 
-	if q.Len() != maxSize - overflowThreshold || q.Cap() != 1024 {
+	if q.Len() != maxSize-overflowThreshold || q.Cap() != 1024 {
 		t.Fatal("q.Len() != maxSize - overflowThreshold || q.Cap() != 1024")
 	}
 
-	for i:=0; i< q.Len(); i++ {
-		x:=iton(q.Pop())
+	for i := 0; i < q.Len(); i++ {
+		x := iton(q.Pop())
 		y := maxSize + 128 - 1 - i
 		if x == 1109 || y == 1109 {
 			t.Log(1)
