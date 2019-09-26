@@ -1,0 +1,130 @@
+package comet
+
+import (
+	"fmt"
+	"github.com/Terry-Mao/goim/api/comet/grpc"
+	"github.com/Terry-Mao/goim/pkg/pqueue"
+	"time"
+)
+
+const channelOpen = true
+
+type IMsgQueue interface {
+	In(msg *grpc.Proto) error
+	Out() *grpc.Proto
+}
+
+func NewIMsgQueue(svr int) IMsgQueue {
+	if channelOpen {
+		return NewMsgChannel(svr)
+	} else {
+		return NewWrapPriorityMsgQueue()
+	}
+}
+
+type MsgChannel struct {
+	signal chan *grpc.Proto
+}
+
+func NewMsgChannel(svr int) *MsgChannel {
+	return &MsgChannel{
+		signal: make(chan *grpc.Proto, svr),
+	}
+}
+
+func (c *MsgChannel) In(p *grpc.Proto) error {
+	select {
+	case c.signal <- p:
+	default:
+		return fmt.Errorf("channel full")
+	}
+	return nil
+}
+
+func (c *MsgChannel) Out() *grpc.Proto {
+	return <-c.signal
+}
+
+type MsgQueue struct {
+	queue *pqueue.PQueue
+}
+
+func NewWrapPriorityMsgQueue() *MsgQueue {
+	list := pqueue.NewPriorityQueue(16)
+	return &MsgQueue{queue: list}
+}
+
+// In push msg and return queue length
+func (q *MsgQueue) In(data *grpc.Proto) error {
+	msg := NewWrapPriorityMsg(data)
+	q.queue.Push(msg)
+	if n := q.queue.Len(); n > 256 {
+		// just mark
+		return fmt.Errorf("msg queue length too big(>256)")
+	}
+	return nil
+}
+
+func (q *MsgQueue) Out() *grpc.Proto {
+	for {
+		msg := q.queue.Pop()
+		if msg != nil {
+			return msg.Value().(*grpc.Proto)
+		}
+	}
+}
+
+type WrapPriorityMsg struct {
+	data     *grpc.Proto
+	priority int
+	unixtime int64
+}
+
+func NewWrapPriorityMsg(msg *grpc.Proto) *WrapPriorityMsg {
+	data := &WrapPriorityMsg{
+		data:     msg,
+		priority: 0,
+		unixtime: time.Now().UnixNano(),
+	}
+	data.generatePriority()
+	return data
+}
+
+func (m *WrapPriorityMsg) Less(another pqueue.PriorityEntry) bool {
+	a := another.(*WrapPriorityMsg)
+	if m.priority == a.priority {
+		return m.unixtime < a.unixtime
+	} else {
+		return m.priority < a.priority
+	}
+}
+
+func (m *WrapPriorityMsg) Value() interface{} {
+	return m.data
+}
+
+func (m *WrapPriorityMsg) Msg() *grpc.Proto {
+	return m.data
+}
+
+func (m *WrapPriorityMsg) Compare(another pqueue.PriorityEntry) int {
+	a := another.(*WrapPriorityMsg)
+	if m.priority < a.priority {
+		return -1
+	} else if m.priority > a.priority {
+		return 1
+	}
+
+	if m.unixtime < a.unixtime {
+		return -1
+	} else if m.unixtime > a.unixtime {
+		return 1
+	} else {
+		return 0
+	}
+}
+
+// TODO(fukun): generate priority with proto data
+func (m *WrapPriorityMsg) generatePriority() {
+	m.priority = 0
+}
