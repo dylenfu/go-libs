@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>在线实时统计</title>
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+
+</head>
+
+
+
+<body>
+<p id="sum"></p>
+<table border="1px" cellspacing="0" cellpadding="2px">
+    <thead>
+    <tr>
+        <th>房间号</th><th>im在线连接</th><th>cdn在线人数</th>
+    </tr>
+    </thead>
+    <tbody id="tbody">
+        <tr>
+            <td>1</td><td>2</td><td>3</td>
+        </tr>
+    </tbody>
+</table>
+
+<script type="application/javascript">
+
+    function stat() {
+        $.ajax({
+            url:"http://39.106.38.228:8080/stat/",
+            dataType:"jsonp",
+        }).done(function (data) {
+            $("#tbody").empty();
+            var cdnData = {};
+
+            data.cdn.dataValue.forEach(function(item) {
+               cdnData[item["prog"].split("/").pop()] = item["value"]
+            });
+
+            data.top.forEach(function(item){
+                $("#tbody").append('<tr><td>'+item["room_id"]+'</td><td>'+item['count']+'</td><td>'+(cdnData[item["room_id"]] || 0)+'</td></tr>')
+            });
+            $("#sum").html('im统计在线总连接数: '+data["sum"]["conn_count"]+'<br/>im统计在线总ip数: '+data["sum"]["ip_count"]+'<br/>cdn统计在线总人数: '+data["cdn"]["count"])
+        })
+    }
+    stat();
+    var timer = setInterval(stat,5000);
+</script>
+</body>
+</html>
