@@ -35,7 +35,8 @@ func TestCreateEmailModel(t *testing.T) {
 		return tablePrefix + defaultTableName
 	}
 
-	url := user + ":" + pwd + "@tcp(" + host + ":" + port + ")/" + dbname + "?charset=utf8&parseTime=True"
+	//url := user + ":" + pwd + "@tcp(" + host + ":" + port + ")/" + dbname + "?charset=utf8&parseTime=True"
+	url := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&parseTime=True", user, pwd, host, port, dbname)
 	db, err := gorm.Open("mysql", url)
 	if err != nil {
 		panic(fmt.Sprintf("mysql connection error:%s", err.Error()))

@@ -16,7 +16,7 @@ type Whitelist struct {
 
 func TestSimpleLog(t *testing.T) {
 	path := "/tmp/white_list.log"
-	list := []int64{12,345}
+	list := []int64{12, 345}
 
 	if f, err := os.OpenFile(path, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0644); err == nil {
 		whitelist = new(Whitelist)

@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"time"
 	"golang.org/x/net/context"
+	"time"
 )
 
 // 模拟一个最小执行时间的阻塞函数
@@ -43,7 +43,7 @@ func main() {
 		// 使用开放的 API 计算 a+b
 		a := 1
 		b := 2
-		timeout := 1 * time.Millisecond//2 * time.Second
+		timeout := 1 * time.Millisecond //2 * time.Second
 		ctx, _ := context.WithTimeout(context.Background(), timeout)
 		res := Add(ctx, 1, 2)
 		fmt.Printf("Compute: %d+%d, result: %d\n", a, b, res)

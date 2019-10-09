@@ -28,7 +28,7 @@ func TestCompactError(t *testing.T) {
 // 奇数时error为nil，偶数时不为空
 func write(i int) error {
 	fmt.Println(i)
-	if i % 2 == 0 {
+	if i%2 == 0 {
 		return nil
 	}
 	return fmt.Errorf("error %d", i)

@@ -7,7 +7,7 @@ import (
 
 var (
 	ErrRingEmpty = fmt.Errorf("empty ring")
-	ErrRingFull = fmt.Errorf("ring full")
+	ErrRingFull  = fmt.Errorf("ring full")
 )
 
 type KK struct {
@@ -17,13 +17,13 @@ type KK struct {
 
 type Student struct {
 	Name string
-	Age int
-	k KK
+	Age  int
+	k    KK
 }
 
 type Proto struct {
 	Name string
-	Age int
+	Age  int
 }
 
 // Ring ring proto buffer.
@@ -37,7 +37,7 @@ type Ring struct {
 	// write
 	wp   uint64
 	data []Proto
-	s Student
+	s    Student
 }
 
 // NewRing new a ring buffer.
@@ -108,7 +108,7 @@ type Channel struct {
 func TestNewChannel(t *testing.T) {
 	ch := new(Channel)
 	ch.CliProto.Init(31)
-	p , err := ch.CliProto.Set()
+	p, err := ch.CliProto.Set()
 	if err != nil {
 		t.Fatal(err)
 	}
