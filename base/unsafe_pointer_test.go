@@ -5,6 +5,7 @@ import (
 	"unsafe"
 )
 
+// desc: 测试不同类型指针通过unsafe.Pointer进行转换
 // go的指针不允许跨类型转换, 转换时需要使用unsafe
 // go test -v github.com/dylenfu/go-libs/base -run TestUnsafePointerConverter
 func TestUnsafePointerConverter(t *testing.T) {
@@ -16,6 +17,7 @@ func TestUnsafePointerConverter(t *testing.T) {
 	t.Log(fp, &fp, *fp)
 }
 
+// desc: 测试unsafe.Offsetof和uintptr，通过偏移量获取结构体字段内容
 // go的指针和unsafe.Pointer都不能计算偏移量，这样就没法得到固定地址的内存内容了
 // 可以将指针转换为uintptr, 该指针类型可以进行偏移量计算
 func TestUnsafePointerOffset(t *testing.T) {
