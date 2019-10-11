@@ -7,7 +7,7 @@ import (
 
 // desc: 测试不同类型指针通过unsafe.Pointer进行转换
 // go的指针不允许跨类型转换, 转换时需要使用unsafe
-// go test -v github.com/dylenfu/go-libs/base -run TestUnsafePointerConverter
+// go test -v github.com/dylenfu/go-libs/sourcecode -run TestUnsafePointerConverter
 func TestUnsafePointerConverter(t *testing.T) {
 	i := 10
 	ip := &i
