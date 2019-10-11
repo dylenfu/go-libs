@@ -1,4 +1,4 @@
-package base
+package sourcecode
 
 import (
 	"testing"
@@ -30,7 +30,7 @@ func TestSlice2(t *testing.T) {
 	t.Log(mm)
 }
 
-// go test -v github.com/dylenfu/go-libs/base -run TestArrayModifyWithUnsafePointerOffset
+// go test -v github.com/dylenfu/go-libs/sourcecode -run TestArrayModifyWithUnsafePointerOffset
 // desc: 测试数组通过unsafe.Sizeof元素长度作为偏移量，查询或者修改对应位置的数据内容
 // 64位机器上的打印结果是:
 // slice_test.go:37: 24
