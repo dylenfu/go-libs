@@ -12,6 +12,7 @@ require (
 	github.com/google/pprof v0.0.0-20190908185732-236ed259b199 // indirect
 	github.com/grpc-ecosystem/grpc-gateway v1.11.1
 	github.com/jinzhu/gorm v1.9.10
+	github.com/micro/cli v0.2.0
 	github.com/micro/go-micro v1.11.1
 	github.com/naoina/go-stringutil v0.1.0 // indirect
 	github.com/naoina/toml v0.1.1

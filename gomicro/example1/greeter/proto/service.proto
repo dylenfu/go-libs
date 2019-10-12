@@ -11,3 +11,8 @@ message HelloRequest {
 message HelloResponse {
     string greeting = 2;
 }
+
+message HelloEvent {
+    string name = 1;
+    int32 age = 2;
+}
