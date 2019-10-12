@@ -4,17 +4,15 @@ go 1.12
 
 require (
 	cloud.google.com/go v0.45.1 // indirect
+	github.com/Terry-Mao/goim v0.0.0-20190611050722-d5d3d0ebd460
 	github.com/facebookgo/inject v0.0.0-20180706035515-f23751cae28b
 	github.com/facebookgo/structtag v0.0.0-20150214074306-217e25fb9691 // indirect
 	github.com/gin-gonic/gin v1.4.0 // indirect
 	github.com/golang/protobuf v1.3.2
-	github.com/google/btree v1.0.0 // indirect
-	github.com/google/go-cmp v0.3.1 // indirect
 	github.com/google/pprof v0.0.0-20190908185732-236ed259b199 // indirect
 	github.com/grpc-ecosystem/grpc-gateway v1.11.1
-	github.com/hashicorp/golang-lru v0.5.3 // indirect
 	github.com/jinzhu/gorm v1.9.10
-	github.com/kr/pty v1.1.8 // indirect
+	github.com/micro/go-micro v1.11.1
 	github.com/naoina/go-stringutil v0.1.0 // indirect
 	github.com/naoina/toml v0.1.1
 	github.com/rogpeppe/fastuuid v1.2.0 // indirect
@@ -22,7 +20,7 @@ require (
 	github.com/stretchr/testify v1.3.0
 	github.com/syndtr/goleveldb v1.0.0
 	go.opencensus.io v0.22.1 // indirect
-	go.uber.org/atomic v1.4.0
+	go.uber.org/atomic v1.4.0 // indirect
 	go.uber.org/multierr v1.1.0 // indirect
 	go.uber.org/zap v1.10.0
 	golang.org/x/crypto v0.0.0-20190911031432-227b76d455e7 // indirect

@@ -1,9 +1,9 @@
 package sourcecode
 
 import (
+	"reflect"
 	"testing"
 	"unsafe"
-	"reflect"
 )
 
 func TestSlice(t *testing.T) {
@@ -53,7 +53,7 @@ func TestArrayModifyWithSizeof(t *testing.T) {
 	*(*int)(unsafe.Pointer(uintptr(unsafe.Pointer(&arr)) + 1*size)) = 10
 
 	t.Log(arr[1])
-	t.Log(*(*int)(unsafe.Pointer(uintptr(unsafe.Pointer(&arr)) + 8 * size)))
+	t.Log(*(*int)(unsafe.Pointer(uintptr(unsafe.Pointer(&arr)) + 8*size)))
 }
 
 // desc: 测试数组拷贝, 打印结果如下
@@ -80,8 +80,8 @@ func TestSliceAttributeInMemoryIdx(t *testing.T) {
 	size := unsafe.Sizeof(int(0))
 	t.Log(uintptr(unsafe.Pointer(&s)), *(*int)(unsafe.Pointer(uintptr(unsafe.Pointer(&s)))))
 	t.Log(*(*int)(unsafe.Pointer(*(*uintptr)(unsafe.Pointer(&s)))))
-	t.Log(uintptr(unsafe.Pointer(&s)) + size, *(*int)(unsafe.Pointer(uintptr(unsafe.Pointer(&s)) + size)))
-	t.Log(uintptr(unsafe.Pointer(&s)) + size * 2, *(*int)(unsafe.Pointer(uintptr(unsafe.Pointer(&s)) + size * 2)))
+	t.Log(uintptr(unsafe.Pointer(&s))+size, *(*int)(unsafe.Pointer(uintptr(unsafe.Pointer(&s)) + size)))
+	t.Log(uintptr(unsafe.Pointer(&s))+size*2, *(*int)(unsafe.Pointer(uintptr(unsafe.Pointer(&s)) + size*2)))
 }
 
 // desc: 测试slice的值拷贝到array
@@ -116,8 +116,8 @@ func TestSliceCopy(t *testing.T) {
 
 	size := unsafe.Sizeof(0)
 	t.Log(uintptr(unsafe.Pointer(&s)), uintptr(unsafe.Pointer(&s1)))
-	t.Log(uintptr(unsafe.Pointer(&s)) + size, *(*int)(unsafe.Pointer(uintptr(unsafe.Pointer(&s)) + size)))
-	t.Log(uintptr(unsafe.Pointer(&s1)) + size, *(*int)(unsafe.Pointer(uintptr(unsafe.Pointer(&s1)) + size)))
+	t.Log(uintptr(unsafe.Pointer(&s))+size, *(*int)(unsafe.Pointer(uintptr(unsafe.Pointer(&s)) + size)))
+	t.Log(uintptr(unsafe.Pointer(&s1))+size, *(*int)(unsafe.Pointer(uintptr(unsafe.Pointer(&s1)) + size)))
 	t.Log(uintptr(unsafe.Pointer(&s[1])), uintptr(unsafe.Pointer(&s1[1])))
 
 	t.Log(cap(s))
@@ -135,18 +135,18 @@ func TestSliceCopy(t *testing.T) {
 // slice_test.go:143: {824633835920 0 10} [] false
 func TestNilSlice(t *testing.T) {
 	var s0 []int
-    s1 := make([]int, 0)
-    s2 := make([]int, 0, 0)
-    s3 := make([]int, 0, 100)
+	s1 := make([]int, 0)
+	s2 := make([]int, 0, 0)
+	s3 := make([]int, 0, 100)
 
-    arr := [10]int{}
-    s4 := arr[:0]
+	arr := [10]int{}
+	s4 := arr[:0]
 
 	t.Log("s0", *(*reflect.SliceHeader)(unsafe.Pointer(&s0)), s0, s0 == nil)
-    t.Log("s1", *(*reflect.SliceHeader)(unsafe.Pointer(&s1)), s1, s1 == nil)
-    t.Log("s2", *(*reflect.SliceHeader)(unsafe.Pointer(&s2)), s2, s2 == nil)
-    t.Log("s3", *(*reflect.SliceHeader)(unsafe.Pointer(&s3)), s3, s3 == nil)
-    t.Log("s4", *(*reflect.SliceHeader)(unsafe.Pointer(&s4)), s4, s4 == nil)
+	t.Log("s1", *(*reflect.SliceHeader)(unsafe.Pointer(&s1)), s1, s1 == nil)
+	t.Log("s2", *(*reflect.SliceHeader)(unsafe.Pointer(&s2)), s2, s2 == nil)
+	t.Log("s3", *(*reflect.SliceHeader)(unsafe.Pointer(&s3)), s3, s3 == nil)
+	t.Log("s4", *(*reflect.SliceHeader)(unsafe.Pointer(&s4)), s4, s4 == nil)
 }
 
 func TestSlicePost(t *testing.T) {
