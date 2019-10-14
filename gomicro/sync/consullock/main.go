@@ -1,9 +1,9 @@
 package consullock
 
 import (
-	"github.com/micro/go-micro/util/log"
 	"github.com/micro/go-micro/sync/lock"
 	"github.com/micro/go-micro/sync/lock/consul"
+	"github.com/micro/go-micro/util/log"
 	"time"
 )
 
