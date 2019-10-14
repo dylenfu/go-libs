@@ -1,3 +1,7 @@
+# github.com/DataDog/zstd v1.4.1
+github.com/DataDog/zstd
+# github.com/Shopify/sarama v1.23.1
+github.com/Shopify/sarama
 # github.com/Terry-Mao/goim v0.0.0-20190611050722-d5d3d0ebd460
 github.com/Terry-Mao/goim/pkg/bufio
 # github.com/armon/go-metrics v0.0.0-20190430140413-ec5e00d3c878
@@ -6,6 +10,12 @@ github.com/armon/go-metrics
 github.com/cheekybits/genny/generic
 # github.com/davecgh/go-spew v1.1.1
 github.com/davecgh/go-spew/spew
+# github.com/eapache/go-resiliency v1.2.0
+github.com/eapache/go-resiliency/breaker
+# github.com/eapache/go-xerial-snappy v0.0.0-20180814174437-776d5712da21
+github.com/eapache/go-xerial-snappy
+# github.com/eapache/queue v1.1.0
+github.com/eapache/queue
 # github.com/facebookgo/inject v0.0.0-20180706035515-f23751cae28b
 github.com/facebookgo/inject
 # github.com/facebookgo/structtag v0.0.0-20150214074306-217e25fb9691
@@ -55,12 +65,17 @@ github.com/hashicorp/go-multierror
 github.com/hashicorp/go-rootcerts
 # github.com/hashicorp/go-sockaddr v1.0.2
 github.com/hashicorp/go-sockaddr
+# github.com/hashicorp/go-uuid v1.0.1
+github.com/hashicorp/go-uuid
 # github.com/hashicorp/golang-lru v0.5.3
 github.com/hashicorp/golang-lru/simplelru
 # github.com/hashicorp/memberlist v0.1.4
 github.com/hashicorp/memberlist
 # github.com/hashicorp/serf v0.8.3
 github.com/hashicorp/serf/coordinate
+# github.com/jcmturner/gofork v1.0.0
+github.com/jcmturner/gofork/encoding/asn1
+github.com/jcmturner/gofork/x/crypto/pbkdf2
 # github.com/jinzhu/gorm v1.9.10
 github.com/jinzhu/gorm
 github.com/jinzhu/gorm/dialects/mysql
@@ -152,6 +167,7 @@ github.com/micro/go-micro/transport/grpc/proto
 github.com/micro/go-micro/api/resolver
 github.com/micro/go-micro/api/resolver/micro
 # github.com/micro/go-plugins v1.2.0
+github.com/micro/go-plugins/broker/kafka
 github.com/micro/go-plugins/broker/nsq
 # github.com/micro/mdns v0.3.0
 github.com/micro/mdns
@@ -182,10 +198,15 @@ github.com/nats-io/nkeys
 github.com/nats-io/nuid
 # github.com/nsqio/go-nsq v1.0.7
 github.com/nsqio/go-nsq
+# github.com/pierrec/lz4 v2.0.5+incompatible
+github.com/pierrec/lz4
+github.com/pierrec/lz4/internal/xxh32
 # github.com/pkg/errors v0.8.1
 github.com/pkg/errors
 # github.com/pmezard/go-difflib v1.0.0
 github.com/pmezard/go-difflib/difflib
+# github.com/rcrowley/go-metrics v0.0.0-20190706150252-9beb055b7962
+github.com/rcrowley/go-metrics
 # github.com/sean-/seed v0.0.0-20170313163322-e2103e2c3529
 github.com/sean-/seed
 # github.com/stretchr/testify v1.3.0
@@ -217,10 +238,12 @@ go.uber.org/zap/internal/exit
 # golang.org/x/crypto v0.0.0-20190911031432-227b76d455e7
 golang.org/x/crypto/ed25519
 golang.org/x/crypto/hkdf
+golang.org/x/crypto/md4
 golang.org/x/crypto/ed25519/internal/edwards25519
 golang.org/x/crypto/chacha20poly1305
 golang.org/x/crypto/cryptobyte
 golang.org/x/crypto/curve25519
+golang.org/x/crypto/pbkdf2
 golang.org/x/crypto/internal/chacha20
 golang.org/x/crypto/internal/subtle
 golang.org/x/crypto/poly1305
@@ -233,9 +256,11 @@ golang.org/x/net/http2/h2c
 golang.org/x/net/http/httpguts
 golang.org/x/net/http2/hpack
 golang.org/x/net/idna
+golang.org/x/net/proxy
 golang.org/x/net/internal/timeseries
 golang.org/x/net/ipv4
 golang.org/x/net/ipv6
+golang.org/x/net/internal/socks
 golang.org/x/net/bpf
 golang.org/x/net/internal/iana
 golang.org/x/net/internal/socket
@@ -291,5 +316,43 @@ google.golang.org/grpc/credentials/internal
 google.golang.org/grpc/balancer/base
 google.golang.org/grpc/binarylog/grpc_binarylog_v1
 google.golang.org/grpc/internal/syscall
+# gopkg.in/jcmturner/aescts.v1 v1.0.1
+gopkg.in/jcmturner/aescts.v1
+# gopkg.in/jcmturner/dnsutils.v1 v1.0.1
+gopkg.in/jcmturner/dnsutils.v1
+# gopkg.in/jcmturner/gokrb5.v7 v7.3.0
+gopkg.in/jcmturner/gokrb5.v7/asn1tools
+gopkg.in/jcmturner/gokrb5.v7/client
+gopkg.in/jcmturner/gokrb5.v7/config
+gopkg.in/jcmturner/gokrb5.v7/credentials
+gopkg.in/jcmturner/gokrb5.v7/gssapi
+gopkg.in/jcmturner/gokrb5.v7/iana/chksumtype
+gopkg.in/jcmturner/gokrb5.v7/iana/keyusage
+gopkg.in/jcmturner/gokrb5.v7/keytab
+gopkg.in/jcmturner/gokrb5.v7/messages
+gopkg.in/jcmturner/gokrb5.v7/types
+gopkg.in/jcmturner/gokrb5.v7/crypto
+gopkg.in/jcmturner/gokrb5.v7/crypto/etype
+gopkg.in/jcmturner/gokrb5.v7/iana/errorcode
+gopkg.in/jcmturner/gokrb5.v7/iana/flags
+gopkg.in/jcmturner/gokrb5.v7/iana/nametype
+gopkg.in/jcmturner/gokrb5.v7/iana/patype
+gopkg.in/jcmturner/gokrb5.v7/kadmin
+gopkg.in/jcmturner/gokrb5.v7/krberror
+gopkg.in/jcmturner/gokrb5.v7/iana/etypeID
+gopkg.in/jcmturner/gokrb5.v7/iana
+gopkg.in/jcmturner/gokrb5.v7/iana/adtype
+gopkg.in/jcmturner/gokrb5.v7/iana/asnAppTag
+gopkg.in/jcmturner/gokrb5.v7/iana/msgtype
+gopkg.in/jcmturner/gokrb5.v7/pac
+gopkg.in/jcmturner/gokrb5.v7/iana/addrtype
+gopkg.in/jcmturner/gokrb5.v7/crypto/common
+gopkg.in/jcmturner/gokrb5.v7/crypto/rfc3961
+gopkg.in/jcmturner/gokrb5.v7/crypto/rfc3962
+gopkg.in/jcmturner/gokrb5.v7/crypto/rfc4757
+gopkg.in/jcmturner/gokrb5.v7/crypto/rfc8009
+# gopkg.in/jcmturner/rpc.v1 v1.1.0
+gopkg.in/jcmturner/rpc.v1/mstypes
+gopkg.in/jcmturner/rpc.v1/ndr
 # gopkg.in/urfave/cli.v1 v1.20.0
 gopkg.in/urfave/cli.v1

@@ -1,0 +1,5 @@
+示例为broker采用kafka的情况。
+
+该代码与nsq非常像，有一点需要注意，与我们以往使用kafka不同的地方在于
+1.topic会在server注册subscribe时添加到kafka
+2.暂时不知道该如何选择patriat，group等
