@@ -6,8 +6,8 @@ import (
 	proto "github.com/dylenfu/go-libs/gomicro/basical/meta/proto"
 	"github.com/micro/go-micro"
 	"github.com/micro/go-micro/api"
-	"github.com/micro/go-micro/api/handler/rpc"
 	rapi "github.com/micro/go-micro/api/handler/api"
+	"github.com/micro/go-micro/api/handler/rpc"
 	"github.com/micro/go-micro/errors"
 	"github.com/micro/go-micro/util/log"
 )
@@ -20,22 +20,22 @@ const (
 func main() {
 	service := micro.NewService(
 		micro.Name(SERVER_ID),
-		)
+	)
 
 	service.Init()
 
 	_ = proto.RegisterExampleHandler(service.Server(), new(Example), api.WithEndpoint(&api.Endpoint{
-		Name: "Example.Call",
+		Name:        "Example.Call",
 		Description: "",
-		Path: []string{"/example"},
-		Method: []string{"POST"},
-		Handler: rpc.Handler,
+		Path:        []string{"/example"},
+		Method:      []string{"POST"},
+		Handler:     rpc.Handler,
 	}))
 
 	_ = proto.RegisterFooHandler(service.Server(), new(Foo), api.WithEndpoint(&api.Endpoint{
-		Name: "Foo.Bar",
-		Path: []string{"/foo/bar"},
-		Method: []string{"POST"},
+		Name:    "Foo.Bar",
+		Path:    []string{"/foo/bar"},
+		Method:  []string{"POST"},
 		Handler: rapi.Handler,
 	}))
 
@@ -45,6 +45,7 @@ func main() {
 }
 
 type Example struct{}
+
 func (e *Example) Call(ctx context.Context, req *proto.CallRequest, res *proto.CallResponse) error {
 	log.Log("Meta Example.Call received request")
 
@@ -56,7 +57,8 @@ func (e *Example) Call(ctx context.Context, req *proto.CallRequest, res *proto.C
 	return nil
 }
 
-type Foo struct {}
+type Foo struct{}
+
 func (f *Foo) Bar(ctx context.Context, req *proto.EmptyRequest, res *proto.EmptyResponse) error {
 	log.Log("Meta Foo.Bar received request")
 	return nil
