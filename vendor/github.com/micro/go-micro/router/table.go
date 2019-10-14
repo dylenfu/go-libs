@@ -6,17 +6,9 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/micro/go-micro/util/log"
 )
 
-var (
-	// ErrRouteNotFound is returned when no route was found in the routing table
-	ErrRouteNotFound = errors.New("route not found")
-	// ErrDuplicateRoute is returned when the route already exists
-	ErrDuplicateRoute = errors.New("duplicate route")
-)
-
-// table is an in-memory routing table
+// table is an in memory routing table
 type table struct {
 	sync.RWMutex
 	// routes stores service routes
@@ -33,19 +25,6 @@ func newTable(opts ...Option) *table {
 	}
 }
 
-// sendEvent sends events to all subscribed watchers
-func (t *table) sendEvent(e *Event) {
-	t.RLock()
-	defer t.RUnlock()
-
-	for _, w := range t.watchers {
-		select {
-		case w.resChan <- e:
-		case <-w.done:
-		}
-	}
-}
-
 // Create creates new route in the routing table
 func (t *table) Create(r Route) error {
 	service := r.Service
@@ -57,12 +36,14 @@ func (t *table) Create(r Route) error {
 	// check if there are any routes in the table for the route destination
 	if _, ok := t.routes[service]; !ok {
 		t.routes[service] = make(map[uint64]Route)
+		t.routes[service][sum] = r
+		go t.sendEvent(&Event{Type: Create, Timestamp: time.Now(), Route: r})
+		return nil
 	}
 
 	// add new route to the table for the route destination
 	if _, ok := t.routes[service][sum]; !ok {
 		t.routes[service][sum] = r
-		log.Debugf("Router emitting %s for route: %s", Create, r.Address)
 		go t.sendEvent(&Event{Type: Create, Timestamp: time.Now(), Route: r})
 		return nil
 	}
@@ -82,12 +63,7 @@ func (t *table) Delete(r Route) error {
 		return ErrRouteNotFound
 	}
 
-	if _, ok := t.routes[service][sum]; !ok {
-		return ErrRouteNotFound
-	}
-
 	delete(t.routes[service], sum)
-	log.Debugf("Router emitting %s for route: %s", Delete, r.Address)
 	go t.sendEvent(&Event{Type: Delete, Timestamp: time.Now(), Route: r})
 
 	return nil
@@ -104,17 +80,13 @@ func (t *table) Update(r Route) error {
 	// check if the route destination has any routes in the table
 	if _, ok := t.routes[service]; !ok {
 		t.routes[service] = make(map[uint64]Route)
-	}
-
-	if _, ok := t.routes[service][sum]; !ok {
 		t.routes[service][sum] = r
-		log.Debugf("Router emitting %s for route: %s", Update, r.Address)
-		go t.sendEvent(&Event{Type: Update, Timestamp: time.Now(), Route: r})
+		go t.sendEvent(&Event{Type: Create, Timestamp: time.Now(), Route: r})
 		return nil
 	}
 
-	// just update the route, but dont emit Update event
 	t.routes[service][sum] = r
+	go t.sendEvent(&Event{Type: Update, Timestamp: time.Now(), Route: r})
 
 	return nil
 }
@@ -134,23 +106,21 @@ func (t *table) List() ([]Route, error) {
 	return routes, nil
 }
 
-// isMatch checks if the route matches given query options
-func isMatch(route Route, gateway, network, router string) bool {
-	if gateway == "*" || gateway == route.Gateway {
-		if network == "*" || network == route.Network {
-			if router == "*" || router == route.Router {
-				return true
-			}
+// isMatch checks if the route matches given network and router
+func isMatch(route Route, network, router string) bool {
+	if network == "*" || network == route.Network {
+		if router == "*" || router == route.Gateway {
+			return true
 		}
 	}
 	return false
 }
 
 // findRoutes finds all the routes for given network and router and returns them
-func findRoutes(routes map[uint64]Route, gateway, network, router string) []Route {
+func findRoutes(routes map[uint64]Route, network, router string) []Route {
 	var results []Route
 	for _, route := range routes {
-		if isMatch(route, gateway, network, router) {
+		if isMatch(route, network, router) {
 			results = append(results, route)
 		}
 	}
@@ -166,13 +136,13 @@ func (t *table) Query(q Query) ([]Route, error) {
 		if _, ok := t.routes[q.Options().Service]; !ok {
 			return nil, ErrRouteNotFound
 		}
-		return findRoutes(t.routes[q.Options().Service], q.Options().Gateway, q.Options().Network, q.Options().Router), nil
+		return findRoutes(t.routes[q.Options().Service], q.Options().Network, q.Options().Gateway), nil
 	}
 
 	var results []Route
 	// search through all destinations
 	for _, routes := range t.routes {
-		results = append(results, findRoutes(routes, q.Options().Gateway, q.Options().Network, q.Options().Router)...)
+		results = append(results, findRoutes(routes, q.Options().Network, q.Options().Gateway)...)
 	}
 
 	return results, nil
@@ -211,3 +181,23 @@ func (t *table) Watch(opts ...WatchOption) (Watcher, error) {
 
 	return w, nil
 }
+
+// sendEvent sends events to all subscribed watchers
+func (t *table) sendEvent(e *Event) {
+	t.RLock()
+	defer t.RUnlock()
+
+	for _, w := range t.watchers {
+		select {
+		case w.resChan <- e:
+		case <-w.done:
+		}
+	}
+}
+
+var (
+	// ErrRouteNotFound is returned when no route was found in the routing table
+	ErrRouteNotFound = errors.New("route not found")
+	// ErrDuplicateRoute is returned when the route already exists
+	ErrDuplicateRoute = errors.New("duplicate route")
+)

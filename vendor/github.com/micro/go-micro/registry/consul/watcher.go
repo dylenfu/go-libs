@@ -163,7 +163,7 @@ func (cw *consulWatcher) serviceHandler(idx uint64, data interface{}) {
 
 			// it's an update rather than creation
 			if len(nodes) > 0 {
-				delService := registry.CopyService(oldService)
+				delService := oldService
 				delService.Nodes = nodes
 				cw.next <- &registry.Result{Action: "delete", Service: delService}
 			}

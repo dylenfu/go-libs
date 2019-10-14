@@ -96,15 +96,7 @@ func (r *rpcClient) call(ctx context.Context, node *registry.Node, req Request, 
 		}
 	}
 
-	dOpts := []transport.DialOption{
-		transport.WithStream(),
-	}
-
-	if opts.DialTimeout >= 0 {
-		dOpts = append(dOpts, transport.WithTimeout(opts.DialTimeout))
-	}
-
-	c, err := r.pool.Get(address, dOpts...)
+	c, err := r.pool.Get(address, transport.WithTimeout(opts.DialTimeout))
 	if err != nil {
 		return errors.InternalServerError("go.micro.client", "connection error: %v", err)
 	}
@@ -220,7 +212,7 @@ func (r *rpcClient) stream(ctx context.Context, node *registry.Node, req Request
 		dOpts = append(dOpts, transport.WithTimeout(opts.DialTimeout))
 	}
 
-	c, err := r.opts.Transport.Dial(address, dOpts...)
+	c, err := r.pool.Get(address, dOpts...)
 	if err != nil {
 		return nil, errors.InternalServerError("go.micro.client", "connection error: %v", err)
 	}
@@ -254,7 +246,7 @@ func (r *rpcClient) stream(ctx context.Context, node *registry.Node, req Request
 		// signal the end of stream,
 		sendEOS: true,
 		// release func
-		release: func(err error) { c.Close() },
+		release: func(err error) { r.pool.Release(c, err) },
 	}
 
 	// wait for error response

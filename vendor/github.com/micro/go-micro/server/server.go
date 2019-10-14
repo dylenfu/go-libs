@@ -6,7 +6,6 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/micro/go-micro/codec"
@@ -116,15 +115,13 @@ type Subscriber interface {
 type Option func(*Options)
 
 var (
-	DefaultAddress                 = ":0"
-	DefaultName                    = "go.micro.server"
-	DefaultVersion                 = time.Now().Format("2006.01.02.15.04")
-	DefaultId                      = uuid.New().String()
-	DefaultServer           Server = newRpcServer()
-	DefaultRouter                  = newRpcRouter()
-	DefaultRegisterCheck           = func(context.Context) error { return nil }
-	DefaultRegisterInterval        = time.Second * 30
-	DefaultRegisterTTL             = time.Minute
+	DefaultAddress              = ":0"
+	DefaultName                 = "server"
+	DefaultVersion              = "latest"
+	DefaultId                   = uuid.New().String()
+	DefaultServer        Server = newRpcServer()
+	DefaultRouter               = newRpcRouter()
+	DefaultRegisterCheck        = func(context.Context) error { return nil }
 )
 
 // DefaultOptions returns config options for the default service

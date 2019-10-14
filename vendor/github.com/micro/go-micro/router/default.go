@@ -10,7 +10,6 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/micro/go-micro/registry"
-	"github.com/micro/go-micro/util/log"
 )
 
 const (
@@ -44,7 +43,7 @@ var (
 // router implements default router
 type router struct {
 	sync.RWMutex
-	options   Options
+	opts      Options
 	status    Status
 	table     *table
 	exit      chan struct{}
@@ -71,7 +70,7 @@ func newRouter(opts ...Option) Router {
 	status := Status{Code: Stopped, Error: nil}
 
 	return &router{
-		options:     options,
+		opts:        options,
 		status:      status,
 		table:       newTable(),
 		advertWg:    &sync.WaitGroup{},
@@ -86,7 +85,7 @@ func (r *router) Init(opts ...Option) error {
 	defer r.Unlock()
 
 	for _, o := range opts {
-		o(&r.options)
+		o(&r.opts)
 	}
 
 	return nil
@@ -95,10 +94,10 @@ func (r *router) Init(opts ...Option) error {
 // Options returns router options
 func (r *router) Options() Options {
 	r.Lock()
-	options := r.options
+	opts := r.opts
 	r.Unlock()
 
-	return options
+	return opts
 }
 
 // Table returns routing table
@@ -113,19 +112,16 @@ func (r *router) manageRoute(route Route, action string) error {
 		if err := r.table.Create(route); err != nil && err != ErrDuplicateRoute {
 			return fmt.Errorf("failed adding route for service %s: %s", route.Service, err)
 		}
+	case "update":
+		if err := r.table.Update(route); err != nil && err != ErrDuplicateRoute {
+			return fmt.Errorf("failed updating route for service %s: %s", route.Service, err)
+		}
 	case "delete":
 		if err := r.table.Delete(route); err != nil && err != ErrRouteNotFound {
 			return fmt.Errorf("failed deleting route for service %s: %s", route.Service, err)
 		}
-	case "update":
-		if err := r.table.Update(route); err != nil {
-			return fmt.Errorf("failed updating route for service %s: %s", route.Service, err)
-		}
-	case "solicit":
-		// nothing to do here
-		return nil
 	default:
-		return fmt.Errorf("failed to manage route for service %s: unknown action %s", route.Service, action)
+		return fmt.Errorf("failed to manage route for service %s. Unknown action: %s", route.Service, action)
 	}
 
 	return nil
@@ -143,8 +139,7 @@ func (r *router) manageServiceRoutes(service *registry.Service, action string) e
 			Service: service.Name,
 			Address: node.Address,
 			Gateway: "",
-			Network: r.options.Network,
-			Router:  r.options.Id,
+			Network: r.opts.Network,
 			Link:    DefaultLink,
 			Metric:  DefaultLocalMetric,
 		}
@@ -186,6 +181,10 @@ func (r *router) manageRegistryRoutes(reg registry.Registry, action string) erro
 // watchRegistry watches registry and updates routing table based on the received events.
 // It returns error if either the registry watcher fails with error or if the routing table update fails.
 func (r *router) watchRegistry(w registry.Watcher) error {
+	// wait in the background for the router to stop
+	// when the router stops, stop the watcher and exit
+	r.wg.Add(1)
+
 	exit := make(chan bool)
 
 	defer func() {
@@ -194,9 +193,6 @@ func (r *router) watchRegistry(w registry.Watcher) error {
 		r.wg.Done()
 	}()
 
-	// wait in the background for the router to stop
-	// when the router stops, stop the watcher and exit
-	r.wg.Add(1)
 	go func() {
 		defer w.Stop()
 
@@ -230,6 +226,9 @@ func (r *router) watchRegistry(w registry.Watcher) error {
 // watchTable watches routing table entries and either adds or deletes locally registered service to/from network registry
 // It returns error if the locally registered services either fails to be added/deleted to/from network registry.
 func (r *router) watchTable(w Watcher) error {
+	// wait in the background for the router to stop
+	// when the router stops, stop the watcher and exit
+	r.wg.Add(1)
 	exit := make(chan bool)
 
 	defer func() {
@@ -238,9 +237,6 @@ func (r *router) watchTable(w Watcher) error {
 		r.wg.Done()
 	}()
 
-	// wait in the background for the router to stop
-	// when the router stops, stop the watcher and exit
-	r.wg.Add(1)
 	go func() {
 		defer w.Stop()
 
@@ -283,14 +279,13 @@ func (r *router) publishAdvert(advType AdvertType, events []*Event) {
 	defer r.advertWg.Done()
 
 	a := &Advert{
-		Id:        r.options.Id,
+		Id:        r.opts.Id,
 		Type:      advType,
 		TTL:       DefaultAdvertTTL,
 		Timestamp: time.Now(),
 		Events:    events,
 	}
 
-	log.Debugf("Router publishing advert; %+v", a)
 	r.RLock()
 	for _, sub := range r.subscribers {
 		// check the exit chan first
@@ -337,7 +332,6 @@ func (r *router) advertiseTable() error {
 
 			// advertise all routes as Update events to subscribers
 			if len(events) > 0 {
-				log.Debugf("Router flushing table with %d events: %s", len(events), r.options.Id)
 				r.advertWg.Add(1)
 				go r.publishAdvert(RouteUpdate, events)
 			}
@@ -347,10 +341,9 @@ func (r *router) advertiseTable() error {
 	}
 }
 
-// routeAdvert contains a route event to be advertised
+// routeAdvert contains a list of route events to be advertised
 type routeAdvert struct {
-	// event received from routing table
-	event *Event
+	events []*Event
 	// lastUpdate records the time of the last advert update
 	lastUpdate time.Time
 	// penalty is current advert penalty
@@ -399,11 +392,9 @@ func (r *router) advertiseEvents() error {
 				// suppress/recover the event based on its penalty level
 				switch {
 				case advert.penalty > AdvertSuppress && !advert.isSuppressed:
-					log.Debugf("Router supressing advert %d for route %s", key, advert.event.Route.Address)
 					advert.isSuppressed = true
 					advert.suppressTime = time.Now()
 				case advert.penalty < AdvertRecover && advert.isSuppressed:
-					log.Debugf("Router recovering advert %d for route %s", key, advert.event.Route.Address)
 					advert.isSuppressed = false
 				}
 
@@ -416,18 +407,19 @@ func (r *router) advertiseEvents() error {
 				}
 
 				if !advert.isSuppressed {
-					e := new(Event)
-					*e = *(advert.event)
-					events = append(events, e)
-					// delete the advert from the advertMap
-					delete(advertMap, key)
+					for _, event := range advert.events {
+						e := new(Event)
+						*e = *event
+						events = append(events, e)
+						// delete the advert from the advertMap
+						delete(advertMap, key)
+					}
 				}
 			}
 
 			// advertise all Update events to subscribers
 			if len(events) > 0 {
 				r.advertWg.Add(1)
-				log.Debugf("Router publishing %d events", len(events))
 				go r.publishAdvert(RouteUpdate, events)
 			}
 		case e := <-r.eventChan:
@@ -435,7 +427,7 @@ func (r *router) advertiseEvents() error {
 			if e == nil {
 				continue
 			}
-			log.Debugf("Router processing table event %s for service %s", e.Type, e.Route.Address)
+
 			// determine the event penalty
 			var penalty float64
 			switch e.Type {
@@ -446,11 +438,13 @@ func (r *router) advertiseEvents() error {
 			}
 
 			// check if we have already registered the route
+			// we use the route hash as advertMap key
 			hash := e.Route.Hash()
 			advert, ok := advertMap[hash]
 			if !ok {
+				events := []*Event{e}
 				advert = &routeAdvert{
-					event:      e,
+					events:     events,
 					penalty:    penalty,
 					lastUpdate: time.Now(),
 				}
@@ -458,15 +452,17 @@ func (r *router) advertiseEvents() error {
 				continue
 			}
 
-			// override the route event only if the last event was different
-			if advert.event.Type != e.Type {
-				advert.event = e
+			// attempt to squash last two events if possible
+			lastEvent := advert.events[len(advert.events)-1]
+			if lastEvent.Type == e.Type {
+				advert.events[len(advert.events)-1] = e
+			} else {
+				advert.events = append(advert.events, e)
 			}
 
-			// update event penalty and timestamp
+			// update event penalty and recorded timestamp
 			advert.lastUpdate = time.Now()
 			advert.penalty += penalty
-			log.Debugf("Router advert %d for route %s event penalty: %f", hash, advert.event.Route.Address, advert.penalty)
 		case <-r.exit:
 			// first wait for the advertiser to finish
 			r.advertWg.Wait()
@@ -475,38 +471,12 @@ func (r *router) advertiseEvents() error {
 	}
 }
 
-// close closes exit channels
-func (r *router) close() {
-	// notify all goroutines to finish
-	close(r.exit)
-
-	// drain the advertise channel only if advertising
-	if r.status.Code == Advertising {
-		// drain the event channel
-		for range r.eventChan {
-		}
-
-		// close advert subscribers
-		for id, sub := range r.subscribers {
-			// close the channel
-			close(sub)
-
-			// delete the subscriber
-			delete(r.subscribers, id)
-		}
-	}
-
-	// mark the router as Stopped and set its Error to nil
-	r.status = Status{Code: Stopped, Error: nil}
-}
-
 // watchErrors watches router errors and takes appropriate actions
 func (r *router) watchErrors() {
 	var err error
 
 	select {
 	case <-r.exit:
-		return
 	case err = <-r.errChan:
 	}
 
@@ -514,12 +484,22 @@ func (r *router) watchErrors() {
 	defer r.Unlock()
 	// if the router is not stopped, stop it
 	if r.status.Code != Stopped {
-		// close all the channels
-		r.close()
-		// set the status error
-		if err != nil {
-			r.status.Error = err
+		// notify all goroutines to finish
+		close(r.exit)
+
+		// drain the advertise channel only if the router is advertising
+		if r.status.Code == Advertising {
+			// drain the event channel
+			for range r.eventChan {
+			}
 		}
+
+		// mark the router as Stopped and set its Error to nil
+		r.status = Status{Code: Stopped, Error: nil}
+	}
+
+	if err != nil {
+		r.status = Status{Code: Error, Error: err}
 	}
 }
 
@@ -528,28 +508,21 @@ func (r *router) Start() error {
 	r.Lock()
 	defer r.Unlock()
 
-	// only start if we're stopped
-	if r.status.Code != Stopped {
-		return nil
-	}
-
 	// add all local service routes into the routing table
-	if err := r.manageRegistryRoutes(r.options.Registry, "create"); err != nil {
+	if err := r.manageRegistryRoutes(r.opts.Registry, "create"); err != nil {
 		e := fmt.Errorf("failed adding registry routes: %s", err)
 		r.status = Status{Code: Error, Error: e}
 		return e
 	}
 
 	// add default gateway into routing table
-	if r.options.Gateway != "" {
+	if r.opts.Gateway != "" {
 		// note, the only non-default value is the gateway
 		route := Route{
 			Service: "*",
 			Address: "*",
-			Gateway: r.options.Gateway,
+			Gateway: r.opts.Gateway,
 			Network: "*",
-			Router:  r.options.Id,
-			Link:    DefaultLink,
 			Metric:  DefaultLocalMetric,
 		}
 		if err := r.table.Create(route); err != nil {
@@ -564,7 +537,7 @@ func (r *router) Start() error {
 	r.exit = make(chan struct{})
 
 	// registry watcher
-	regWatcher, err := r.options.Registry.Watch()
+	regWatcher, err := r.opts.Registry.Watch()
 	if err != nil {
 		e := fmt.Errorf("failed creating registry watcher: %v", err)
 		r.status = Status{Code: Error, Error: e}
@@ -602,14 +575,25 @@ func (r *router) Advertise() (<-chan *Advert, error) {
 
 	switch r.status.Code {
 	case Advertising:
-		advertChan := make(chan *Advert, 128)
+		advertChan := make(chan *Advert)
 		r.subscribers[uuid.New().String()] = advertChan
 		return advertChan, nil
 	case Running:
-		// list all the routes and pack them into even slice to advertise
-		events, err := r.flushRouteEvents(Create)
+		// list routing table routes to announce
+		routes, err := r.table.List()
 		if err != nil {
-			return nil, fmt.Errorf("failed to flush routes: %s", err)
+			return nil, fmt.Errorf("failed listing routes: %s", err)
+		}
+
+		// collect all the added routes before we attempt to add default gateway
+		events := make([]*Event, len(routes))
+		for i, route := range routes {
+			event := &Event{
+				Type:      Create,
+				Timestamp: time.Now(),
+				Route:     route,
+			}
+			events[i] = event
 		}
 
 		// create event channels
@@ -642,7 +626,7 @@ func (r *router) Advertise() (<-chan *Advert, error) {
 		r.status = Status{Code: Advertising, Error: nil}
 
 		// create advert channel
-		advertChan := make(chan *Advert, 128)
+		advertChan := make(chan *Advert)
 		r.subscribers[uuid.New().String()] = advertChan
 
 		return advertChan, nil
@@ -664,18 +648,10 @@ func (r *router) Process(a *Advert) error {
 		return events[i].Timestamp.Before(events[j].Timestamp)
 	})
 
-	log.Debugf("Router %s processing advert from: %s", r.options.Id, a.Id)
-
 	for _, event := range events {
-		// skip if the router is the origin of this route
-		if event.Route.Router == r.options.Id {
-			log.Debugf("Router skipping processing its own route: %s", r.options.Id)
-			continue
-		}
 		// create a copy of the route
 		route := event.Route
 		action := event.Type
-		log.Debugf("Router %s applying %s from router %s for address: %s", r.options.Id, action, route.Router, route.Address)
 		if err := r.manageRoute(route, fmt.Sprintf("%s", action)); err != nil {
 			return fmt.Errorf("failed applying action %s to routing table: %s", action, err)
 		}
@@ -684,49 +660,10 @@ func (r *router) Process(a *Advert) error {
 	return nil
 }
 
-// flushRouteEvents returns a slice of events, one per each route in the routing table
-func (r *router) flushRouteEvents(evType EventType) ([]*Event, error) {
-	// list all routes
-	routes, err := r.table.List()
-	if err != nil {
-		return nil, fmt.Errorf("failed listing routes: %s", err)
-	}
-
-	// build a list of events to advertise
-	events := make([]*Event, len(routes))
-	for i, route := range routes {
-		event := &Event{
-			Type:      evType,
-			Timestamp: time.Now(),
-			Route:     route,
-		}
-		events[i] = event
-	}
-
-	return events, nil
-}
-
-// Solicit advertises all of its routes to the network
-// It returns error if the router fails to list the routes
-func (r *router) Solicit() error {
-	events, err := r.flushRouteEvents(Update)
-	if err != nil {
-		return fmt.Errorf("failed solicit routes: %s", err)
-	}
-
-	// advertise the routes
-	r.advertWg.Add(1)
-	go r.publishAdvert(RouteUpdate, events)
-
-	return nil
-}
-
-// Lookup routes in the routing table
 func (r *router) Lookup(q Query) ([]Route, error) {
 	return r.table.Query(q)
 }
 
-// Watch routes
 func (r *router) Watch(opts ...WatchOption) (Watcher, error) {
 	return r.table.Watch(opts...)
 }
@@ -745,15 +682,31 @@ func (r *router) Status() Status {
 // Stop stops the router
 func (r *router) Stop() error {
 	r.Lock()
-	defer r.Unlock()
+	// only close the channel if the router is running and/or advertising
+	if r.status.Code == Running || r.status.Code == Advertising {
+		// notify all goroutines to finish
+		close(r.exit)
 
-	switch r.status.Code {
-	case Stopped, Error:
-		return r.status.Error
-	case Running, Advertising:
-		// close all the channels
-		r.close()
+		// drain the advertise channel only if advertising
+		if r.status.Code == Advertising {
+			// drain the event channel
+			for range r.eventChan {
+			}
+		}
+
+		// close advert subscribers
+		for id, sub := range r.subscribers {
+			// close the channel
+			close(sub)
+
+			// delete the subscriber
+			delete(r.subscribers, id)
+		}
+
+		// mark the router as Stopped and set its Error to nil
+		r.status = Status{Code: Stopped, Error: nil}
 	}
+	r.Unlock()
 
 	// wait for all goroutines to finish
 	r.wg.Wait()
@@ -763,5 +716,5 @@ func (r *router) Stop() error {
 
 // String prints debugging information about router
 func (r *router) String() string {
-	return "memory"
+	return "default"
 }

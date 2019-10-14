@@ -33,8 +33,6 @@ type httpTransportClient struct {
 	once     sync.Once
 
 	sync.RWMutex
-
-	// request must be stored for response processing
 	r    chan *http.Request
 	bl   []*http.Request
 	buff *bufio.Reader
@@ -50,17 +48,9 @@ type httpTransportSocket struct {
 	r  *http.Request
 	rw *bufio.ReadWriter
 
-	mtx sync.RWMutex
-
-	// the hijacked when using http 1
 	conn net.Conn
 	// for the first request
 	ch chan *http.Request
-
-	// h2 things
-	buf *bufio.Reader
-	// indicate if socket is closed
-	closed chan bool
 
 	// local/remote ip
 	local  string
@@ -171,13 +161,14 @@ func (h *httpTransportClient) Recv(m *Message) error {
 }
 
 func (h *httpTransportClient) Close() error {
+	err := h.conn.Close()
 	h.once.Do(func() {
 		h.Lock()
 		h.buff.Reset(nil)
 		h.Unlock()
 		close(h.r)
 	})
-	return h.conn.Close()
+	return err
 }
 
 func (h *httpTransportSocket) Local() string {
@@ -241,23 +232,14 @@ func (h *httpTransportSocket) Recv(m *Message) error {
 		return nil
 	}
 
-	// only process if the socket is open
-	select {
-	case <-h.closed:
-		return io.EOF
-	default:
-		// no op
-	}
-
 	// processing http2 request
 	// read streaming body
 
 	// set max buffer size
-	// TODO: adjustable buffer size
-	buf := make([]byte, 4*1024*1024)
+	buf := make([]byte, 4*1024)
 
 	// read the request body
-	n, err := h.buf.Read(buf)
+	n, err := h.r.Body.Read(buf)
 	// not an eof error
 	if err != nil {
 		return err
@@ -308,17 +290,7 @@ func (h *httpTransportSocket) Send(m *Message) error {
 		return rsp.Write(h.conn)
 	}
 
-	// only process if the socket is open
-	select {
-	case <-h.closed:
-		return io.EOF
-	default:
-		// no op
-	}
-
-	// we need to lock to protect the write
-	h.mtx.RLock()
-	defer h.mtx.RUnlock()
+	// http2 request
 
 	// set headers
 	for k, v := range m.Header {
@@ -327,10 +299,6 @@ func (h *httpTransportSocket) Send(m *Message) error {
 
 	// write request
 	_, err := h.w.Write(m.Body)
-
-	// flush the trailers
-	h.w.(http.Flusher).Flush()
-
 	return err
 }
 
@@ -353,29 +321,13 @@ func (h *httpTransportSocket) error(m *Message) error {
 
 		return rsp.Write(h.conn)
 	}
-
 	return nil
 }
 
 func (h *httpTransportSocket) Close() error {
-	h.mtx.Lock()
-	defer h.mtx.Unlock()
-	select {
-	case <-h.closed:
-		return nil
-	default:
-		// close the channel
-		close(h.closed)
-
-		// close the buffer
-		h.r.Body.Close()
-
-		// close the connection
-		if h.r.ProtoMajor == 1 {
-			return h.conn.Close()
-		}
+	if h.r.ProtoMajor == 1 {
+		return h.conn.Close()
 	}
-
 	return nil
 }
 
@@ -422,29 +374,20 @@ func (h *httpTransportListener) Accept(fn func(Socket)) error {
 			con = conn
 		}
 
-		// buffered reader
-		bufr := bufio.NewReader(r.Body)
-
 		// save the request
 		ch := make(chan *http.Request, 1)
 		ch <- r
 
-		// create a new transport socket
-		sock := &httpTransportSocket{
+		fn(&httpTransportSocket{
 			ht:     h.ht,
 			w:      w,
 			r:      r,
 			rw:     buf,
-			buf:    bufr,
 			ch:     ch,
 			conn:   con,
 			local:  h.Addr(),
 			remote: r.RemoteAddr,
-			closed: make(chan bool),
-		}
-
-		// execute the socket
-		fn(sock)
+		})
 	})
 
 	// get optional handlers
