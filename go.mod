@@ -40,7 +40,7 @@ require (
 	github.com/micro/cli v0.2.0
 	github.com/micro/go-config v1.1.1-0.20190603113547-03fb75f2f1e4 // indirect
 	github.com/micro/go-micro v1.9.0
-	github.com/micro/go-plugins v1.2.0 // indirect
+	github.com/micro/go-plugins v1.2.0
 	github.com/micro/go-web v1.0.0 // indirect
 	github.com/micro/util v0.2.0 // indirect
 	github.com/mitchellh/copystructure v1.0.0 // indirect

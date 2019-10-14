@@ -97,11 +97,11 @@ github.com/micro/go-micro/api
 github.com/micro/go-micro/api/handler/api
 github.com/micro/go-micro/api/handler/rpc
 github.com/micro/go-micro/web
+github.com/micro/go-micro/broker
+github.com/micro/go-micro/config/cmd
 github.com/micro/go-micro/sync/lock
 github.com/micro/go-micro/sync/lock/consul
-github.com/micro/go-micro/broker
 github.com/micro/go-micro/client/selector
-github.com/micro/go-micro/config/cmd
 github.com/micro/go-micro/debug/handler
 github.com/micro/go-micro/metadata
 github.com/micro/go-micro/registry
@@ -151,6 +151,8 @@ github.com/micro/go-micro/util/grpc
 github.com/micro/go-micro/transport/grpc/proto
 github.com/micro/go-micro/api/resolver
 github.com/micro/go-micro/api/resolver/micro
+# github.com/micro/go-plugins v1.2.0
+github.com/micro/go-plugins/broker/nsq
 # github.com/micro/mdns v0.3.0
 github.com/micro/mdns
 # github.com/miekg/dns v1.1.15
@@ -178,6 +180,8 @@ github.com/nats-io/nats.go/util
 github.com/nats-io/nkeys
 # github.com/nats-io/nuid v1.0.1
 github.com/nats-io/nuid
+# github.com/nsqio/go-nsq v1.0.7
+github.com/nsqio/go-nsq
 # github.com/pkg/errors v0.8.1
 github.com/pkg/errors
 # github.com/pmezard/go-difflib v1.0.0
@@ -223,13 +227,13 @@ golang.org/x/crypto/poly1305
 golang.org/x/crypto/cryptobyte/asn1
 # golang.org/x/net v0.0.0-20190909003024-a7b16738d86b
 golang.org/x/net/context
-golang.org/x/net/trace
 golang.org/x/net/http2
+golang.org/x/net/trace
 golang.org/x/net/http2/h2c
-golang.org/x/net/internal/timeseries
-golang.org/x/net/http2/hpack
 golang.org/x/net/http/httpguts
+golang.org/x/net/http2/hpack
 golang.org/x/net/idna
+golang.org/x/net/internal/timeseries
 golang.org/x/net/ipv4
 golang.org/x/net/ipv6
 golang.org/x/net/bpf
