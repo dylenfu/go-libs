@@ -28,7 +28,7 @@ github.com/golang/protobuf/ptypes
 github.com/golang/protobuf/ptypes/struct
 github.com/golang/protobuf/protoc-gen-go/generator/internal/remap
 github.com/golang/protobuf/protoc-gen-go/plugin
-# github.com/golang/snappy v0.0.0-20180518054509-2e65f85255db
+# github.com/golang/snappy v0.0.1
 github.com/golang/snappy
 # github.com/google/btree v1.0.0
 github.com/google/btree
@@ -66,6 +66,8 @@ github.com/jinzhu/gorm
 github.com/jinzhu/gorm/dialects/mysql
 # github.com/jinzhu/inflection v1.0.0
 github.com/jinzhu/inflection
+# github.com/joncalhoun/qson v0.0.0-20170526102502-8a9cab3a62b1
+github.com/joncalhoun/qson
 # github.com/json-iterator/go v1.1.7
 github.com/json-iterator/go
 # github.com/lucas-clemente/quic-go v0.12.0
@@ -84,10 +86,15 @@ github.com/lucas-clemente/quic-go/quictrace/pb
 github.com/marten-seemann/qtls
 # github.com/micro/cli v0.2.0
 github.com/micro/cli
-# github.com/micro/go-micro v1.11.1
+# github.com/micro/go-micro v1.11.1-0.20191001180929-e8a53610f17b
 github.com/micro/go-micro
+github.com/micro/go-micro/api/proto
+github.com/micro/go-micro/errors
+github.com/micro/go-micro/util/log
 github.com/micro/go-micro/client
 github.com/micro/go-micro/server
+github.com/micro/go-micro/api
+github.com/micro/go-micro/api/handler/rpc
 github.com/micro/go-micro/broker
 github.com/micro/go-micro/client/selector
 github.com/micro/go-micro/config/cmd
@@ -96,7 +103,6 @@ github.com/micro/go-micro/metadata
 github.com/micro/go-micro/plugin
 github.com/micro/go-micro/registry
 github.com/micro/go-micro/transport
-github.com/micro/go-micro/util/log
 github.com/micro/go-micro/client/pool
 github.com/micro/go-micro/codec
 github.com/micro/go-micro/codec/bytes
@@ -105,11 +111,13 @@ github.com/micro/go-micro/codec/json
 github.com/micro/go-micro/codec/jsonrpc
 github.com/micro/go-micro/codec/proto
 github.com/micro/go-micro/codec/protorpc
-github.com/micro/go-micro/errors
 github.com/micro/go-micro/util/buf
 github.com/micro/go-micro/util/addr
 github.com/micro/go-micro/util/net
 github.com/micro/go-micro/util/socket
+github.com/micro/go-micro/api/handler
+github.com/micro/go-micro/api/internal/proto
+github.com/micro/go-micro/util/ctx
 github.com/micro/go-micro/registry/cache
 github.com/micro/go-micro/util/tls
 github.com/micro/go-micro/broker/http
@@ -132,12 +140,15 @@ github.com/micro/go-micro/transport/http
 github.com/micro/go-micro/transport/memory
 github.com/micro/go-micro/transport/quic
 github.com/micro/go-micro/debug/proto
+github.com/micro/go-micro/api/router
 github.com/micro/go-micro/router
 github.com/micro/go-micro/router/proto
 github.com/micro/go-micro/registry/gossip/proto
 github.com/micro/go-micro/registry/proto
 github.com/micro/go-micro/util/grpc
 github.com/micro/go-micro/transport/grpc/proto
+github.com/micro/go-micro/api/resolver
+github.com/micro/go-micro/api/resolver/micro
 # github.com/micro/mdns v0.3.0
 github.com/micro/mdns
 # github.com/miekg/dns v1.1.15

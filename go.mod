@@ -14,8 +14,8 @@ require (
 	github.com/jinzhu/gorm v1.9.10
 	github.com/micro/cli v0.2.0
 	github.com/micro/go-micro v1.11.1-0.20191001180929-e8a53610f17b
-	github.com/micro/go-plugins v1.3.0
-	github.com/micro/micro v1.11.1-0.20191001181547-221ee138ab7c
+	github.com/micro/go-plugins v1.3.0 // indirect
+	github.com/micro/micro v1.11.1-0.20191001181547-221ee138ab7c // indirect
 	github.com/micro/protoc-gen-micro v0.8.0 // indirect
 	github.com/naoina/go-stringutil v0.1.0 // indirect
 	github.com/naoina/toml v0.1.1
