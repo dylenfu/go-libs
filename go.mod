@@ -22,6 +22,7 @@ require (
 	github.com/golang/protobuf v1.3.2
 	github.com/google/go-querystring v1.0.0 // indirect
 	github.com/google/pprof v0.0.0-20190908185732-236ed259b199 // indirect
+	github.com/google/uuid v1.1.1
 	github.com/grpc-ecosystem/grpc-gateway v1.11.1
 	github.com/hashicorp/go-memdb v1.0.0 // indirect
 	github.com/hashicorp/go-plugin v1.0.0 // indirect
