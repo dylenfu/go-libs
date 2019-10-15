@@ -47,3 +47,34 @@ func TestUnsafePointerOffset(t *testing.T) {
 		t.Log(u)
 	}
 }
+
+// 测试结果可以看出，结构体在内存中存储是一片连续的内存，以8字节为单位存储每个字段的指针
+//unsafe_pointer_test.go:61: size of s 8
+//unsafe_pointer_test.go:69: age offset 824634224096 15
+//unsafe_pointer_test.go:70: pc offset 824634224104 3
+//unsafe_pointer_test.go:71: class offset 824634224112 6
+//unsafe_pointer_test.go:72: grade offset 824634224120 3
+//在内存中的总长度为 24+8，即便是uint16，存储的也是8字节指针
+func TestSimpleStructPointerAndIndex(t *testing.T) {
+	type scase struct {
+		age   uint16
+		pc    uintptr
+		class int64
+		grade int64
+	}
+
+	s := &scase{age: 15, pc: uintptr(3), class: 6, grade: 3}
+
+	t.Log("size of s", unsafe.Sizeof(s))
+
+	a0 := uintptr(unsafe.Pointer(s))
+	a1 := a0 + unsafe.Offsetof(s.age)
+	a2 := a0 + unsafe.Offsetof(s.pc)
+	a3 := a0 + unsafe.Offsetof(s.class)
+	a4 := a0 + unsafe.Offsetof(s.grade)
+
+	t.Log("age offset", a1, *(*uint16)(unsafe.Pointer(a1)))
+	t.Log("pc offset", a2, *(*uintptr)(unsafe.Pointer(a2)))
+	t.Log("class offset", a3, *(*int64)(unsafe.Pointer(a3)))
+	t.Log("grade offset", a4, *(*int64)(unsafe.Pointer(a4)))
+}
