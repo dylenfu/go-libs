@@ -33,3 +33,13 @@ func (r *Rectangle) Area() float32 {
 func (r *Rectangle) Perimeter() float32 {
 	return 2*r.W + 2*r.L
 }
+
+func TestSimpleInterface2(t *testing.T) {
+	type Test struct{}
+	v := Test{}
+	Print(v)
+}
+
+func Print(v interface{}) {
+	println(v)
+}

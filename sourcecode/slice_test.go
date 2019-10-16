@@ -30,6 +30,17 @@ func TestSlice2(t *testing.T) {
 	t.Log(mm)
 }
 
+// s1[x:y:z], y - x = len, z - x = cap, z不能超过原s capcity
+func TestSlice3(t *testing.T) {
+	s := make([]int, 6, 16)
+	for i := 0; i < 6; i++ {
+		s[i] = i
+	}
+
+	s1 := s[1:3:9]
+	t.Log(s1)
+}
+
 // go test -v github.com/dylenfu/go-libs/sourcecode -run TestArrayModifyWithUnsafePointerOffset
 // desc: 测试数组通过unsafe.Sizeof元素长度作为偏移量，查询或者修改对应位置的数据内容
 // 64位机器上的打印结果是:
