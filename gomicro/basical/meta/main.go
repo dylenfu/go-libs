@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	SERVER_ID = "go.micro.api.example"
+	SERVER_ID = "go.micro.api.example1"
 )
 
 // Endpoint is a mapping between an RPC method and HTTP endpoint
@@ -27,7 +27,7 @@ func main() {
 	_ = proto.RegisterExampleHandler(service.Server(), new(Example), api.WithEndpoint(&api.Endpoint{
 		Name:        "Example.Call",
 		Description: "",
-		Path:        []string{"/example"},
+		Path:        []string{"/example1"},
 		Method:      []string{"POST"},
 		Handler:     rpc.Handler,
 	}))

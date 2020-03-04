@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	SERVER_ID           = "go.micro.api.example"
+	SERVER_ID           = "go.micro.api.example1"
 	POST                = "POST"
 	GET                 = "GET"
 	STATUS_CODE_SUCCESS = 200

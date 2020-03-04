@@ -48,7 +48,7 @@ func NewExampleService(name string, c client.Client) ExampleService {
 		c = client.NewClient()
 	}
 	if len(name) == 0 {
-		name = "example"
+		name = "example1"
 	}
 	return &exampleService{
 		c:    c,

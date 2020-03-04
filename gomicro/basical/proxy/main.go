@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	SERVER_ID = "go.micro.api.example"
+	SERVER_ID = "go.micro.api.example1"
 	POST      = "POST"
 	GET       = "GET"
 )
@@ -24,9 +24,9 @@ func main() {
 	service := web.NewService(
 		web.Name(SERVER_ID))
 
-	service.HandleFunc("/example/call", exampleCall)
-	service.HandleFunc("/example/foo/bar", exampleFooBar)
-	service.HandleFunc("/example/foo/upload", uploadFile)
+	service.HandleFunc("/example1/call", exampleCall)
+	service.HandleFunc("/example1/foo/bar", exampleFooBar)
+	service.HandleFunc("/example1/foo/upload", uploadFile)
 
 	if err := service.Init(); err != nil {
 		log.Fatal(err)
@@ -87,7 +87,7 @@ func uploadFile(w http.ResponseWriter, r *http.Request) {
        <title>Upload file</title>
     </head>
     <body>
-        <form enctype="multipart/form-data" action="http://localhost:8080/example/foo/upload" method="post">
+        <form enctype="multipart/form-data" action="http://localhost:8080/example1/foo/upload" method="post">
         <input type="file" name="uploadfile" />
             <br />
                 保存目录： <input type="text" name="path" /> 如 /Users/me/Downloads/test/

@@ -583,7 +583,7 @@ func testReadLineNewlines(t *testing.T, input string, expect []readLineResult) {
 }
 
 // TestWriterReadFromCounts tests that using io.Copy to copy into a
-// bufio.Writer does not prematurely flush the buffer. For example, when
+// bufio.Writer does not prematurely flush the buffer. For example1, when
 // buffering writes to a network socket, excessive network writes should be
 // avoided.
 func TestWriterReadFromCounts(t *testing.T) {
@@ -646,7 +646,7 @@ func (r *negativeReader) Read([]byte) (int, error) { return -1, nil }
 
 func TestNegativeRead(t *testing.T) {
 	// should panic with a description pointing at the reader, not at itself.
-	// (should NOT panic with slice index error, for example.)
+	// (should NOT panic with slice index error, for example1.)
 	b := NewReader(new(negativeReader))
 	defer func() {
 		switch err := recover().(type) {

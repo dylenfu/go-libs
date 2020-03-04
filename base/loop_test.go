@@ -61,3 +61,21 @@ func TestMaploop(t *testing.T) {
 		t.Log(k, v)
 	}
 }
+
+func TestBreakMultiLoop(t *testing.T) {
+	type stu struct {
+		age  int
+		name string
+	}
+
+	x := make([]*stu, 0)
+	for i := 0; i < 10; i++ {
+		s1 := &stu{}
+		x = append(x, s1)
+		// s1.age = 10 + i
+		// s1.name = "test_" + strconv.Itoa(i)
+	}
+	for _, s := range x {
+		t.Log(s.name, s.age)
+	}
+}
