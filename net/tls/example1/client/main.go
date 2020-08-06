@@ -56,7 +56,7 @@ func verifyCert() {
 	trans := http.Transport{
 		TLSClientConfig: &tls.Config{RootCAs: pool},
 	}
-	client := http.Client{ Transport: &trans}
+	client := http.Client{Transport: &trans}
 
 	res, err := client.Get(url)
 	handlerResponse(res, err)
